@@ -89,19 +89,19 @@ function NavBar() {
                     <Link to='/testimony'  className='nav-links' onClick={closeMobileMenu}> <FcIcons.FcPodiumWithSpeaker /> <span>Testimony</span> </Link>
                 </li>
                 <li className='nav-item' onMouseEnter={onMouseEnterAnnouncement} onMouseLeave={onMouseLeaveAnnouncement} onClick={onClickAnnouncement}>
-                    <Link to='' className='nav-links' > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    <Link to='/announcement' className='nav-links' > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </Link>
                     {announcementDropdown && <AnnouncementDropdown />}
                 </li>
               
                 
                 <li className='nav-item' onMouseEnter={onMouseEnterBooks} onMouseLeave={onMouseLeaveBooks} onClick={onClickBooks}>
-                    <Link to='' onClick={closeMobileMenu} className='nav-links' > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    <Link to='/book' onClick={closeMobileMenu} className='nav-links' > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </Link>
                     {booksDropdown && <BooksDropdown />}
                 </li>
                 
 
                 <li className='nav-item' onMouseEnter={onMouseEnterOthers} onMouseLeave={onMouseLeaveOthers} onClick={onClickOthers}>
-                    <Link to=''  className='nav-links' onClick={closeMobileMenu}> <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </Link>
+                    <Link to='/others'  className='nav-links' onClick={closeMobileMenu}> <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </Link>
                     {othersDropdown && <OthersDropdown />}
                 </li>
                 

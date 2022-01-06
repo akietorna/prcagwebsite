@@ -10,7 +10,7 @@ import { IconContext } from 'react-icons/lib'
 
 
 const Nav = styled.div`
-    background: rgb(126, 126, 233);
+    background: linear-gradient(0deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% );
     height:65px;
     display:flex;
     justify-content: flex-start;
@@ -29,7 +29,7 @@ const NavIcon = styled(Link)`
     align-items:center;
 `
 const SideBarNav = styled.nav `
-    background: rgb(126, 126, 233);
+    background: linear-gradient(0deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% );
     width:260px;
     height:100vh;
     display: flex;
