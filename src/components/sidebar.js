@@ -11,7 +11,7 @@ import { IconContext } from 'react-icons/lib'
 
 const Nav = styled.div`
     background: linear-gradient(0deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% );
-    height:65px;
+    height:80px;
     display:flex;
     justify-content: flex-start;
     align-items:center;
