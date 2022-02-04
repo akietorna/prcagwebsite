@@ -34,11 +34,11 @@ function App() {
   return (
     <>
       <Router>
-        {window.innerWidth < 960 ? <SideBar /> : <NavBar />} 
+        {window.innerWidth < 1300 ? <SideBar /> : <NavBar />} 
         <Routes>
           <Route path='/announcement/children' element={<Children />} />
           <Route path='/book/christian-life' element={<ChristianLife />} />
-          <Route path='others/comment' element={<Comments />} />
+          <Route path='others/comments' element={<Comments />} />
           <Route path='/devotional' element={<Devotional />} />
           <Route path='/announcement/general' element={<General />} />
           <Route path='/book/health' element={<Health />} />

@@ -1,13 +1,17 @@
 import React from 'react'
+import '../arrows.css'
+import Typewritting from '../typewritting'
 
 const Sermons =() =>{
     return (
         <>
-            <h1 className='sermon'>
-                Alleluyah
-            </h1>
+            <div>
+                <Typewritting  />
+            </div>
         </>
     )
 }
+
+
 
 export default Sermons

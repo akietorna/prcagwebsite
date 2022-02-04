@@ -1,0 +1,80 @@
+.carousel{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(0, 0, 0);
+}
+
+@media screen and (max-width:290px) {
+    .carousel{
+        height: 148px;
+    }
+}
+
+@media screen and (min-width:291px) {
+    .carousel{
+        height: 170px;
+    }
+}
+
+@media screen and (min-width:321px) {
+    .carousel{
+        height: 190px;
+    }
+}
+
+@media screen and (min-width:361px){
+    .carousel{
+        height: 198px;
+    }
+}
+
+@media screen and (min-width:380px){
+    .carousel{
+        height: 252px;
+    }
+}
+
+@media screen and (min-width:400px) {
+    .carousel{
+        height: 218px;
+    }
+}
+
+@media screen and (min-width:450px) {
+    .carousel{
+        height: 254px;
+    }
+}
+
+@media screen and (min-width:530px) {
+    .carousel{
+        height: 287px;
+    }
+}
+
+@media screen and (min-width:550px) {
+    .carousel{
+        height: 410px;
+    }
+}
+
+@media screen and (min-width:780px) {
+    .carousel{
+        height: 545px;
+    }
+}
+
+@media screen and (min-width:1020px) {
+    .carousel{
+        height: 543px;
+    }
+}
+
+@media screen and (min-width:1200px) {
+    .carousel{
+        height: 680px;
+    }
+}
+

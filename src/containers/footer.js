@@ -1,5 +1,5 @@
 import React from 'react'
-import  Footer  from  '../components/footer'
+import Footer from '../components/footer'
 import * as TiIcons from 'react-icons/ti'
 import * as FaIcons from 'react-icons/fa'
 import * as IoIcons from 'react-icons/io'
@@ -33,7 +33,7 @@ export function FooterContainer() {
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Social Media</Footer.Title>
-                        <Footer.Link href='#'><TiIcons.TiSocialFacebook />   Facebook</Footer.Link>
+                        <Footer.Link href='#'><TiIcons.TiSocialFacebook /> Facebook</Footer.Link>
                         <Footer.Link href='#'><TiIcons.TiSocialTwitter /> Twitter</Footer.Link>
                         <Footer.Link href='#'><Footer.Span><TiIcons.TiSocialInstagram /></Footer.Span> Intagram</Footer.Link>
                         <Footer.Link href='#'><Footer.Span><FaIcons.FaTelegramPlane /></Footer.Span> Telegram</Footer.Link>
