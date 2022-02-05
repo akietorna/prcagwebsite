@@ -24,8 +24,6 @@
 
 .selection-buttons{
     padding: 0;
-    margin-left:5px;
-    /* border-radius: 50%; */
     margin: 0px 15px 0px 0px;
     width: 30px;
     height: 30px;
@@ -67,14 +65,13 @@
 .image-container {
     margin:0;
     padding:0;
-    width:100%;
-    height:100%;
     width:100vw;
     height:100vh;
     position:relative;
     top:0;
     left:0;
     transform: translate(-0.1%, -0.1%);
+    transition: transform 3s ease-in-out;
     overflow:hidden;
 }
 
@@ -105,9 +102,9 @@
 
     .selection-buttons{
         height: 5px;
-        width: 5px;
         margin: 0px 8px 0px 0px;
         /* height: 15px; */
+        margin: 0px 8px 0px 0px;
         width: 15px;
     }
 
@@ -182,6 +179,9 @@
         margin: 0px 8px 0px 0px;
         height: 17px;
         /* width: 17px; */
+        /* margin: 0px 8px 0px 0px; */
+        /* height: 17px; */
+        /* width: 17px; */
     }
 
     .nav-buttons-container{
@@ -215,8 +215,9 @@
     }
 
     .selection-buttons{
-        height: 5px;
-        width: 5px;
+        margin: 0px 8px 0px 0px;
+        height: 18px;
+        width: 18px;
     }
 
     .image-container{
@@ -258,6 +259,7 @@
 
     .selection-buttons{
         height: 5px;
+        height: 18px;
         width: 18px;
     }
 
@@ -291,8 +293,9 @@
     }
 
     .selection-buttons{
-        height: 5px;
-        width: 5px;
+        margin: 0px 12px 0px 0px;
+        height: 20px;
+        width: 20px;
     }
 
     .image-container{
@@ -321,8 +324,6 @@
     }
 
     .selection-buttons{
-        height: 5px;
-        width: 5px;
         margin: 0px 15px 0px 0px;
         height: 25px;
         width: 25px;
@@ -352,8 +353,6 @@
     }
 
     .selection-buttons{
-        height: 5px;
-        width: 5px;
         margin: 0px 16px 0px 0px;
         height: 30px;
         width: 30px;
