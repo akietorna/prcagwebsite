@@ -8,13 +8,13 @@
 }
 
 .selection-buttons-container{
-    /* background-color: rgb(122, 122, 247); */
+    background-color: rgb(122, 122, 247);
     margin: 0;
     padding: 0;
     width: fit-content;
     height: fit-content;
     position: absolute;
-    top: 685px;
+    top: 600px;
     left: 40%;
     display: flex;
     flex-direction: row;
@@ -55,10 +55,9 @@
     width:100vw;
     height:100vh;
     position:absolute;
-    top:80px;
+    top:0;
     left:0;
-    transform: translate(-0.1%, -0.1%);
-    transition: transform 3s ease-in-out;
+    transform: translateX(-0.1%, -0.1%);
     overflow:hidden;
 }
 
@@ -71,7 +70,6 @@
     top:0;
     left:0;
     transform: translate(-0.1%, -0.1%);
-    transition: transform 3s ease-in-out;
     overflow:hidden;
 }
 
@@ -160,13 +158,18 @@
         font-size: 40px;
     }
     
-    .view-port{
+    /* .view-port{
         height: 190px;
+    } */
+
+    #one{
+        height: 100vh;
+        width: 100vh;
     }
 
-    .image-container{
+    /* .image-container{
         height: 190px;
-    }
+    } */
 
     .selection-buttons-container{
         top: 251px;

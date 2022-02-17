@@ -6,7 +6,6 @@ import Typewiter from 'typewriter-effect';
 const Typping = styled.div`
     color: yellow;
     font-size: 60px;
-    background:rgba(0, 0, 0, 0.207);
     height:94vh;
     width:100vw;
     top:100px;
@@ -18,17 +17,14 @@ const welcomeMessage = ['Worship with us on Wednesdays,Fridays @ 6:30 pm and Sun
 function Typewritting() {
     return(
         <Typping >
-            <Typewiter 
+            <Typewiter loop
                 onInit = {(typewritter) =>{
-                    for(let a= 0; a <10; a++){
-                        for(let i = 0; i< welcomeMessage.length; i++){
-                            typewritter.typeString(welcomeMessage[i])
+                            typewritter.typeString(welcomeMessage[0])
                             .pauseFor(5000)
                             .deleteAll()
                             .start()
                         }
                     }
-                }}
             />
         </Typping>
     )

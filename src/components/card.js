@@ -1,11 +1,4 @@
 import React from 'react'
-<<<<<<< HEAD
-<<<<<<< HEAD
-import Typewritting from './typewritting'
-=======
->>>>>>> 98e9b0387817d4e5257722bd5f62b9bd7442048e
-=======
->>>>>>> 98e9b0387817d4e5257722bd5f62b9bd7442048e
 
 function Card(props) {
     return(
@@ -26,8 +19,6 @@ const styles ={
         left:0,
         transform: 'translate(-0.1%, -0.1%)',
         overflow:"hidden",
-<<<<<<< HEAD
-<<<<<<< HEAD
         backgroundColor:'black',
     },
     card_img: {
@@ -37,22 +28,6 @@ const styles ={
         top:0,
         left:0,
         transform: 'translate(0.1%, 0.1%)',
-=======
-=======
->>>>>>> 98e9b0387817d4e5257722bd5f62b9bd7442048e
-    },
-    card_img: {
-        maxWidth:'100%',
-        maxHeight:'100%',
-        position:'relative',
-        top:0,
-        left:0,
-        transform: 'translate(-0.1%, -0.1%)',
-<<<<<<< HEAD
->>>>>>> 98e9b0387817d4e5257722bd5f62b9bd7442048e
-=======
->>>>>>> 98e9b0387817d4e5257722bd5f62b9bd7442048e
-        overflow:"hidden",
     }
 }
 

@@ -37,7 +37,7 @@
 
 @media screen and (min-width:380px){
     .carousel{
-        height: 252px;
+        height: 208px;
         overflow: hidden;
     }
 }
@@ -72,7 +72,14 @@
 
 @media screen and (min-width:780px) {
     .carousel{
-        height: 545px;
+        height: 435px;
+        overflow: hidden;
+    }
+}
+
+@media screen and (min-width:900px) {
+    .carousel{
+        height: 480px;
         overflow: hidden;
     }
 }
