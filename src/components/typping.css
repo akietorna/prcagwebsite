@@ -1,23 +1,37 @@
 .typping{
-    font-size: 25px;
-    padding-top: 500px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 500;
+    font-size: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
 }
 
-@media screen and (min-width:190px) {
+@media screen and (min-width:190px) and (max-width:1299px) {
+    .arrow{
+        display:  none;
+    }
     .typping{
         padding-top: 90px;
-        font-size: 15px;
+        font-size: 0.2rem;
         color: white;
     }
 }
 
 @media screen and (min-width:1300px) {
+    .arrow{
+        color: white;
+        margin-top: 20px;
+        font-size: 3rem;
+    }
+
+
     .typping{
+        padding-top: 500px;
         height: 100vh;
-        width: 70vw;
-        padding-top: 600px;
-        font-size: 30px;
+        background:rgba(0, 0, 0, 0.308);
+        width: 100vw;
+        font-size: 20px;
+        margin-left: -15%;
+        color: white;
+        font-family: cursive;
+        /* margin-right: 10%; */
     }
 }

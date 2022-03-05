@@ -57,7 +57,27 @@
     height: 80px;
 }
 
+.nav-links-clicked{
+    text-decoration: none;
+    padding: 0.5rem;
+    padding-top: 20px;
+    /* margin: 5px; */
+    padding-left: 5px;
+    margin-top: -10px;
+    height: 80px;
+    color: rgb(247, 231, 10);
+    border-bottom: 4px solid yellow ;
+    background: black;
+}
+
 .nav-links:hover{
+    color: rgb(247, 231, 10);
+    transition: 0.1s ease-in;
+    border-bottom: 4px solid yellow ;
+    background: black;
+}
+
+.nav-links-clicked:hover{
     color: rgb(247, 231, 10);
     transition: 0.1s ease-in;
     border-bottom: 4px solid yellow ;

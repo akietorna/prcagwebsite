@@ -17,6 +17,10 @@ function NavBar() {
     const [booksDropdown, setBooksDropdown] = useState(false);
     const [othersDropdown, setOthersDropdown] = useState(false);
     const [hover, setHover] = useState(false);
+    // const [clicked, setClicked] = useState(false);
+
+
+    // const handleClick = () => setClick(!click);
     
 
     const onClickAnnouncement = () =>{
@@ -76,7 +80,7 @@ function NavBar() {
             <nav className='navbar'>
                 <ul className='nav-menu'>
                     <li className='nav-item' >
-                        <Link to="/" className='nav-links' > <AiIcons.AiFillHome /> <span>Home</span>  </Link>
+                        <Link to="/" className={'nav-links'} > <AiIcons.AiFillHome /> <span>Home</span>  </Link>
                     </li>
                     <li className='nav-item' >
                         <Link to='/sermons'  className='nav-links' > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </Link> 

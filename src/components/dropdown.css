@@ -1,6 +1,7 @@
 .dopdown-menu{
     width: 200px;
-    position: absolute;
+    position: fixed;
+    z-index: 99999;
     top: 80px;
     list-style:none;
     text-align: start;

@@ -5,6 +5,98 @@
     height: 100vh;
     overflow: hidden;
     background-color: rgb(0, 0, 0);
+    /* margin-bottom: 50px; */
+}
+
+
+.container{
+    border: 2px solid rgba(0, 0, 0, 0.356);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.356);
+    border-radius: 10px;
+}
+
+.container:hover{
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.356);
+}
+
+.row{
+    margin-bottom: 40px;
+}
+
+.pastors-heading{
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color:rgba(4, 4, 107, 0.911);
+    text-decoration: underline;
+}
+
+.leaders-heading{
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color:rgba(4, 4, 107, 0.911);
+    text-decoration: underline;
+}
+
+.departments-heading{
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color:rgba(4, 4, 107, 0.911);
+    text-decoration: underline;
+}
+
+.leaders{
+    padding-top: 40px;
+    border-radius: 10px;
+    padding-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.356);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.356);
+    text-align: center;
+}
+
+.departments{
+    padding-top: 40px;
+    border-radius: 10px;
+    padding-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.356);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.356);
+    text-align: center;
+}
+
+
+.pastors{
+    padding-top: 40px;
+    border-radius: 10px;
+    padding-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.356);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.356);
+    text-align: center;
+}
+
+.pastors:hover{
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.356);
+}
+
+.leaders:hover{
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.356);
+}
+
+.departments:hover{
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.356);
 }
 
 @media screen and (max-width:290px) {
@@ -12,12 +104,28 @@
         height: 148px;
         overflow: hidden;
     }
+
+    .container{
+        font-size: 10px;
+    }
+
+    .pastors{
+        width: 20rem;
+    }
+
 }
 
 @media screen and (min-width:291px) {
     .carousel{
         height: 170px;
         overflow: hidden;
+    }
+    /* .pastors{
+        margin-left: 0px;
+    } */
+    
+    .Card{        
+        width:18rem;
     }
 }
 
@@ -61,12 +169,41 @@
         height: 287px;
         overflow: hidden;
     }
+
+    .pastors{
+        margin-left: 80px;
+    }
+
+    .leaders{
+        margin-left: 80px;
+    }
+
+    .departments{
+        margin-left: 80px;
+    }
+
+    
 }
 
 @media screen and (min-width:550px) {
     .carousel{
         height: 410px;
         overflow: hidden;
+    }
+
+    
+}
+
+@media screen and (min-width:700px) {
+    .pastors{
+        margin-left: 190px;
+    }
+
+    .leaders{
+        margin-left: 190px;
+    }
+    .departments{
+        margin-left: 190px;
     }
 }
 
@@ -75,12 +212,36 @@
         height: 435px;
         overflow: hidden;
     }
+
+    .pastors{
+        margin-left: 240px;
+    }
+
+    .leaders{
+        margin-left: 240px;
+    }
+
+    .departments{
+        margin-left: 240px;
+    }
 }
 
 @media screen and (min-width:900px) {
     .carousel{
         height: 480px;
         overflow: hidden;
+    }
+
+    .pastors{
+        margin-left: 270px;
+    }
+
+    .leaders{
+        margin-left: 270px;
+    }
+
+    .departments{
+        margin-left: 270px;
     }
 }
 
@@ -89,12 +250,31 @@
         height: 543px;
         overflow: hidden;
     }
+    .leaders{
+        margin-left: 20px;
+    }
+    .pastors{
+        margin-left: 20px;
+    }
+    .departments{
+        margin-left: 20px;
+    }
 }
 
 @media screen and (min-width:1200px) {
     .carousel{
         height: 680px;
         overflow: hidden;
+    }
+
+    .leaders{
+        margin-left: 30px;
+    }
+    .pastors{
+        margin-left: 30px;
+    }
+    .departments{
+        margin-left: 30px;
     }
 }
 
