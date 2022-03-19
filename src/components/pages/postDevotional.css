@@ -1,0 +1,417 @@
+.devotional-form{
+    color:rgba(170, 12, 99, 0.87);
+    text-align: center;
+    border-right: 2px solid rgba(0, 0, 0, 0.548);
+}
+
+.the-devotional-form{
+    margin-top: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+    width: 1000px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.the-devotional-form input{
+    width: 500px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.26);
+}
+
+.the-devotional-form .submit{
+    width: 200px;
+    margin-top: 10px;
+    background: rgb(75, 75, 248);
+    border-radius: 5px;
+    color: white;
+}
+
+.the-devotional-form .submit:hover{
+    box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+}
+
+
+@media screen and (min-width:280px) {
+    .devotional-form{
+        padding-left: 20px;
+        border-right: 0px ;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 5px;
+        width:270px
+    }
+
+    .the-devotional-form input{
+        width:250px
+    }
+
+}
+
+@media screen and (min-width:350px) {
+    .devotional-form{
+        padding-left: 25px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 5px;
+        width:340px
+    }
+
+    .the-devotional-form input{
+        width: 310px;
+    }
+
+    .the-devotional-form textarea{
+        width: 310px;
+        height: 150px;
+    }
+
+}
+
+@media screen and (min-width:370px) {
+
+    .devotional-form{
+        padding-left: 32px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 5px;
+        width:340px
+    }
+
+    .the-devotional-form input{
+        width: 310px;
+    }
+
+    .the-devotional-form textarea{
+        width: 310px;
+        height: 150px;
+    }
+}
+
+@media screen and (min-width:390px) {
+    .devotional-form{
+        padding-left: 30px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 5px;
+        width:360px
+    }
+
+    .the-devotional-form input{
+        width: 330px;
+    }
+
+    .the-devotional-form textarea{
+        width: 330px;
+        height: 150px;
+    }
+
+}
+
+
+@media screen and (min-width:400px) {
+    .devotional-form{
+        padding-left: 35px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 5px;
+        width:380px
+    }
+
+    .the-devotional-form input{
+        width: 340px;
+    }
+
+    .the-devotional-form textarea{
+        width: 340px;
+        height: 150px;
+    }
+
+}
+
+@media screen and (min-width:500px) {
+    .devotional-form{
+        padding-left: 40px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 10px;
+        width:490px
+    }
+
+    .the-devotional-form input{
+        border-radius: 7px;
+        width: 460px;
+    }
+
+    .the-devotional-form textarea{
+        border-radius: 8px;
+        width: 460px;
+        height: 180px;
+    }
+
+}
+
+
+@media screen and (min-width:750px) {
+    .praying .carousel{
+        width: 100vw;
+        height: 24vh;
+    }
+
+    .devotional-form{
+        padding-left: 30px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 10px;
+        width:740px
+    }
+
+    .the-devotional-form input{
+        border-radius: 10px;
+        width: 700px;
+    }
+
+    .the-devotional-form textarea{
+        border-radius: 10px;
+        width: 700px;
+        height: 180px;
+    }
+
+}
+
+@media screen and (min-width:800px) {
+    .praying .carousel{
+        width: 100vw;
+        height: 24vh;
+    }
+
+    .praying .carousel img{
+        height: 280px;
+    }
+
+    .devotional-form{
+        padding-left: 45px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 10px;
+        width:760px
+    }
+
+    .the-devotional-form input{
+        border-radius: 10px;
+        width: 700px;
+    }
+
+    .the-devotional-form textarea{
+        border-radius: 10px;
+        width: 700px;
+        height: 180px;
+    }
+}
+
+@media screen and (min-width:900px) {
+
+    .row .the-devotional-form{
+        width: 800px;
+    }
+
+    .devotional-form{
+        padding-left: 50px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-devotional-form{
+        border-radius: 10px;
+        width:800px
+    }
+
+    .row .the-devotional-form input{
+        border-radius: 10px;
+        width: 810px;
+    }
+
+    .the-devotional-form textarea{
+        border-radius: 10px;
+        width: 810px;
+        height: 180px;
+    }
+
+}
+
+@media screen and (min-width:1020px) {   
+    .devotional-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 25px;
+    }
+    
+    .row .the-devotional-form{
+        margin-top: 20px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        width: 900px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    
+    
+    .row .the-devotional-form input{
+        width: 750px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+}
+
+
+@media screen and (min-width:1200px) { 
+    
+    .devotional-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 100px;
+
+    }
+    
+    .row .the-devotional-form{
+        margin-top: 20px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        width: 1000px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    
+    
+    .row .the-devotional-form input{
+        width: 750px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+    .the-devotional-form .submit{
+        width: 200px;
+        margin-top: 10px;
+        background: rgb(75, 75, 248);
+        border-radius: 5px;
+        color: white;
+    }
+    
+    .the-devotional-form .submit:hover{
+        box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+    }
+}
+
+
+@media screen and (min-width:1300px) {
+    
+    .devotional-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 0px;
+    }
+    
+    .the-devotional-form{
+        margin-top: 900px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    .row .the-devotional-form{
+        width: 1000px;
+    }
+
+    .row .the-devotional-form .submit{
+        width: 200px;
+        margin-top: 10px;
+        background: rgb(75, 75, 248);
+        border-radius: 5px;
+        color: white;
+    }
+
+    .row .the-devotional-form textarea{
+        padding: 10px 10px 10px 10px;
+
+    }
+    
+    
+    .row .the-devotional-form input{
+        width: 800px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+    
+    
+    
+    .the-devotional-form .submit:hover{
+        box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+    }
+}
+
+

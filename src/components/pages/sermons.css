@@ -1,0 +1,21 @@
+.sermons{
+    padding-top: 40px;
+    border-radius: 10px;
+    padding-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.356);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.356);
+    text-align: center;
+}
+
+.sermons:hover{
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.356);
+}
+
+.sermons .signature{
+    text-align: right;
+    font-size: 18px;
+    margin-top: 15px;
+}

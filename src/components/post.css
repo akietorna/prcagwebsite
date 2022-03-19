@@ -1,0 +1,93 @@
+.posts{
+    margin-top: 50px;
+    margin-left: 25px;
+    text-align: center;
+}
+
+.posts .table{
+    width: 96vw;
+    border: 1px solid black;
+}
+
+.posts .table th{
+    border: 1px solid black;
+}
+
+
+
+@media screen and (min-width:275px) {
+    .posts .table th{
+        font-size: 8px;
+    }
+
+    .posts .table td{
+        font-size: 0.3rem;
+    }
+
+
+
+    .posts{
+        margin-top: 50px;
+        margin-left: 5px;
+        text-align: center;
+    }
+}
+
+
+
+@media screen and (min-width:750px) {
+    .posts .table th{
+        font-size: 1rem;
+    }
+
+    .posts .table td{
+        font-size: 1rem;
+    }
+
+
+
+    .posts{
+        margin-top: 50px;
+        margin-left: 10px;
+        text-align: center;
+    }
+}
+
+
+@media screen and (min-width:810px) {
+    .posts .table th{
+        font-size: 1rem;
+    }
+
+    .posts .table td{
+        font-size: 1rem;
+    }
+
+
+
+    .posts{
+        margin-top: 50px;
+        margin-left: 10px;
+        text-align: center;
+    }
+}
+
+
+@media screen and (min-width:1020px) {
+    .posts .table th{
+        font-size: 1rem;
+    }
+
+    .posts .table td{
+        font-size: 1rem;
+    }
+
+
+
+    .posts{
+        margin-top: 50px;
+        margin-left: 20px;
+        text-align: center;
+    }
+}
+

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import "./navbar.css";
 import  AnnouncementDropdown from "./announcementdropdown";
 import  BooksDropdown from "./booksdropdown";
@@ -10,6 +10,9 @@ import * as GiIcons from 'react-icons/gi'
 import * as FcIcons from 'react-icons/fc'
 import * as BiIcons from 'react-icons/bi'
 import * as RiIcons from 'react-icons/ri'
+
+
+
 
 function NavBar() {
     const [click, setClick] = useState(false);
@@ -75,49 +78,49 @@ function NavBar() {
 
 
 
-   return(
-        <>
-            <nav className='navbar'>
-                <ul className='nav-menu'>
-                    <li className='nav-item' >
-                        <Link to="/" className={'nav-links'} > <AiIcons.AiFillHome /> <span>Home</span>  </Link>
-                    </li>
-                    <li className='nav-item' >
-                        <Link to='/sermons'  className='nav-links' > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </Link> 
-                    </li>
-                    <li className='nav-item' >
-                        <Link to='/prayer-request'  className='nav-links' > <GiIcons.GiPrayer /> <span>Prayer Request</span></Link>
-                    </li>
-                    <li className='nav-item' >
-                        <Link to='/devotional'  className='nav-links' > <FaIcons.FaBookReader /> <span>Devotional</span> </Link>
-                    </li>
-                    <li className='nav-item' >
-                        <Link to='/testimony'  className='nav-links' > <FcIcons.FcPodiumWithSpeaker /> <span>Testimony</span> </Link>
-                    </li>
-                    <li className='nav-item' onMouseEnter={onMouseEnterAnnouncement} onMouseLeave={onMouseLeaveAnnouncement} onClick = {onClickAnnouncement }>
-                        <Link to='/announcement' className='nav-links' > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </Link>
-                        {announcementDropdown && <AnnouncementDropdown />}
-                    </li>
-                
-                    
-                    <li className='nav-item' onMouseEnter={onMouseEnterBooks} onMouseLeave={onMouseLeaveBooks} onClick={onClickBooks}>
-                        <Link to='/book'  className='nav-links' > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </Link>
-                        {booksDropdown && <BooksDropdown />}
-                    </li>
-                    
-
-                    <li className='nav-item' onMouseEnter={onMouseEnterOthers} onMouseLeave={onMouseLeaveOthers} onClick={onClickOthers}>
-                        <Link to='/others'  className='nav-links' > <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </Link>
-                        {othersDropdown && <OthersDropdown />}
-                    </li>
-                    
-                </ul>
-
-            </nav>
-
+return(
+    <>
+    <nav className='navbar'>
+            <ul className='nav-menu'>
+                <li className='nav-item'>
+                    <Link className='nav-links' to="/" > <AiIcons.AiFillHome /> <span>Home</span>  </Link>
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-links' to='/sermons'   > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </Link> 
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-links' to='/prayer-request'   > <GiIcons.GiPrayer /> <span>Prayer Request</span></Link>
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-links' to='/devotional'   > <FaIcons.FaBookReader /> <span>Devotional</span> </Link>
+                </li>
+                <li className='nav-item'>
+                    <Link className='nav-links' to='/testimony'   > <FcIcons.FcPodiumWithSpeaker /> <span>Testimony</span> </Link>
+                </li>
+                <li className='nav-item' onMouseEnter={onMouseEnterAnnouncement} onMouseLeave={onMouseLeaveAnnouncement} onClick = {onClickAnnouncement }>
+                    <Link className='nav-links' to='/announcement'  > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    {announcementDropdown && <AnnouncementDropdown />}
+                </li>
             
-        </>   
-   )
+                
+                <li className='nav-item' onMouseEnter={onMouseEnterBooks} onMouseLeave={onMouseLeaveBooks} onClick={onClickBooks}>
+                    <Link className='nav-links' to='/book'   > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    {booksDropdown && <BooksDropdown />}
+                </li>
+                
+
+                <li className='nav-item' onMouseEnter={onMouseEnterOthers} onMouseLeave={onMouseLeaveOthers} onClick={onClickOthers}>
+                    <Link className='nav-links' to='/others'   > <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </Link>
+                    {othersDropdown && <OthersDropdown />}
+                </li>
+                
+            </ul>
+
+        </nav >
+        
+        
+    </>   
+)
 
 }
 

@@ -9,7 +9,7 @@ import * as BiIcons from 'react-icons/bi'
 export const SideBarData =[
     {
         title: 'Home',
-        path: '/',
+        path: '/home',
         icon: <AiIcons.AiFillHome />,      
     },
 

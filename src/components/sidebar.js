@@ -15,9 +15,9 @@ const Nav = styled.div`
     display:flex;
     justify-content: flex-start;
     align-items:center;
-    top: 0px
-    bottom:0px
-    left:0px
+    top: 0px;
+    bottom:0px;
+    left:0px;
 `
 
 const NavIcon = styled(Link)`
@@ -37,18 +37,18 @@ const SideBarNav = styled.nav `
     position:fixed;   
     top:0;
     left: ${({sidebar}) =>(sidebar ? '0' : '-100%')};
-    transition: 1s;
+    transition: 0.5s ease-out;
     z-index: 10;
 
 `
 const SideBarWrap = styled.div `
-    width:100%
+    width:100%;
 `
 
 const SideBar = () =>{
     const [sidebar,setSidebar] = useState(false);
 
-    const handleSidebar = () => setSidebar(!sidebar)
+    const handleSidebar = () => setSidebar(!sidebar);
 
     return (
         <>

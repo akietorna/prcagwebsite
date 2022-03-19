@@ -9,19 +9,6 @@
     position:absolute;
 }
 
-.navbar-logo{
-    color: white;
-    font-size: 20px;
-    padding-top: 5px;
-    text-decoration: none;
-}
-
-
-.fa-firstdraft {
-    margin-left: 0.5rem;
-    font-size: 1.6rem;
-}
-
 .nav-menu {
     display: grid;
     grid-template-columns: repeat(8, auto);
@@ -90,9 +77,6 @@ span{
     margin-left: 3px;
 }
 
-.fa-bars{
-    color: white;
-}
 
 .nav-links-mobile{
     display: none;

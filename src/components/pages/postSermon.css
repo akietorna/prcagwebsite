@@ -1,0 +1,435 @@
+.sermon-form{
+    color:rgba(170, 12, 99, 0.87);
+    text-align: center;
+    border-right: 2px solid rgba(0, 0, 0, 0.548);
+}
+
+.the-sermon-form{
+    margin-top: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+    width: 1000px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.the-sermon-form input{
+    width: 500px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.26);
+}
+
+.contact{
+    padding-left: 30px;
+}
+
+.contact .the-email{
+    text-decoration: none;
+    color: rgba(170, 12, 99, 0.87);
+}
+
+.the-sermon-form .submit{
+    width: 200px;
+    margin-top: 10px;
+    background: rgb(75, 75, 248);
+    border-radius: 5px;
+    color: white;
+}
+
+.the-sermon-form .submit:hover{
+    box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+}
+
+
+@media screen and (min-width:280px) {
+    .sermon-form{
+        padding-left: 20px;
+        border-right: 0px ;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 5px;
+        width:270px
+    }
+
+    .the-sermon-form input{
+        width:250px
+    }
+
+}
+
+@media screen and (min-width:350px) {
+    .sermon-form{
+        padding-left: 25px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 5px;
+        width:340px
+    }
+
+    .the-sermon-form input{
+        width: 310px;
+    }
+
+    .the-sermon-form textarea{
+        width: 310px;
+        height: 150px;
+    }
+
+}
+
+@media screen and (min-width:370px) {
+
+    .sermon-form{
+        padding-left: 32px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 5px;
+        width:340px
+    }
+
+    .the-sermon-form input{
+        width: 310px;
+    }
+
+    .the-sermon-form textarea{
+        width: 310px;
+        height: 150px;
+    }
+}
+
+@media screen and (min-width:390px) {
+    .sermon-form{
+        padding-left: 30px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 5px;
+        width:360px
+    }
+
+    .the-sermon-form input{
+        width: 330px;
+    }
+
+    .the-sermon-form textarea{
+        width: 330px;
+        height: 150px;
+    }
+}
+
+
+@media screen and (min-width:400px) {
+    .sermon-form{
+        padding-left: 35px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 5px;
+        width:380px
+    }
+
+    .the-sermon-form input{
+        width: 340px;
+    }
+
+    .the-sermon-form textarea{
+        width: 340px;
+        height: 150px;
+    }
+
+}
+
+@media screen and (min-width:500px) {
+    .sermon-form{
+        padding-left: 40px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 10px;
+        width:490px
+    }
+
+    .the-sermon-form input{
+        border-radius: 7px;
+        width: 460px;
+    }
+
+    .the-sermon-form textarea{
+        border-radius: 8px;
+        width: 460px;
+        height: 180px;
+    }
+
+}
+
+
+@media screen and (min-width:750px) {
+    .praying .carousel{
+        width: 100vw;
+        height: 24vh;
+    }
+
+    .sermon-form{
+        padding-left: 30px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 10px;
+        width:740px
+    }
+
+    .the-sermon-form input{
+        border-radius: 10px;
+        width: 700px;
+    }
+
+    .the-sermon-form textarea{
+        border-radius: 10px;
+        width: 700px;
+        height: 180px;
+    }
+
+}
+
+@media screen and (min-width:800px) {
+    .praying .carousel{
+        width: 100vw;
+        height: 24vh;
+    }
+
+    .praying .carousel img{
+        height: 280px;
+    }
+
+    .sermon-form{
+        padding-left: 45px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 10px;
+        width:760px
+    }
+
+    .the-sermon-form input{
+        border-radius: 10px;
+        width: 700px;
+    }
+
+    .the-sermon-form textarea{
+        border-radius: 10px;
+        width: 700px;
+        height: 180px;
+    }
+}
+
+@media screen and (min-width:900px) {
+
+    .row .the-sermon-form{
+        width: 800px;
+    }
+
+    .sermon-form{
+        padding-left: 50px;
+        border-right: 0px ;
+        padding-top: 40px;
+        border-top: 2px solid rgba(0, 0, 0, 0.212);
+    }
+
+    .the-sermon-form{
+        border-radius: 10px;
+        width:800px
+    }
+
+    .row .the-sermon-form input{
+        border-radius: 10px;
+        width: 810px;
+    }
+
+    .the-sermon-form textarea{
+        border-radius: 10px;
+        width: 810px;
+        height: 180px;
+    }
+
+}
+
+@media screen and (min-width:1020px) {   
+    .sermon-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 25px;
+    }
+    
+    .row .the-sermon-form{
+        margin-top: 20px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        width: 900px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    
+    
+    .row .the-sermon-form input{
+        width: 750px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+    
+    .the-sermon-form .submit{
+        width: 200px;
+        margin-top: 10px;
+        background: rgb(75, 75, 248);
+        border-radius: 5px;
+        color: white;
+    }
+    
+    .the-sermon-form .submit:hover{
+        box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+    }
+    
+}
+
+
+@media screen and (min-width:1200px) { 
+    
+    .sermon-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 100px;
+
+    }
+    
+    .row .the-sermon-form{
+        margin-top: 20px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        width: 1000px;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    
+    
+    .row .the-sermon-form input{
+        width: 750px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+    
+    .the-sermon-form .submit{
+        width: 200px;
+        margin-top: 10px;
+        background: rgb(75, 75, 248);
+        border-radius: 5px;
+        color: white;
+    }
+    
+    .the-sermon-form .submit:hover{
+        box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+    }
+    
+}
+
+
+@media screen and (min-width:1300px) {
+    
+    .sermon-form{
+        color:rgba(170, 12, 99, 0.87);
+        padding-left: 50px;
+        border-top: 0px;
+        border-right: 2px solid rgba(0, 0, 0, 0.548);
+        margin-left: 0px;
+    }
+    
+    .the-sermon-form{
+        margin-top: 900px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    .row .the-sermon-form{
+        width: 1000px;
+    }
+
+    
+    
+    .row .the-sermon-form input{
+        width: 800px;
+        height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+    }
+    
+    
+    .the-sermon-form .submit{
+        width: 200px;
+        margin-top: 10px;
+        background: rgb(75, 75, 248);
+        border-radius: 5px;
+        color: white;
+    }
+    
+    .the-sermon-form .submit:hover{
+        box-shadow: 2px 4px rgba(0, 0, 0, 0.418);
+    }
+    
+}
+
+

@@ -19,7 +19,7 @@ import sirjerry from '../pictures/sirjerry.jpg'
 
 function Home (){
     useEffect(() =>{
-        Aos.init({duration:1000});
+        Aos.init({duration:500});
     },[])
     return (
         <div >
@@ -50,7 +50,7 @@ function Home (){
             <div data-aos='fade-up' className='row '>
             <h5 className='pastors-heading'> Pastors </h5>
                 <div className='pastors w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                    <Card className='Card' style={{ width: '18rem' , }}>
+                    <Card className='Card' style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={revdavid} />
                         <Card.Body>
                             <Card.Title style={{ color:'rgba(170, 12, 99, 0.87)', fontFamily:'cursive'}}>Rev David Kporha</Card.Title>
@@ -232,7 +232,7 @@ function Home (){
                     <Card style={{ width: '18rem' , }}>
                         <Card.Img variant="top" src={sirjerry} />
                         <Card.Body>
-                        <Card.Title style={{ color:'rgba(170, 12, 99, 0.87)', fontFamily:'cursive'}}>Ms. Jerry Samson Demorto</Card.Title>
+                        <Card.Title style={{ color:'rgba(170, 12, 99, 0.87)', fontFamily:'cursive'}}>Mr. Jerry Samson Demorto</Card.Title>
                             <Card.Text style={{fontSize:'20px', color:'rgba(170, 12, 99, 0.87)', fontFamily:'cursive'}}>
                                 Head Children Teacher <br />
                                 <Card.Link href='#' style={{textDecoration:'none',fontSize:'16px', color:'rgb(14, 14, 124)' }}>(00233) 240 000 000</Card.Link> <br />

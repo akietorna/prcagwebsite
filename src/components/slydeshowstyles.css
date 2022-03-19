@@ -278,3 +278,20 @@
     }
 }
 
+@media screen and (min-width:1300px) {
+    .carousel{
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .leaders{
+        margin-left: 30px;
+    }
+    .pastors{
+        margin-left: 30px;
+    }
+    .departments{
+        margin-left: 30px;
+    }
+}
+
