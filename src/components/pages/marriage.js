@@ -16,7 +16,7 @@ const Marriage =() =>{
         <div>
             <div className='row'>
                 <div className='praying col-lg-12 col-md-12 col-sm-12 col-xs-12'>
-                    <Carousel duration={4000}>
+                    <Carousel duration={5000}>
                         <Carousel.Item>
                             <img height={250} className='d-block w-100' src={prayerpics2} alt='item-one' />
                             <Carousel.Caption className='type'>

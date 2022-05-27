@@ -1,1 +1,0 @@
-var ExpandableHiddenContainer;(function(){WireUp.init("exphci",function(n){WireUp.onUpdate(n,"a",function(){Lib.CssClass.toggle(n,"b_hide");var t=!Lib.CssClass.contains(n,"b_hide");WireUp.setValue(n,"s",t)})})})(ExpandableHiddenContainer||(ExpandableHiddenContainer={}))

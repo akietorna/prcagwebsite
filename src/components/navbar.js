@@ -80,7 +80,7 @@ function NavBar() {
 
 return(
     <>
-    <nav className='navbar'>
+    <nav className='navbar' sticky='top'>
             <ul className='nav-menu'>
                 <li className='nav-item'>
                     <Link className='nav-links' to="/" > <AiIcons.AiFillHome /> <span>Home</span>  </Link>

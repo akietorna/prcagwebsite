@@ -19,7 +19,7 @@ import sirjerry from '../pictures/sirjerry.jpg'
 
 function Home (){
     useEffect(() =>{
-        Aos.init({duration:500});
+        Aos.init({duration:1000});
     },[])
     return (
         <div >

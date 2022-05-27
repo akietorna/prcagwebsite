@@ -63,7 +63,7 @@ function App() {
   if (myPath){
     return(
         <Router>
-          {window.innerWidth <1300 ? <AdminSideBar />  : <AdminNavBar /> }
+          {window.innerWidth <1100 ? <AdminSideBar />  : <AdminNavBar /> }
           <Routes>
             <Route exact path='/admin'  element={<LogIn />}/>    
             <Route exact path='/admin/posts' element={<Posts />} />
@@ -97,7 +97,7 @@ function App() {
 
     return (
         <Router>
-          {window.innerWidth <1300 ? <SideBar />  : <NavBar /> }
+          {window.innerWidth <1100 ? <SideBar />  : <NavBar /> }
           <Routes>
             <Route path='/announcement/children' element={<Children />} />
             <Route path='/book/christian-life' element={<ChristianLife />} />

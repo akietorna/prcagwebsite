@@ -26,38 +26,7 @@ bcrypt = Bcrypt()
 user ={"firstname":'', "lastname":""}
 
        
-@app.route("/confirm_email/", methods=["GET","POST"])
-def confirm_email():
-    port = 465
-    stmp_server = "smtp.gmail.com"
-    
-    sender_email = "pentecostalrevivalcenterag@gmail.com"
-    receiver_email = str(session["email"])
-    name = session['lastname']
-    password = "revmosesasafo1954"
-
-    confirmation_code = ""
-    for a in range(0,7):
-        confirmation_code += str(random.randint(0,9))
-
-    
-
-    msg = MIMEText(" Hello "+ name + " ! \n \n You signed up an account on the Pentecostal Revival center,AG website.To confirm that it was really you, please enter the confirmatory code  into the box provided. Thank you \n \n \t \t Confirmatory Code: "+ confirmation_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
-    msg['Subject'] = 'PRC AG website sign up email confirmation'
-    msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
-    msg['To'] = session["email"]
-    
-    session['conf'] = confirmation_code
-
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
-        server.login(sender_email,password)
-        server.sendmail(sender_email,receiver_email,msg.as_string())
-        print('Mail sent')
-
-    return redirect(url_for('confirm_coded'))
-    
+  
 
 @app.route("/confirm_coded/", methods=["POST", "GET"])
 def confirm_coded():
@@ -129,54 +98,6 @@ def logged_in_required(f):
     return wrapping 
     
 
-class RegistrationForm(Form):
-    firstname = TextField('Firstname', [validators.Length(min=4, max=24)])
-    lastname = TextField('Lastname', [validators.Length(min=4, max=24)])
-    sex = TextField('Sex', [validators.Length(min=1, max=7)])
-    username = TextField('Username', [validators.Length(min=4, max=24)])
-    email = TextField('Email Address', [validators.Length(min=9, max=50)])
-    password = PasswordField('Password', [validators.Length(min=5, max=40)])
-
-
-class ResetPassword(Form):
-    username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
-
-class ConfirmEmail(Form):
-    confirmation = TextField('Enter the Confirmatory Code', [validators.Length(min=4, max=24)])
-
-class SetPassword(Form):
-    username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
-    password = PasswordField('Enter your new Password', [validators.DataRequired(),validators.EqualTo('confirm_password', message="Passwords must match")])
-    confirm_password = PasswordField(' Confirm Password')
-
-
-class DailyDevotion(Form):
-    sender_name = TextField('Author', [validators.Length(min=4, max=50)])
-    title = TextField('Title', [validators.Length(min=1, max=100)])
-    passage = TextField('Passage', [validators.Length(min=4, max=24)])
-    message = TextAreaField('Message', [validators.Length(min=1, max=50000)])
-
-class AddTestimony(Form):
-    sender_name = TextField('Author', [validators.Length(min=4, max=50)])
-    title = TextField('Title', [validators.Length(min=1, max=100)])
-    testimony = TextAreaField('Testimony', [validators.Length(min=1, max=100000)])
-
-class Announcement(Form):
-    sender_name = TextField('Author', [validators.Length(min=4, max=50)])
-    title = TextField('Title', [validators.Length(min=1, max=100)])
-    announcement = TextAreaField('Announcement', [validators.Length(min=1, max=50000)])
-    department = TextField('Department Code', [validators.Length(min=2, max=2)])
-
-class PrayerRequest(Form):
-    sender_name = TextField('Name', [validators.Length(min=4, max=50)])
-    prayer = TextAreaField('Prayer_request', [validators.Length(min=1, max=50000)])
-    contact = TextField('Contact', [validators.Length(min=10, max=15)])
-
-
-class Comments(Form):
-    sender_name = TextField('Name', [validators.Length(min=4, max=50)])
-    comments = TextAreaField('Comment', [validators.Length(min=1, max=50000)])
-    contact = TextField('Contact', [validators.Length(min=10, max=15)])
 
 
 @app.route("/forget_password/", methods=["POST", "GET"])
