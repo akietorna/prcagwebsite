@@ -16,13 +16,13 @@ function LogIn(){
                 <div className='sign-in-form-container col-lg-6 col-md-6 col-sm-12 col-xs-12'>
 
                     <form className='sign-in-form' >
-                        <input type="text" placeholder='Username'  required />
+                        <input name='username' type="text" placeholder='Username'  required />
                         <br />
 
-                        <input type='password' placeholder='Password'  required/>
+                        <input name='password' type='password' placeholder='Password'  required/>
                         <br />
 
-                        <Link to="#" className='forgot-password'>forgot password?</Link>
+                        <Link to="/admin/forget_password" className='forgot-password'>forgot password?</Link>
 
                         <input type='button' value='Log In' className='submit'/>
                     </form>

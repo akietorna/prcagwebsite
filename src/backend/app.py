@@ -1,9 +1,8 @@
-from flask import Flask,render_template,request,url_for,redirect,flash,session,g, send_from_directory, abort,send_file
-from database import connection
-from wtforms import Form, BooleanField,TextAreaField, TextField, PasswordField,validators
+from flask import Flask,json, jsonify,request,redirect,flash,send_file,session,url_for
+from python_modules.database import connection
+from python_modules.emailhandling import confirm_email
 from flask_bcrypt import Bcrypt
 from functools import wraps
-from MySQLdb import escape_string as thwart
 import gc
 from time import localtime,strftime
 from datetime import datetime
@@ -23,54 +22,7 @@ app.config['DEBUG'] = True
 bcrypt = Bcrypt()
 #socketio = SocketIO(app)
 
-user ={"firstname":'', "lastname":""}
-
-       
-  
-
-@app.route("/confirm_coded/", methods=["POST", "GET"])
-def confirm_coded():
-    form = ConfirmEmail(request.form)
-    if request.method =="POST" and form.validate():
-        confirmed_code = form.confirmation.data
-        conf = session['conf']
-        # inserting statements into the database
-        if confirmed_code == conf:
-            firstname = session["firstname"]
-            lastname=session["lastname"]
-            day= session["day"]
-            month=session["month"]
-            year=session["year"]
-            sex=session["sex"]
-            contact=session["contact"]
-            marital_status=session["marital_status"]
-            username=session["username"]
-            email = session["email"]
-            password = session["password"]
-
-            print('it worked')
-
-            curs,connect = connection()
-
-            curs.execute("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",([firstname],[lastname], [day],[month],[year],[sex],[contact],[marital_status],[username], [email], [password]) ) 
-
-            connect.commit()
-            flash("Thanks. Registration was succesfull!")
-            curs.close()
-            connect.close()
-            gc.collect()
-
-            session['logged_in'] = True
-
-            return redirect(url_for('home'))
-
-        else:
-            error = "Your credentials do not match, try again" 
-            return render_template('sign_up_page.html', error = error)
-
-    return render_template("confirm_email.html", form = form)
-
-
+userdetails = { 'username': '','email': '', 'password': '', 'confirm_code': ''}
 
 
 def login_required(f):
@@ -80,134 +32,110 @@ def login_required(f):
             return f(*args, **kwargs)
         
         else :
-            flash('You need to login first')
-            return redirect(url_for('home_page'))
+            return jsonify('You need to log in first') ,redirect(url_for('home_page'))
         
     return wrapping
-
-def logged_in_required(f):
-    @wraps(f)
-    def wrapping(*args, **kwargs):
-        if 'admin' in session:
-            return f(*args, **kwargs)
-        
-        else :
-            flash('You need to login first')
-            return redirect(url_for('admin'))
-        
-    return wrapping 
     
 
 
 
-@app.route("/forget_password/", methods=["POST", "GET"])
+@app.route("/admin/forget_password/", methods=["POST"])
 def forget_password():
     
-    form = ResetPassword(request.form)
+    # this takes care of resetting password
+    request_data = request.get_json()
+    username = request_data['username']
 
-    if request.method =="POST" and form.validate():
-        username = form.username.data
+    curs, connect = connection()
 
-        # fetching the email from database
-        curs,connect = connection()
-           
-        curs.execute("select email from users where username = (%s) " , [username])
-        r_email = curs.fetchone()[0]
+    check_account = curs.execute(
+        "select * from users where username = %s ", [username])
+
+    # this function checks if the username is correct by sending an email to it's email address with a confirmation code
+    if check_account > 0:
+        email = curs.execute("select email from users where username = %s ", [username])
+        email = curs.fetchone()
+        userdetails['confirm_code'] = confirm_email(receiver = email,username=username)       
         
+        return redirect(url_for('confirm_code'))
+
+    else:
+        return jsonify('Sorry, No account is connected this username')
+
+
+
+@app.route('/confirm_code/', methods=["POST"])
+def confirm_code():
+    # this function check if the correct code sent to user is typed
+    request_data = request.get_json()
+    confirmed_code = request_data['confirm_code']
+    conf = userdetails["confirm_code"]
+    if conf == confirmed_code:
+        return redirect(url_for('set_password'))
+
+    else:
+        return jsonify('You typed the wrong confirmatory code')
+
+
+
+
+@app.route('/set_password/',methods=['POST'])
+def set_password():
+    # this function accept new password from the user to reset the old one 
+    request_data = request.get_json()
+    username = request_data['username']
+    email = request_data['email']
+    password = request_data['password']
+    confirm_password = request_data['confirm_password']
+
+    if password == confirm_password:
+        password = bcrypt.generate_password_hash(password)
+        curs, connect = connection()
+        curs.execute("insert into users (username,password,email) values (%s, %s, %s)", [username,password,email])
         connect.commit()
         curs.close()
         connect.close()
         gc.collect()
+        return jsonify('Password successfully reset'),redirect(url_for('sign_in'))
+
+    else:
+        return jsonify('Error resetting password')
+    
+@app.route('/admin', methods=[ "POST"])
+def sign_in():
+    request_data = request.get_json()
+    username = request_data['username']
+    password = request_data['password']
+    curs, connect = connection()
+    info = curs.execute("SELECT * FROM users WHERE username = %s", [username])
+
+    # fetching the password
+    Password = curs.execute("SELECT password FROM users WHERE username = %s", [username])
+    Password = curs.fetchone()
+    curs.close()
+    connect.close()
+
+    if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
+        return jsonify("Log in successfully")
+
+    else:
+        return jsonify("Invalid credentials, try again")
 
 
-        # sending the code to the eamil
-        port = 465
-        stmp_server = "smtp.gmail.com"
-        
-        sender_email = "pentecostalrevivalcenterag@gmail.com"
-        receiver_email = r_email
-        name = username
-        password = "revmoses1954"
-
-        confirmation_code = ""
-        for a in range(0,7):
-            confirmation_code += str(random.randint(0,9))
-
-        
-
-        msg = MIMEText(" Hello "+ name + " ! \n \n You requested for a reset of password on the Pentecostal Revival center,AG website.To confirm that it was really you, please enter the confirmatory code  into the box providedonthe website. Thank you \n \n \t \t Confirmatory Code: "+ confirmation_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
-        msg['Subject'] = 'PRC AG website sign up email confirmation'
-        msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
-        msg['To'] =  r_email
-        
-        session["conf"] = confirmation_code
-
-        print(confirmation_code)
-
-        context = ssl.create_default_context()
-
-        with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
-            server.login(sender_email,password)
-            server.sendmail(sender_email,receiver_email,msg.as_string())
-            print('Mail sent')
+@app.route('/admin/post',methods=["GET"])
+@login_required
+def post():
+    curs,connect= connection()
+    curs.execute("select * from post")
+    posts = curs.fetchall()
+    posts= reversed(posts)
+    
+    return jsonify(posts)
 
 
-        return redirect(url_for('confirm_reset'))
-
-    return render_template("forgetPassword.html", form=form)
-
-
-@app.route('/confirm_reset/', methods=["GET","POST"])
-def confirm_reset():
-    form=ConfirmEmail(request.form)
-    if request.method =="POST" and form.validate():
-        confirmed_code = form.confirmation.data
-        conf = session["conf"]
-        if conf == confirmed_code:
-            return redirect(url_for('set_password'))
-
-        else:
-            error = "Your credentials do not match, try again" 
-            return redirect(url_for('home_page'))
-
-    return render_template("confirm_email.html", form = form)
-
-
-
-
-@app.route('/set_password/',methods=["GET","POST"])
-def set_password():
-    error = ''
-    form = SetPassword(request.form)
-    if request.method =='POST' and form.validate():
-        username = form.username.data
-        password = form.password.data
-        confirm_password = form.confirm_password.data
-
-        if password == confirm_password:
-
-            bcrypt = Bcrypt()
-            password = bcrypt.generate_password_hash(password)
-
-            curs, connect = connection()
-            curs.execute("update users set password = (%s)  WHERE username = (%s)",[password,username])
-            connect.commit()
-            curs.close()
-            connect.close()
-            gc.collect()
-
-            session['logged_in'] = True
-            return redirect(url_for("home"))
-
-        else:
-            error = "Your credentials do not match, try again" 
-            return render_template('reset_password.html', error = error)
-
-
-    return render_template('reset_password.html', form=form)
 
 @app.route("/addpost/", methods=["POST", "GET"])
-@logged_in_required
+@login_required
 def addpost():
     form = DailyDevotion(request.form)
     if request.method =='POST' and form.validate():
@@ -264,7 +192,7 @@ def addtestimony():
 
 
 @app.route("/add_announcement/", methods=["POST", "GET"])
-@logged_in_required
+@login_required
 def add_announcement():
     form = Announcement(request.form)
     if request.method =='POST' and form.validate():
@@ -294,7 +222,7 @@ def add_announcement():
 
 
 @app.route("/deletepost/",methods=["POST", "GET"])
-@logged_in_required
+@login_required
 def deletepost():
     if request.method == 'POST':
         picked = request.form['picked']
@@ -314,7 +242,7 @@ def deletepost():
     return redirect(url_for("devotional"), name= session['admin']) 
 
 @app.route("/delete_announcement/",methods=["POST", "GET"])
-@logged_in_required
+@login_required
 def delete_announcement():                      
     if request.method == 'POST':
         picked = request.form['picked']
@@ -373,7 +301,7 @@ def devotional():
 
 
 @app.route("/announcement/",methods=["POST","GET"])
-@logged_in_required
+@login_required
 def announcement():
     error=''
     try:
@@ -398,209 +326,6 @@ def logout():
 
 #routing the various webpages 
 
-
-@app.route('/',methods=["GET","POST"])
-def home_page():
-    error = ''
-    if request.method == 'POST':
-        try:
-
-            username = request.form['username']
-            password = request.form['password']
-
-            curs, connect = connection()
-            info = curs.execute("SELECT * FROM users WHERE username = %s", [username])
-
-            # fetching the password
- 
-            Passwd = curs.fetchone()[10]
-
-            
-
-            # checking if the password valid
-
-            
-
-            if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['logged_in'] = True
-                session['username'] = request.form['username']
-                update = request.form['username']
-
-                return redirect(url_for("home"))
-
-           
-
-
-            else:
-                error = "Your credentials are invalid, try again" 
-            
-            gc.collect() 
-            return render_template('beginning.html', error = error)
-
-
-        except Exception as e:
-
-            return render_template('beginning.html', error = error)
-
-    return render_template('beginning.html', error = error)
-    
-
-
-@app.route('/administration_page/',methods=["GET","POST"])
-def admin():
-    error = ''
-    if request.method == 'POST':
-        try:
-
-            username = request.form['username']
-            password = request.form['password']
-
-            curs, connect = connection()
-            info = curs.execute("SELECT * FROM administration WHERE username = %s", [username])
-
-
-
-            # fetching the password
-
-            Passwd = curs.fetchone()[3]
-
-            
-
-            # checking if the password valid
-
-            
-
-            if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['admin'] = True
-                session['username'] = request.form['username']
-
-                print("it worked")
-                
-
-                return redirect(url_for("users"))
-
-            
-
-
-            else:
-                error = "Your credentials are invalid, try again" 
-            
-            gc.collect() 
-            return render_template('admin1.html', error = error)
-
-
-        except Exception as e:
-
-            return render_template('admin1.html', error = error)
-
-    return render_template('admin1.html', error = error)
-
-
-
-
-
-@app.route('/users/',methods=['GET', 'POST'])
-def users():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT * FROM users')
-        data = curs.fetchall()
-
-        return render_template("users.html", value = data)
-
-    except Exception as e:
-            return render_template('admin1.html')
-
-
-
-@app.route('/add_users/', methods=['GET','POST'])
-@logged_in_required
-def add_users():
-
-    form = RegistrationForm(request.form)
-    if request.method =='POST' and form.validate():
-        firstname = form.firstname.data
-        lastname = form.lastname.data
-        sex = form.sex.data
-        username= form.username.data
-        email = form.email.data
-
-        bcrypt = Bcrypt()
-        password = bcrypt.generate_password_hash(form.password.data)
-
-        
-
-            
-
-        curs,connect = connection()
-
-        # checking if the username matches that of another person
-    
-
-        check_name = curs.execute("SELECT * FROM users WHERE username = %s ", [username] )
-
-        check_mail = curs.execute("SELECT * FROM users WHERE email = %s ", [email])
-
-        if int(check_name) > 0:
-            flash("Username already used,please choose another one")
-            return render_template('add.html')
-
-        elif int(check_mail) > 0:
-            flash("Email already used,please choose another one")
-            return render_template('add.html')
-
-        else:
-
-
-            # inserting statements into the database
-            input_statement = ("INSERT INTO administration (firstname, lastname,sex,username,email, password) VALUES (%s, %s, %s, %s, %s, %s)" ) 
-            data = (thwart(firstname), thwart(lastname), thwart(sex),  thwart(username),thwart(email),  thwart(password) )
-            curs.execute( input_statement, data)
-
-            connect.commit()
-            flash("Thanks. Registration was succesfull!")
-            curs.close()
-            connect.close()
-            gc.collect()
-
-            return redirect(url_for("users"))
-
-    return render_template("add.html", form=form, name=session['admin'])
-
-
-@app.route('/delete_user/', methods=["GET", "POST"])
-@logged_in_required
-def delete_user():
-    if request.method == 'POST':
-        picked = request.form['picked']
-
-
-# connection to database
-        curs,connect = connection()
-        curs.execute("DELETE FROM  users WHERE user_id = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for('users'))
-    return redirect(url_for('users'), name= session['admin']) 
-
-
-
-
-@app.route('/home/',methods=["GET","POST"])
-@login_required
-def home():
-
-    
-    #flash("You are welcome to Pentecostal Revival Center, AG.We are happy to have you here")
-    return render_template('home.html', name=session['logged_in'])
-
-
-
 @app.route('/testimony/',methods=["GET","POST"])
 @login_required
 def testimony():
@@ -620,7 +345,7 @@ def testimony():
         return render_template('testimony.html', name=session['logged_in'])
 
 @app.route('/prayer_request/',methods=["GET","POST"])
-@logged_in_required
+@login_required
 def prayer_request():
     error=''
     try:
@@ -639,7 +364,7 @@ def prayer_request():
 
 
 @app.route('/get_comment/',methods=["GET","POST"])
-@logged_in_required
+@login_required
 def get_comment():
     error=''
     try:
@@ -659,7 +384,7 @@ def get_comment():
 
 
 @app.route('/testimony1/',methods=["GET","POST"])
-@logged_in_required
+@login_required
 def testimony1():
     error=''
     try:
@@ -953,7 +678,7 @@ app.config['ALLOWED_BOOK_EXTENTIONS']=["PDF"]
 
 
 @app.route('/spiritualbooks/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def spiritualbooks():
     if request.method =='POST':
 
@@ -1003,7 +728,7 @@ def spiritualbooks():
 
 
 @app.route('/marriagebooks/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def marriagebooks():
     if request.method =='POST':
 
@@ -1054,7 +779,7 @@ def marriagebooks():
 
 
 @app.route('/sermons/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def sermons():
     if request.method =='POST':
 
@@ -1104,7 +829,7 @@ def sermons():
   
 
 @app.route('/sundayschool1/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def sundayschool1():
     if request.method =='POST':
 
@@ -1155,7 +880,7 @@ def sundayschool1():
 
 
 @app.route('/prayerbooks/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def prayerbooks():
     if request.method =='POST':
 
@@ -1205,7 +930,7 @@ def prayerbooks():
 
 
 @app.route('/healthbooks/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def healthbooks():
     if request.method =='POST':
 
@@ -1254,7 +979,7 @@ def healthbooks():
 
 
 @app.route('/inspirationalbooks/', methods=["GET","POST"]) 
-@logged_in_required
+@login_required
 def inspirationalbooks():
     if request.method =='POST':
 
@@ -1300,132 +1025,6 @@ def inspirationalbooks():
             return redirect(url_for('inspirationalbooks'))
 
     return render_template('inspirationalbooks.html', name=session['admin'])
-
-
-
-
-@app.route('/sign_up_page/',methods=["GET","POST"])
-
-def sign_up_page():
-
-        if request.method == "POST":
-
-            #taking in personal info
-
-            session["firstname"] = request.form['firstname']
-            session["lastname"] = request.form['lastname']
-
-            session["day"] = request.form['day']
-            session["month"] = request.form['month']
-            session["year"] = request.form['year']
-
-            session["sex"] = request.form['sex']
-
-            session["contact"] = request.form['contact']
-
-            session["marital_status"] = request.form['marry']
-            
-            session["username"] = request.form['username']
-
-            session["email"] = request.form['email']
-
-
-            bcrypt = Bcrypt()
-
-            session["password"] = bcrypt.generate_password_hash(request.form['password'])
-
-            curs,connect = connection()
-
-            username = session["username"]
-            email = session["email"]
-            # checking if the username matches that of another person
-        
-
-            check_name = curs.execute("SELECT * FROM users WHERE username = %s ", [username] )
-
-            connect.commit()
-            print("The process was sucessful")
-            curs.close()
-            connect.close()
-            gc.collect()
-
-            if int(check_name) > 0:
-                flash("Username already used,please choose another one")
-                return render_template('sign_up_page.html')
-
-            else:
-                return redirect(url_for('confirm_email'))
-
-
-            
-        return render_template("sign_up_page.html")
-
-
-
-
-@app.route('/ed_profile/', methods=["GET","POST"])
-def ed_profile():
-
-        if request.method =="POST":
-
-            firstname = request.form['firstname']
-            lastname = request.form['lastname']
-
-            day = request.form['day']
-            month = request.form['month']
-            year = request.form['year']
-
-            sex = request.form['sex']
-
-            marital_status = request.form['marry']
-            
-            username = request.form['username']
-
-            email = request.form['email']
-            # info on the date the church was joined
-            day_joined_church = request.form['day']
-            month_joined_church = request.form['month']
-            year_joined_church = request.form['year']
-
-            #info on the the date of baptism 
-
-            day_of_baptism = request.form['day_of_baptism']
-            month_of_baptism = request.form['month_of_baptism']
-            year_of_baptism = request.form['year_of_baptism']
-
-
-            # info on department and positions held
-            department = request.form['dept']
-            position = request.form['position']
-
-            department_1 = request.form['depart']
-            position_1 = request.form['pos']
-
-            #info on the service you attend
-            service = request.form['service']
-            status = request.form['status']
-
-            # personal info
-            location = request.form['location']
-            house_number = request.form['house']
-            home_town = request.form['home_town']
-
-            update = session['username']
-            
-            curs,connect = connection()
-
-                # updating the table
-            # curs.execute("SELECT day_joined_church,month_joined_church,year_joined_church,department,position,department_1,postion_1,service,status,location,house_number,home_town] FROM users WHERE username = (%s)", [update])
-            curs.execute("UPDATE users SET firstname = (%s),lastname = (%s), day = (%s), month= (%s), year = (%s), sex = (%s), marital_status = (%s), username = (%s), email, day_joined_church = (%s),month_joined_church= (%s),year_joined_church= (%s),day_of_baptism=(%s),month_of_baptism=(%s),year_of_baptism=(%s),department= (%s),postion= (%s),department_1= (%s),position_1= (%s),service= (%s),status= (%s),location= (%s),house_number= (%s),home_town= (%s) WHERE username = (%s)", [day_joined_church,month_joined_church,year_joined_church,day_of_baptism,month_of_baptism,year_of_baptism,department,position,department_1,position_1,service,status,location,house_number,home_town,session["username"]])
-            print('it was successfull')
-            connect.commit()
-            curs.close()
-            connect.close()
-            gc.collect()
-            return redirect(url_for('home'))
-
-
-        return render_template('ed_profile.html', name=session['logged_in'])
 
 
 
@@ -1523,11 +1122,11 @@ def thank_you1():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html')
+    return jsonify('page not found')
 
 @app.errorhandler(500)
 def server_error(e):
-    return render_template('500.html')
+    return jsonify('error connecting to server')
 
 
 

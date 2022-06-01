@@ -16,7 +16,7 @@ const Prayer =() =>{
                 <div className='praying col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                     <Carousel duration={4000}>
                         <Carousel.Item>
-                            <img height={250} className='d-block w-100' src={prayerpics2} alt='item-one' />
+                            <img height={400} className='d-block w-100' src={prayerpics2} alt='item-one' />
                             <Carousel.Caption className='type'>
                                 <h5>This book of the law should not depart from your mouth
                                 </h5>
@@ -24,7 +24,7 @@ const Prayer =() =>{
                         </Carousel.Item>
 
                         <Carousel.Item>
-                            <img height={250} className='d-block w-100' src={prayerpics3} alt='item-one' />
+                            <img height={400} className='d-block w-100' src={prayerpics3} alt='item-one' />
                             <Carousel.Caption className='type'>
                                 <h5>Meditate on it daily and your way shall be prosperous</h5>
                             </Carousel.Caption>
