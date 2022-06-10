@@ -10,8 +10,8 @@ def confirm_email(receiver, username):
     smtp_server = "smtp.gmail.com"
     
     # generate code generate the con
-    sender_email = "pentecostalrevivalcenter@gmail.com"
-    password = "aaaaaa"
+    sender_email = str("akitestapps@gmail.com")
+    password = str("geflzngnbbqcrzfh")
 
     conf_code = generate_code()
 
@@ -26,7 +26,6 @@ def confirm_email(receiver, username):
     with smtplib.SMTP_SSL(smtp_server,port,context = context) as server:
         server.login(sender_email,password)
         server.sendmail(sender_email,receiver,msg.as_string())
-
     return conf_code
     
 

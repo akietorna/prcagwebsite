@@ -8,9 +8,7 @@ from time import localtime,strftime
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
-import smtplib,ssl
-from email.mime.text import MIMEText
-import random
+
 
 
 app=Flask(__name__)
@@ -39,7 +37,7 @@ def login_required(f):
 
 
 
-@app.route("/admin/forget_password/", methods=["POST"])
+@app.route("/admin/forget_password", methods=["POST"])
 def forget_password():
     
     # this takes care of resetting password
@@ -49,29 +47,31 @@ def forget_password():
     curs, connect = connection()
 
     check_account = curs.execute(
-        "select * from users where username = %s ", [username])
+        "select * from users where user_name = %s ", [username])
 
+    print(check_account)
     # this function checks if the username is correct by sending an email to it's email address with a confirmation code
     if check_account > 0:
-        email = curs.execute("select email from users where username = %s ", [username])
-        email = curs.fetchone()
-        userdetails['confirm_code'] = confirm_email(receiver = email,username=username)       
-        
-        return redirect(url_for('confirm_code'))
+        email = curs.execute("select email from users where user_name = %s ", [username])
+        email = str(curs.fetchone()[0])
+        userdetails['confirm_code'] = confirm_email(email,username)     
+        print(userdetails['confirm_code'])
+        return jsonify('username received')
 
     else:
         return jsonify('Sorry, No account is connected this username')
 
 
 
-@app.route('/confirm_code/', methods=["POST"])
+@app.route('/admin/confirmation_code', methods=["POST"])
 def confirm_code():
     # this function check if the correct code sent to user is typed
     request_data = request.get_json()
     confirmed_code = request_data['confirm_code']
     conf = userdetails["confirm_code"]
+    print(conf)
     if conf == confirmed_code:
-        return redirect(url_for('set_password'))
+        return jsonify('verification successful')
 
     else:
         return jsonify('You typed the wrong confirmatory code')
@@ -79,24 +79,23 @@ def confirm_code():
 
 
 
-@app.route('/set_password/',methods=['POST'])
+@app.route('/admin/set_password',methods=['POST'])
 def set_password():
     # this function accept new password from the user to reset the old one 
     request_data = request.get_json()
-    username = request_data['username']
-    email = request_data['email']
-    password = request_data['password']
-    confirm_password = request_data['confirm_password']
+    username = request_data["username"]
+    password = request_data["password"]
+    confirm_password = request_data["confirm_password"]
 
-    if password == confirm_password:
+    if password == confirm_password:       
         password = bcrypt.generate_password_hash(password)
         curs, connect = connection()
-        curs.execute("insert into users (username,password,email) values (%s, %s, %s)", [username,password,email])
+        curs.execute("update users set password = (%s) where user_name= (%s)", [password,username])
         connect.commit()
         curs.close()
         connect.close()
         gc.collect()
-        return jsonify('Password successfully reset'),redirect(url_for('sign_in'))
+        return jsonify('Password successfully reset')
 
     else:
         return jsonify('Error resetting password')
@@ -107,10 +106,10 @@ def sign_in():
     username = request_data['username']
     password = request_data['password']
     curs, connect = connection()
-    info = curs.execute("SELECT * FROM users WHERE username = %s", [username])
+    info = curs.execute("SELECT * FROM users WHERE user_name = %s", [username])
 
     # fetching the password
-    Password = curs.execute("SELECT password FROM users WHERE username = %s", [username])
+    Password = curs.execute("SELECT password FROM users WHERE user_name = %s", [username])
     Password = curs.fetchone()
     curs.close()
     connect.close()
@@ -123,14 +122,17 @@ def sign_in():
 
 
 @app.route('/admin/post',methods=["GET"])
-@login_required
 def post():
     curs,connect= connection()
-    curs.execute("select * from post")
+    curs.execute("select * from posts")
     posts = curs.fetchall()
-    posts= reversed(posts)
     
-    return jsonify(posts)
+    if len(posts) > 0 :
+        posts= reversed(posts)    
+        return jsonify(posts)
+    
+    else:
+        return jsonify("No post Available")
 
 
 

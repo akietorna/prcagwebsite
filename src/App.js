@@ -5,7 +5,7 @@ import AdminNavBar from '../src/components/adminNav';
 import PostSermon from '../src/components/pages/postSermon';
 import ReadPrayerRequest from '../src/components/pages/readPrayerRequest';
 import Posts from '../src/components/pages/Posts';
-import LogIn from '../src/components/signin';
+import LogIn from './components/pages/signin';
 import NavBar from './components/navbar'
 import SideBar from './components/sidebar';
 import Women from './components/pages/women';
@@ -54,6 +54,7 @@ import UpdateAboutUs from './components/pages/updateAboutUs';
 import PostPrayer from './components/pages/postPrayer';
 import ForgetPassword from './components/pages/forget_password';
 import ResetPassword from './components/pages/reset_password';
+import GetUserName from './components/pages/getUsername';
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
           <Routes>
             <Route exact path='/admin'  element={<LogIn />}/> 
             <Route exact path='/admin/forget_password'  element={<ForgetPassword />}/>
+            <Route exact path='/admin/get_username'  element={<GetUserName />}/>
             <Route exact path='/admin/reset_password'  element={<ResetPassword />}/>
             <Route exact path='/admin/posts' element={<Posts />} />
             <Route exact path='/admin/postsermons' element={<PostSermon />} />

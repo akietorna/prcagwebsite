@@ -1,7 +1,7 @@
 drop database if exists prcwebsite;
 create database if not exists prcwebsite;
 use prcwebsite;
-create table users(user_id int primary key not null auto_increment,user_name varchar(200),password varchar(500));
+create table users(user_id int primary key not null auto_increment,user_name varchar(200),password varchar(500),email varchar(500));
 create table posts(post_id int primary key not null auto_increment,title varchar(3000),sender varchar(1000),post_time datetime,item varchar(1000));
 create table prayer_request(post_id int primary key not null auto_increment,sender varchar(500),title varchar(3000),prayer_request text,post_time datetime);
 create table comment(post_id int primary key not null auto_increment,title varchar(3000),comment text,post_time datetime);

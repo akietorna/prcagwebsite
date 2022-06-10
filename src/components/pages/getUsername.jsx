@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import '../pages/forget_password.css'
 import Aos from 'aos'
 import 'aos/dist/aos.css';
@@ -7,45 +7,45 @@ import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
 import { useNavigate } from 'react-router-dom';
 
-function ForgetPassword(){
+function GetUserName(){
 
-    const [confirmCode, setConfirmCode] = useState('')
+    const [username, setUsername] =  useState('')
     const [alertMessage, setAlertMessage] = useState('')
+
+    const handleUsername = (event) =>{
+        setUsername(event.target.value)
+    }
 
     let navigate = useNavigate()
 
-    const handleConfirmCode = (event) =>{
-        setConfirmCode(event.target.value)
-    }
-
     const handleSubmit = (event) =>{
-        event.preventDefault()
-        handleCodeSend()
+        event.preventDefault();
+        handlePost();
     }
 
-    const authenticate = (alert) =>{
-        if (alert === "verification successful"){
-            navigate("/admin/reset_password",{replace : true})
+    const authenticate =(alert) =>{
+        if (alert === "username received"){
+            navigate("/admin/forget_password", {replace:true})
         };
     }
 
-
-    const handleCodeSend = () =>{
-        fetch('/admin/confirmation_code', {
-            method : 'POST',
+    const handlePost = () =>{
+        fetch('/admin/forget_password', {
+            method:"POST",
             body:JSON.stringify({
-                confirm_code : confirmCode
+                username:username
             }),
-            headers: {
-                "Content-type":"application/json; charset=UTF-8"
+            headers :{
+                "Content-type" : "application/json; charset-UTF-8"
             }
         }).then(responds => responds.json())
           .then(message =>{
-            authenticate(message)
-            setAlertMessage(message)
-            setConfirmCode('')
-          })
+                authenticate(message)
+                setAlertMessage(message)
+                setUsername(' ')
+        })
     }
+
 
     useEffect(() =>{
         Aos.init({duration:1000});
@@ -59,11 +59,10 @@ function ForgetPassword(){
                         <Card.Body >
                             <Card.Title style={{ color:'rgba(4, 4, 107, 0.911)', fontSize: 'auto', textDecoration:'underline'}}>User Confirmation</Card.Title>
                             <Card.Text style={{fontSize:'auto', color:'rgba(95, 110, 243, 0.486)', fontFamily:'cursive'}}>
-                               <small>A Confirmation code was sent to your E-mail address. Please check and type it in the box provided below. </small>
-                               <p style={{'color':'red'}}>{alertMessage}</p>
-                                <form className='confirm-code' onSubmit={ handleSubmit } >
-                                    
-                                    <input type='text' value={confirmCode} onChange={handleConfirmCode} placeholder='Confirmation code here' required />
+                            <small>Enter your username for confirmation </small>
+                            <p style={{'color':"red"}}> {alertMessage} </p>
+                                <form className='confirm-code' onSubmit={handleSubmit}>
+                                    <input type='text' value={username} onChange={handleUsername} placeholder='Username' required />
                                     <br />
                                     <input type='submit' value='Submit' className='submit'/>
                                 </form>
@@ -76,4 +75,4 @@ function ForgetPassword(){
     )
     
 }
-export default ForgetPassword
+export default GetUserName
