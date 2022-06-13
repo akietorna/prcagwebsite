@@ -146,6 +146,7 @@
     }
 
     .the-devotional-form textarea{
+        padding: 10px,10px,10px,10px;
         width: 340px;
         height: 150px;
     }

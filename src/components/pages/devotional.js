@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
-import commander from '../pictures/commander.jpg'
 import "./sermons.css"
 import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 
-const Devotional =() =>{
+function Devotional () {
+    const [devotional, setDevotional] = useState([])
+
+
+    useEffect(() =>{
+        fetch('/devotional').then(response =>{
+            if(response.ok){
+                return response.json()
+            }
+        }).then(data => {
+            setDevotional(data)
+            // console.log()
+        } )
+    },[])
+
+
+
     return (
         <div>
             <div className='row'>
@@ -35,22 +50,31 @@ const Devotional =() =>{
 
             <hr/>
 
+           
             <div className='row'>
-                <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                    <Card className='Card' style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={commander} />
-                        <Card.Body>
-                            <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>Sermon Topic</Card.Title>
-                            <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                               The content:kjbfdewqfbfbbf FBFBFABIJLKNKLNFKENFJKRTLKGLKGNNLKNIOLKFLKFJKBAFBF,MJBFFKFFKDBFJJFBLINFKJ
-                               <h6 className='signature'>By: Hispresence</h6>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
-            </div>
-        </div>
+                {devotional.map((item, index) =>{ 
+                    return(
+                        <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>                                                            
+                            <Card key={index} className='Card' style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src={item[5]} />
+                                <Card.Body>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontWeight:'800', fontSize:'24px', fontFamily:'Times New Romans'}}>{item[2]}</Card.Title>
+                                    <Card.Text style={{fontSize:'15px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'Times New Romans'}}>
+                                        <h6 style={{color:'rgba(188, 188, 255, 0.842)'}}>Passage: {item[6]}</h6>
+                                        {item[4]}
+                                        <h6 className='signature'>By: {item[1]}</h6>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                                
+                        
+                        </div>
+                    )})}
+            </div>  
+        
+            
 
+        </div>
     )
 }
 

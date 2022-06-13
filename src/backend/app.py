@@ -4,7 +4,6 @@ from python_modules.emailhandling import confirm_email
 from flask_bcrypt import Bcrypt
 from functools import wraps
 import gc
-from time import localtime,strftime
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
@@ -20,7 +19,7 @@ app.config['DEBUG'] = True
 bcrypt = Bcrypt()
 #socketio = SocketIO(app)
 
-userdetails = { 'username': '','email': '', 'password': '', 'confirm_code': ''}
+user_details = { 'username': '','email': '', 'password': '', 'confirm_code': ''}
 
 
 def login_required(f):
@@ -30,11 +29,58 @@ def login_required(f):
             return f(*args, **kwargs)
         
         else :
-            return jsonify('You need to log in first') ,redirect(url_for('home_page'))
+            return jsonify('You need to log in first') 
         
     return wrapping
-    
 
+
+app.config['AUDIO_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/src/components/sermons"
+app.config['IMAGE_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/public/pictures"
+app.config['BOOK_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/src/books"
+app.config['ALLOWED_IMAGE_EXTENSIONS']= ['JPEG', 'JPG', 'PNG']
+app.config['ALLOWED_AUDIO_EXTENSIONS']= ['MP3', 'WMA', 'AAC', 'WAV']
+app.config['ALLOWED_BOOK_EXTENSIONS']=["PDF"]
+
+#takes care of audio extensions
+def allowed_audio_types(filename):
+    #this converts the data into binary format
+    if not '.' in filename:
+        return False
+    
+    extension = filename.rsplit('.', 1)[1]
+    
+    if extension.upper() in app.config['ALLOWED_AUDIO_EXTENSIONS']:
+        return True
+    else:
+        return False
+
+
+# takes care of extensions if books
+def allowed_book_types(filename):
+    #this converts the data into binary format
+    if not '.' in filename:
+        return False
+    
+    extension = filename.rsplit('.', 1)[1]
+    
+    if extension.upper() in app.config['ALLOWED_BOOK_EXTENSIONS']:
+        return True
+    else:
+        return False
+
+
+# takes care of extensions if books
+def allowed_image_types(filename):
+    #this converts the data into binary format
+    if not '.' in filename:
+        return False
+    
+    extension = filename.rsplit('.', 1)[1]
+    
+    if extension.upper() in app.config['ALLOWED_IMAGE_EXTENSIONS']:
+        return True
+    else:
+        return False   
 
 
 @app.route("/admin/forget_password", methods=["POST"])
@@ -46,20 +92,25 @@ def forget_password():
 
     curs, connect = connection()
 
-    check_account = curs.execute(
-        "select * from users where user_name = %s ", [username])
+    check_account = curs.execute("select * from users where user_name = %s ", [username])
 
     print(check_account)
     # this function checks if the username is correct by sending an email to it's email address with a confirmation code
     if check_account > 0:
         email = curs.execute("select email from users where user_name = %s ", [username])
         email = str(curs.fetchone()[0])
-        userdetails['confirm_code'] = confirm_email(email,username)     
-        print(userdetails['confirm_code'])
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+        
+        user_details['confirm_code'] = confirm_email(email,username)     
+        print(user_details['confirm_code'])
         return jsonify('username received')
 
     else:
         return jsonify('Sorry, No account is connected this username')
+
 
 
 
@@ -68,14 +119,13 @@ def confirm_code():
     # this function check if the correct code sent to user is typed
     request_data = request.get_json()
     confirmed_code = request_data['confirm_code']
-    conf = userdetails["confirm_code"]
+    conf = user_details["confirm_code"]
     print(conf)
     if conf == confirmed_code:
         return jsonify('verification successful')
 
     else:
         return jsonify('You typed the wrong confirmatory code')
-
 
 
 
@@ -100,6 +150,8 @@ def set_password():
     else:
         return jsonify('Error resetting password')
     
+ 
+    
 @app.route('/admin', methods=[ "POST"])
 def sign_in():
     request_data = request.get_json()
@@ -111,8 +163,10 @@ def sign_in():
     # fetching the password
     Password = curs.execute("SELECT password FROM users WHERE user_name = %s", [username])
     Password = curs.fetchone()
+    connect.commit()
     curs.close()
     connect.close()
+    gc.collect()
 
     if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
         return jsonify("Log in successfully")
@@ -121,11 +175,17 @@ def sign_in():
         return jsonify("Invalid credentials, try again")
 
 
+
 @app.route('/admin/post',methods=["GET"])
+@login_required
 def post():
     curs,connect= connection()
     curs.execute("select * from posts")
     posts = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
     
     if len(posts) > 0 :
         posts= reversed(posts)    
@@ -136,39 +196,60 @@ def post():
 
 
 
-@app.route("/addpost/", methods=["POST", "GET"])
-@login_required
-def addpost():
-    form = DailyDevotion(request.form)
-    if request.method =='POST' and form.validate():
-        sender_name = form.sender_name.data
-        title = form.title.data
-        passage = form.passage.data
-        message= form.message.data
+@app.route("/admin/add_devotional", methods=["POST"])
+# @login_required
+def add_devotional():
+    
+    # request_data = request.get_json()
+    picture = request.files['picture']
+    name=request.form['name']
+    topic=request.form['topic']
+    message=request.form['message']
+    passage=request.form['passage']
 
+
+
+    if allowed_image_types(picture.filename):
+
+        filename = secure_filename(picture.filename)
+        picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename))
+        
+        path_to_picture = '/pictures/'+ filename
         time_sent = datetime.now()
-
+        item ='devotional'
         curs,connect = connection()
                     
-        input_statement = ("INSERT INTO dailydevotion (sender_name,time_sent,title,passage,message) VALUES (%s,%s,%s,%s, %s)" ) 
-        data = [sender_name, time_sent,title, passage,message]
+        input_statement = ("INSERT INTO devotional (sender,title,post_time,passage,message,path_to_picture) VALUES (%s,%s,%s,%s,%s,%s)" ) 
+        data = [name,topic, time_sent, passage,message,path_to_picture]
         curs.execute( input_statement, data)
-
+        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
         connect.commit()
-        print("The process was sucessful")
         curs.close()
         connect.close()
         gc.collect()
+        return jsonify("Upload Successful !!!")
+    
+    else:
+        return jsonify('Upload Unsuccessful, please try again')
+        
+        
 
-        return redirect(url_for('devotional'))
+@app.route("/devotional", methods=["GET"])
+def devotional():
+    curs, connect = connection()
+    curs.execute('SELECT * FROM devotional')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
 
-    return render_template("addpost.html", form=form, name=session['logged_in'])
 
 
-@app.route("/addtestimony/", methods=["POST", "GET"])
+@app.route("/admin/add_testimony", methods=["POST"])
 @login_required
-def addtestimony():
-    form = AddTestimony(request.form)
+def add_testimony():
     if request.method =='POST' and form.validate():
         sender_name = form.sender_name.data
         title = form.title.data
@@ -183,7 +264,7 @@ def addtestimony():
         curs.execute( input_statement, data)
 
         connect.commit()
-        print("The process was sucessful")
+        print("The process was successful")
         curs.close()
         connect.close()
         gc.collect()
@@ -212,7 +293,7 @@ def add_announcement():
         curs.execute( input_statement, data)
 
         connect.commit()
-        print("The process was sucessful")
+        print("The process was successful")
         curs.close()
         connect.close()
         gc.collect()
@@ -284,22 +365,6 @@ def delete_testimony():
         return redirect(url_for("testimony"))
 
     return redirect(url_for("testimony"), name= session['logged_in']) 
-
-@app.route("/devotional/",methods=["POST","GET"])
-def devotional():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT * FROM dailydevotion')
-        data = curs.fetchall()
-
-        data = reversed(data)        
-       
-        return render_template("devotional.html", value = data)
-
-    except Exception as e:
-        return render_template('admin1.html', error = error , name=session['admin'])
-
 
 
 @app.route("/announcement/",methods=["POST","GET"])
@@ -638,44 +703,6 @@ def comments():
         return redirect(url_for('thank_you1'))
 
     return render_template("comments.html", form=form, name=session['logged_in'])
-
-#takes care of audio extentions
-def allowed_audio_types(filename):
-    #this converts the data into binary format
-    if not '.' in filename:
-        return False
-    
-    extention = filename.rsplit('.', 1)[1]
-    
-    if extention.upper() in app.config['ALLOWED_AUDIO_EXTENTIONS']:
-        return True
-    else:
-        return False
-
-
-# takes care of extensions if books
-def allowed_book_types(filename):
-    #this converts the data into binary format
-    if not '.' in filename:
-        return False
-    
-    extention = filename.rsplit('.', 1)[1]
-    
-    if extention.upper() in app.config['ALLOWED_BOOK_EXTENTIONS']:
-        return True
-    else:
-        return False
-
-
-app.config['AUDIO_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/sermon/"
-app.config['SUNDAYSCH_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/sundaysch/"
-app.config['INSPIRATION_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/"
-app.config['SPIRITUAL_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/spirituallife/"
-app.config['HEALTH_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/health/"
-app.config['PRAYER_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/prayer/"
-app.config['MARRIAGE_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/marriage/"
-app.config['ALLOWED_AUDIO_EXTENTIONS']= ['MP3', 'WMA', 'AAC', 'WAV', 'FLAC']
-app.config['ALLOWED_BOOK_EXTENTIONS']=["PDF"]
 
 
 
