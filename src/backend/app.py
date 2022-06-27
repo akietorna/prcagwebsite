@@ -34,11 +34,11 @@ def login_required(f):
     return wrapping
 
 
-app.config['AUDIO_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/src/components/sermons"
+app.config['AUDIO_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/public/sermons"
 app.config['IMAGE_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/public/pictures"
 app.config['BOOK_UPLOADS']= "C:/Users/Agbodjive Etorna/Desktop/myapp/src/books"
 app.config['ALLOWED_IMAGE_EXTENSIONS']= ['JPEG', 'JPG', 'PNG']
-app.config['ALLOWED_AUDIO_EXTENSIONS']= ['MP3', 'WMA', 'AAC', 'WAV']
+app.config['ALLOWED_AUDIO_EXTENSIONS']= ['MP3', 'AAC', 'WAV']
 app.config['ALLOWED_BOOK_EXTENSIONS']=["PDF"]
 
 #takes care of audio extensions
@@ -177,7 +177,6 @@ def sign_in():
 
 
 @app.route('/admin/post',methods=["GET"])
-@login_required
 def post():
     curs,connect= connection()
     curs.execute("select * from posts")
@@ -187,17 +186,31 @@ def post():
     connect.close()
     gc.collect()
     
-    if len(posts) > 0 :
-        posts= reversed(posts)    
-        return jsonify(posts)
-    
-    else:
-        return jsonify("No post Available")
+    return jsonify(posts[::-1])
+
+@app.route("/delete_posts",methods=["POST"])
+def delete_post():      
+    print('okay1') 
+    request_data = request.get_json()              
+    picked = request_data['id']
+    print('it worked')  
+    print(picked)  
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from posts WHERE post_id = %s", [picked])
+
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
+
+
 
 
 
 @app.route("/admin/add_devotional", methods=["POST"])
-# @login_required
 def add_devotional():
     
     # request_data = request.get_json()
@@ -246,142 +259,312 @@ def devotional():
     return jsonify(data[::-1])
 
 
+@app.route("/delete_devotional",methods=["POST"])
+def delete_devotionals():      
+    print('okay1') 
+    request_data = request.get_json()              
+    picked = request_data['id']
+    print('it worked')  
+    print(picked)  
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from devotional WHERE post_id = %s", [picked])
 
-@app.route("/admin/add_testimony", methods=["POST"])
-@login_required
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+@app.route('/admin/add_sermon', methods=["POST"]) 
+def add_sermon():
+      # request_data = request.get_json()
+    picture = request.files['picture']
+    sermon =request.files['sermon']
+    name=request.form['name']
+    topic=request.form['topic']
+
+
+
+    if allowed_image_types(picture.filename) and allowed_audio_types(sermon.filename):
+
+        filename1 = secure_filename(picture.filename)
+        filename2 = secure_filename(sermon.filename)
+        picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
+        sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
+        
+        path_to_picture = '/pictures/'+ filename1
+        path_to_sermon = '/sermons/'+ filename2
+        time_sent = datetime.now()
+        item ='sermon'
+        curs,connect = connection()
+                     
+        curs.execute( "INSERT INTO sermons (sender,title,post_time,path_to_sermon,path_to_picture) VALUES (%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_sermon,path_to_picture])
+        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+        return jsonify("Upload Successful !!!")
+    
+    else:
+        return jsonify('Upload Unsuccessful, please try again')
+
+
+@app.route("/sermon", methods=["GET"])
+def sermon():
+    curs, connect = connection()
+    curs.execute('SELECT * FROM sermons')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+@app.route("/delete_sermon",methods=["POST"])
+def delete_sermon():      
+    request_data = request.get_json()              
+    picked = request_data['id'] 
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from sermons WHERE post_id = %s", [picked])
+
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+
+@app.route('/prayer_request',methods=['POST'])
+def prayer_request():
+    # this function accept new password from the user to reset the old one 
+    request_data = request.get_json()
+    name = request_data["name"]
+    phone_number = request_data["phone_number"]
+    email = request_data["email"]
+    prayer_request = request_data["prayer_request"]
+    
+    post_time =datetime.now()
+  
+    curs, connect = connection()
+    curs.execute("insert into prayer_request (sender,phone_number,email,prayer_request,post_time) values (%s,%s,%s,%s,%s)", [name,phone_number,email,prayer_request,post_time])
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+    return jsonify('Your input is recorded, it will be processed in due time ')
+
+
+
+@app.route("/admin/prayer_request", methods=["GET"])
+def read_prayer():
+    curs, connect = connection()
+    curs.execute('SELECT * FROM prayer_request')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/delete_prayer_request",methods=["POST"])
+def delete_prayer_request():      
+    request_data = request.get_json()              
+    picked = request_data['id'] 
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from prayer_request WHERE post_id = %s", [picked])
+
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+
+@app.route('/add_testimony',methods=['POST'])
 def add_testimony():
-    if request.method =='POST' and form.validate():
-        sender_name = form.sender_name.data
-        title = form.title.data
-        testimony= form.testimony.data
-
-        time_sent = datetime.now()
-
-        curs,connect = connection()
-                    
-        input_statement = ("INSERT INTO testimony (sender_name,time_sent,title,testimony) VALUES (%s,%s,%s,%s)" ) 
-        data = [sender_name, time_sent,title, testimony]
-        curs.execute( input_statement, data)
-
-        connect.commit()
-        print("The process was successful")
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for('testimony'))
-
-    return render_template("addtestimony.html", form=form, name=session['logged_in'])
+    # this function accept new password from the user to reset the old one 
+    request_data = request.get_json()
+    name = request_data["name"]
+    phone_number = request_data["phone_number"]
+    email = request_data["email"]
+    testimony = request_data["testimony"]
+    
+    post_time =datetime.now()
+  
+    curs, connect = connection()
+    curs.execute("insert into testimony (sender,phone_number,email,testimomy,post_time) values (%s,%s,%s,%s,%s)", [name,phone_number,email,testimony,post_time])
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+    return jsonify('Your Testimony is recorded ')
 
 
-@app.route("/add_announcement/", methods=["POST", "GET"])
-@login_required
+
+@app.route("/admin/testimony", methods=["GET"])
+def testimony():
+    curs, connect = connection()
+    curs.execute('SELECT * FROM testimony')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+@app.route("/delete_testimony",methods=["POST"])
+def delete_testimony():      
+    request_data = request.get_json()              
+    picked = request_data['id']
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from posts WHERE post_id = %s", [picked])
+
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+
+@app.route('/admin/add_announcement',methods=['POST'])
 def add_announcement():
-    form = Announcement(request.form)
-    if request.method =='POST' and form.validate():
-        sender_name = form.sender_name.data
-        title = form.title.data
-        announcement= form.announcement.data
-        department= form.department.data
-
-        time_sent = datetime.now()
-
-        curs,connect = connection()
-                    
-        input_statement = ("INSERT INTO announcement (sender_name,time_sent,title,announcement,Dept_code) VALUES (%s,%s,%s,%s,%s)" ) 
-        data = [sender_name, time_sent,title, announcement,department]
-        curs.execute( input_statement, data)
-
-        connect.commit()
-        print("The process was successful")
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for('announcement'))
-
-    return render_template("add_announcement.html", form=form, name=session['admin'])
+    # this function accept new password from the user to reset the old one 
+    request_data = request.get_json()
+    post_code = request_data["post_code"]
+    sender = request_data["sender"]
+    title = request_data["title"]
+    announcement = request_data["announcement"]
+    
+    post_time =datetime.now()
+  
+    curs, connect = connection()
+    curs.execute("insert into announcements (post_code,sender,title,post_time,announcement) values (%s,%s,%s,%s,%s)", [post_code,sender,title,post_time,announcement])
+    curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [title,sender,post_time,post_code])
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+    return jsonify('Your Announcement is recorded ')
 
 
 
-@app.route("/deletepost/",methods=["POST", "GET"])
-@login_required
-def deletepost():
-    if request.method == 'POST':
-        picked = request.form['picked']
-
-
-        # connection to database
-        curs,connect = connection()
-        curs.execute("DELETE FROM  dailydevotion WHERE user_id = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for("devotional"))
-
-    return redirect(url_for("devotional"), name= session['admin']) 
-
-@app.route("/delete_announcement/",methods=["POST", "GET"])
-@login_required
-def delete_announcement():                      
-    if request.method == 'POST':
-        picked = request.form['picked']
-
-
-        # connection to database
-        curs,connect = connection()
-        curs.execute("DELETE FROM  announcement WHERE id_number = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for("announcement"))
-
-    return redirect(url_for("announcement"), name= session['admin']) 
-
-
-
-@app.route("/delete_testimony/",methods=["POST", "GET"])
-@login_required
-def delete_testimony():
-    if request.method == 'POST':
-        picked = request.form['picked']
-
-
-        # connection to database
-        curs,connect = connection()
-        curs.execute("DELETE FROM  testimony WHERE user_id = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for("testimony"))
-
-    return redirect(url_for("testimony"), name= session['logged_in']) 
-
-
-@app.route("/announcement/",methods=["POST","GET"])
-@login_required
+@app.route("/announcement", methods=["GET"])
 def announcement():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT * FROM announcement')
-        data = curs.fetchall()
+    curs, connect = connection()
+    curs.execute('SELECT * FROM announcement')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
 
-        data = reversed(data)        
-       
-        return render_template("announcement.html", value = data)
 
-    except Exception as e:
-        return render_template('admin1.html', error = error , name=session['admin'])
+
+@app.route("/children_announcement", methods=["GET"])
+def children_announcement():
+    curs, connect = connection()
+    post_id = 'CHI'
+    curs.execute('SELECT * FROM announcement where post_code',[post_id])
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/youth_announcement", methods=["GET"])
+def youth_announcement():
+    curs, connect = connection()
+    post_id = 'YOU'
+    curs.execute('SELECT * FROM announcement where post_code',[post_id])
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/women_announcement", methods=["GET"])
+def women_announcement():
+    curs, connect = connection()
+    post_id = 'WOM'
+    curs.execute('SELECT * FROM announcement where post_id',[post_id])
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/men_announcement", methods=["GET"])
+def men_announcement():
+    curs, connect = connection()
+    post_id = 'MEN'
+    curs.execute('SELECT * FROM announcement where post_id',[post_id])
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/teen_announcement", methods=["GET"])
+def teen_announcement():
+    curs, connect = connection()
+    post_id = 'WOM'
+    curs.execute('SELECT * FROM announcement where post_id',[post_id])
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+
+@app.route("/delete_announcement",methods=["POST"])
+def delete_announcement():       
+    request_data = request.get_json()              
+    picked = request_data['id']  
+    # connection to database
+    curs,connect = connection()
+    curs.execute("delete from posts WHERE post_id = %s", [picked])
+
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+
+    return jsonify(f'Post with ID number {picked} deleted')
 
 
 @app.route("/logout/")
@@ -392,42 +575,6 @@ def logout():
     return redirect(url_for('home_page'))
 
 #routing the various webpages 
-
-@app.route('/testimony/',methods=["GET","POST"])
-@login_required
-def testimony():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT * FROM testimony')
-        data = curs.fetchall()
-        
-        data = reversed(data)
-
-
-
-        return render_template("testimony.html", value = data)
-
-    except Exception as e:
-        return render_template('testimony.html', name=session['logged_in'])
-
-@app.route('/prayer_request/',methods=["GET","POST"])
-@login_required
-def prayer_request():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT * FROM prayer_request')
-        data = curs.fetchall()
-        
-        data = reversed(data)
-
-
-
-        return render_template("prayer_request.html", value = data)
-
-    except Exception as e:
-        return render_template('prayer_request.html', name=session['admin'])
 
 
 @app.route('/get_comment/',methods=["GET","POST"])
@@ -586,19 +733,6 @@ def men():
     except Exception as e:
         return render_template('men.html', name=session['logged_in'])
 
-@app.route('/message/',methods=["GET","POST"])
-@login_required
-def message():
-    error=''
-    try:
-        curs, connect = connection()
-        curs.execute('SELECT filename,file,post_id FROM messages')
-        data = curs.fetchall()
-
-        return render_template("messages.html", value = data)
-
-    except Exception as e:
-            return render_template('messages.html', error = error , name=session['logged_in'])
     
 
 @app.route('/prayer1/',methods=["GET","POST"])
@@ -650,32 +784,7 @@ def download_audio():
     return send_file(path,as_attachment=True)
 
 
-@app.route('/prayersections/',methods=["GET","POST"])
-@login_required
-def prayersections():
-    form = PrayerRequest(request.form)
-    if request.method =='POST' and form.validate():
-        sender_name = form.sender_name.data
-        prayer= form.prayer.data
-        contact = form.contact.data
 
-        time_sent = datetime.now()
-
-        curs,connect = connection()
-                    
-        input_statement = ("INSERT INTO prayer_request (sender_name,time_sent,contact,prayer) VALUES (%s,%s,%s,%s)" ) 
-        data = [sender_name, time_sent,contact, prayer]
-        curs.execute( input_statement, data)
-
-        connect.commit()
-        print("The process was sucessful")
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return redirect(url_for('thank_you'))
-
-    return render_template("prayersections.html", form=form, name=session['logged_in'])
 
 @app.route('/comments/',methods=["GET","POST"])
 @login_required
@@ -807,53 +916,7 @@ def marriagebooks():
 
 
 
-@app.route('/sermons/', methods=["GET","POST"]) 
-@login_required
-def sermons():
-    if request.method =='POST':
 
-        if request.files:
-            audio = request.files['audio']
-
-            if audio.filename !='':
-
-                if allowed_audio_types(audio.filename):
-
-                    filename = secure_filename(audio.filename)
-                    audio.save(os.path.join(app.config['AUDIO_UPLOADS'], filename))
-                    
-
-                    time_sent = datetime.now()
-
-                    sender_name = session['username']
-
-                    sermon = "/home/ekagbodjive/prcwebsite/static/sermon/"+ filename
-
-                    files = "/sermon/" + filename
-
-                    curs,connect = connection()
-                    
-
-                    input_statement = ("INSERT INTO messages (sender_name,time_sent,location,filename,file) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent, sermon,filename,files]
-                    curs.execute( input_statement, data)
-
-                    connect.commit()
-                    print("The process was sucessful")
-                    curs.close()
-                    connect.close()
-                    gc.collect()
-
-
-                else :
-                    flash("that file type is not allowed")
-                    print('that file type is not allowed')
-                    return render_template('404.html')
-
-                
-            return redirect(url_for('sermons'))
-
-    return render_template('sermons.html')
 
   
 

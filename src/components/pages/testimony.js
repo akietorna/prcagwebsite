@@ -1,18 +1,83 @@
-import React from 'react'
+import React , {useState, useEffect} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
+import Card from 'react-bootstrap/Card'
+import "./sermons.css"
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 const Testimony =() =>{
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("Hello your responds has been successfuly recorded. We will work on them.")
+
+    const [name, setName] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [testimony, setTestimony] = useState('')
+    const [alertMessage, setAlertMessage] = useState('')
+
+
+    const handleName = (event)=>{
+        setName(event.target.value)
     }
 
+    const handlePhoneNumber = (event)=>{
+        setPhoneNumber(event.target.value)
+    }
+
+    const handleEmail = (event)=>{
+        setEmail(event.target.value)
+    }
+
+    const handleTestimony = (event)=>{
+        setTestimony(event.target.value)
+    }
+
+    const handleSubmit = (event) =>{
+        event.preventDefault();
+        handleLogIn();       
+    }
+
+
+    const handleLogIn = () =>{
+        fetch('/add_testimony', {
+            method:'POST',
+            body:JSON.stringify({
+                name:name,
+                phone_number:phoneNumber,
+                email:email,
+                testimony:testimony,
+            }),
+            headers: {
+                "Content-type":"application/json; charset=UTF-8"
+            }
+        }).then(responds =>responds.json())
+          .then(message =>{
+            setAlertMessage(message)
+            setName('')
+            setPhoneNumber('')
+            setEmail('')
+            setTestimony('')
+        })
+    }
+
+
+    const [readTestimony, setReadTestimony] = useState([])
+
+
+    useEffect(() =>{
+        fetch('/admin/testimony').then(response =>{
+            if(response.ok){
+                return response.json()
+            }
+        }).then(data => {
+            setReadTestimony(data)
+        } )
+    },[])
+    
+
+    
     return (
         <div>
             <div className='row'>
@@ -42,16 +107,18 @@ const Testimony =() =>{
 
 
                     <form className='the-prayer-form' onSubmit={handleSubmit}>
-                        <input type="text" placeholder='Full name (firstname first)' required />
+                        <p style={{color:'blue'}}> {alertMessage} </p>
+
+                        <input type="text" value={name} onChange={handleName} placeholder='Full name (firstname first)' required />
                         <br />
 
-                        <input type='number' placeholder='Phone Number' required/>
+                        <input type='text' value={phoneNumber} onChange={handlePhoneNumber} placeholder='Phone Number' required/>
                         <br />
 
-                        <input type='email' placeholder='Email' />
+                        <input type='email' value={email} onChange={handleEmail} placeholder='Email' required/>
                         <br />
 
-                        <textarea  placeholder="Testimony"  required />
+                        <textarea value={testimony} onChange={handleTestimony} placeholder="Testimony"  required />
 
                         <input type='submit' className='submit'/>
                     </form>
@@ -79,6 +146,33 @@ const Testimony =() =>{
 
                 </div>
             </div>
+
+            <hr />
+
+            <br />
+
+
+            <div className='row'>
+                {readTestimony.map((item, index) =>{ 
+                    return(
+                        <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>                                                            
+                            <Card key={index} className='Card' style={{ width: '18rem' }}>
+                                <Card.Body id={item[0]}>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontWeight:'800', fontSize:'24px', fontFamily:'Times New Romans'}}>{item[5]}</Card.Title>
+                                    <Card.Text style={{fontSize:'15px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'Times New Romans'}}>
+                                        {item[4]}
+                                        <h6 className='signature'>By: {item[1]}</h6>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                                
+                        
+                        </div>
+                    )})}
+            </div>  
+        
+
+
         </div>
     )
 }

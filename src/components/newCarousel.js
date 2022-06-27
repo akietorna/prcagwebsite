@@ -25,7 +25,7 @@ function NewCarousel() {
     return(
             <>
                 <div className='row'>
-                    <div className='col-12' >
+                    <div className='home col-12' >
                         <Carousel interval={5000}>
                             <Carousel.Item>
                                 <img

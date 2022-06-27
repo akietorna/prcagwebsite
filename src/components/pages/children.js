@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
@@ -10,6 +10,24 @@ import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 const Children =() =>{
+
+    const [post, setPost] = useState([])
+
+
+    useEffect(() =>{
+        fetch('/children_announcement').then(response =>{
+            if(response.ok){
+                return response.json()
+            }
+        }).then(data => {
+            setPost(data)
+        } )
+    },[])
+    
+
+
+
+
     return (
         <div>
             <div className='row'>
@@ -36,18 +54,23 @@ const Children =() =>{
             <hr/>
 
             <div className='row'>
-                <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                    <Card className='Card' style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={commander} />
-                        <Card.Body>
-                            <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>Sermon Topic</Card.Title>
-                            <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                               The content:kjbfdewqfbfbbf FBFBFABIJLKNKLNFKENFJKRTLKGLKGNNLKNIOLKFLKFJKBAFBF,MJBFFKFFKDBFJJFBLINFKJ
-                               <h6 className='signature'>By: Hispresence</h6>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
+                {post.map((item,index)=>{
+                    return(
+                        <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                            <Card className='Card' style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src={commander} />
+                                <Card.Body>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>Sermon Topic</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
+                                    The content:kjbfdewqfbfbbf FBFBFABIJLKNKLNFKENFJKRTLKGLKGNNLKNIOLKFLKFJKBAFBF,MJBFFKFFKDBFJJFBLINFKJ
+                                    <h6 className='signature'>By: Hispresence</h6>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    )
+                })}
+                
             </div>
         </div>
 

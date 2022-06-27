@@ -5,12 +5,8 @@ import './postSermon.css'
 
 
 
-const PostPrayer =() =>{
+function PostPrayer () {
     
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("Hello!, your responds has been successfuly recorded. We will work on them.")
-    }
 
     return (
         <div >
@@ -21,7 +17,7 @@ const PostPrayer =() =>{
                     <h6><strong>Take Note:</strong> The first file to choose is the image file of the book  </h6>
 
 
-                    <form className='the-sermon-form' onSubmit={handleSubmit}>
+                    <form className='the-sermon-form' >
                         <input type="text" placeholder='Name'  required />
                         <br />
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './prayer_request.css'
@@ -8,12 +8,58 @@ import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 
 
-const PrayerRequest =() =>{
-    
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("Hello!, your responds has been successfuly recorded. We will work on them.")
+function PrayerRequest () {
+    const [name, setName] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [prayerRequest, setPrayerRequest] = useState('')
+    const [alertMessage, setAlertMessage] = useState('')
+
+
+    const handleName = (event)=>{
+        setName(event.target.value)
     }
+
+    const handlePhoneNumber = (event)=>{
+        setPhoneNumber(event.target.value)
+    }
+
+    const handleEmail = (event)=>{
+        setEmail(event.target.value)
+    }
+
+    const handlePrayerRequest = (event)=>{
+        setPrayerRequest(event.target.value)
+    }
+
+    const handleSubmit = (event) =>{
+        event.preventDefault();
+        handleLogIn();       
+    }
+
+
+    const handleLogIn = () =>{
+        fetch('/prayer_request', {
+            method:'POST',
+            body:JSON.stringify({
+                name:name,
+                phone_number:phoneNumber,
+                email:email,
+                prayer_request:prayerRequest,
+            }),
+            headers: {
+                "Content-type":"application/json; charset=UTF-8"
+            }
+        }).then(responds =>responds.json())
+          .then(message =>{
+            setAlertMessage(message)
+            setName('')
+            setPhoneNumber('')
+            setEmail('')
+            setPrayerRequest('')
+        })
+    }
+    
 
     return (
         <div>
@@ -44,16 +90,18 @@ const PrayerRequest =() =>{
 
 
                     <form className='the-prayer-form' onSubmit={handleSubmit}>
-                        <input type="text" placeholder='Full name (firstname first)'  required />
+                        <p style={{color:'blue'}} > {alertMessage} </p>
+
+                        <input type="text" value={name} onChange={handleName} placeholder='Full name (firstname first)' required />
                         <br />
 
-                        <input type='number' placeholder='Phone Number'  required/>
+                        <input type='text' value={phoneNumber} onChange={handlePhoneNumber} placeholder='Phone Number'  required/>
                         <br />
 
-                        <input type='email' placeholder='Email' />
+                        <input type='email' value={email} onChange={handleEmail} placeholder='Email(None if you do not have one)' required/>
                         <br />
 
-                        <textarea  placeholder="Prayer Request"  required />
+                        <textarea value={prayerRequest} onChange={handlePrayerRequest} placeholder="Prayer Request"  required />
 
                         <input type='submit' className='submit'/>
                     </form>
