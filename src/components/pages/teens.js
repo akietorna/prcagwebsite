@@ -1,8 +1,7 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
-import commander from '../pictures/commander.jpg'
 import "./sermons.css"
 import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
@@ -11,7 +10,21 @@ import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 
 
-const Teen =() =>{
+function Teen () {
+    const [post, setPost] = useState([])
+
+
+    useEffect(() =>{
+        fetch('/teen_announcement').then(response =>{
+            if(response.ok){
+                return response.json()
+            }
+        }).then(data => {
+            setPost(data)
+        } )
+    },[])
+    
+
     return (
         <div>
             <div className='row'>
@@ -38,18 +51,21 @@ const Teen =() =>{
             <hr/>
 
             <div className='row'>
-                <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                    <Card className='Card' style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={commander} />
-                        <Card.Body>
-                            <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>Sermon Topic</Card.Title>
-                            <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                               The content:kjbfdewqfbfbbf FBFBFABIJLKNKLNFKENFJKRTLKGLKGNNLKNIOLKFLKFJKBAFBF,MJBFFKFFKDBFJJFBLINFKJ
-                               <h6 className='signature'>By: Hispresence</h6>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </div>
+                {post.map((item,index)=>{
+                    return(
+                        <div key={index} className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                            <Card className='Card' style={{ width: '18rem' }}>
+                                <Card.Body>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{ item[3] }</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}> { item[5] }                                        
+                                    <h6 className='signature'>By: { item[2] }</h6>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    )
+                })}
+                
             </div>
         </div>
 
