@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Agbodjive Etorna\Desktop\myapp\prcenv"
+VIRTUAL_ENV="C:\Users\Akietorna\Desktop\myapp\prcenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
