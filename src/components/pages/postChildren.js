@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postDevotional.css'
+import {useNavigate} from 'react-router-dom'
 
 
 
@@ -12,6 +13,7 @@ function PostChildren () {
     const [title, setTitle] = useState('')
     const [announcement, setAnnouncement] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    let Navigate = useNavigate()
 
 
     const handleName = (event)=>{
@@ -31,8 +33,15 @@ function PostChildren () {
         handleLogIn();       
     }
 
+    const handleNavigate = (item) =>{
+        if (item === true){
+            Navigate('/admin',{replace:true})
+        }
+    }
+
 
     const handleLogIn = () =>{
+        const token = localStorage.getItem('jwt-token')
         fetch('/admin/add_announcement', {
             method:'POST',
             body:JSON.stringify({
@@ -41,10 +50,19 @@ function PostChildren () {
                 title: title,
                 announcement: announcement,
             }),
-            headers: {
-                "Content-type":"application/json; charset=UTF-8"
+            headers:{
+                "Content-type":"application/json",
+                "Authorization": "Bearer "+ token
             }
-        }).then(responds =>responds.json())
+        }).then(responds => {
+            if (!responds.ok){
+                alert('You must log in first!!!')
+                return handleNavigate(true)
+            }
+            else {
+                return responds.json()
+            }
+        })
           .then(message =>{
             setAlertMessage(message)
             setName('')

@@ -28,7 +28,7 @@ function LogIn(){
     }
 
     const authenticate = (alert) =>{
-        if (alert === "Log in successfully"){
+        if (alert === true){
             Navigate("/admin/posts",{replace : true})
         };
     }
@@ -43,10 +43,15 @@ function LogIn(){
             headers: {
                 "Content-type":"application/json; charset=UTF-8"
             }
-        }).then(responds =>responds.json())
+        }).then(responds =>{
+            if (responds.ok){
+                authenticate(true)
+                return responds.json()
+            }
+        })
           .then(message =>{
-            authenticate(message)
-            setAlertMessage(message)
+            setAlertMessage(message['status'])
+            localStorage.setItem("jwt-token", message['token'])
             setPassword('')
             setUsername('')
         })
@@ -63,7 +68,7 @@ function LogIn(){
                 <div className='sign-in-form-container col-lg-6 col-md-6 col-sm-12 col-xs-12'>
 
                     <form className='sign-in-form' onSubmit={handleSubmit} >
-                        <p style={{"color":"red"}}> {alertMessage} </p>
+                        <p style={{"color":"blue"}}> {alertMessage} </p>
                         <input name='username' value={username} onChange={handleUsername} type="text" placeholder='Username'  required />
                         <br />
 

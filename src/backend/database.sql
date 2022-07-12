@@ -7,6 +7,8 @@ create table prayer_request(post_id int primary key not null auto_increment,send
 create table testimony(post_id int primary key not null auto_increment,sender varchar(500),phone_number varchar(50),email varchar(100),testimomy text,post_time datetime);
 create table comment(post_id int primary key not null auto_increment,title varchar(3000),comment text,post_time datetime);
 create table sermons(post_id int primary key not null auto_increment,sender varchar(500),title varchar(3000),post_time datetime,path_to_sermon varchar(500),path_to_picture varchar(500));
+create table upcoming(post_id int primary key not null auto_increment,sender varchar(500),title varchar(3000),post_time datetime,path_to_picture varchar(500));
 create table devotional(post_id int primary key not null auto_increment,sender varchar(500),title varchar(3000),post_time datetime,message text,path_to_picture varchar(500),passage varchar(1000));
 create table books(post_id int primary key not null auto_increment,post_code varchar(3),sender varchar(500),title varchar(3000),post_time datetime,path_to_book varchar(500),path_to_picture varchar(500));
 create table announcements(post_id int primary key not null auto_increment,post_code varchar(3),sender varchar(500),title varchar(3000),post_time datetime,announcement text);
+create table about_us(post_id int primary key not null auto_increment,writer varchar(500),about text,post_time datetime);

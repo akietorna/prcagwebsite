@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './prayer_request.css'
@@ -7,9 +7,42 @@ import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 const Comments =() =>{
-    const handleSubmit = (event) => {
+    const [name, setName] = useState('')
+    const [comment, setComment] = useState('')
+    const [alertMessage, setAlertMessage] = useState('')
+    
+
+    const handleName = (event)=>{
+        setName(event.target.value)
+    }
+
+
+    const handleComment = (event)=>{
+        setComment(event.target.value)
+    }
+
+    const handleSubmit = (event) =>{
         event.preventDefault();
-        alert("Hello!, your responds has been successfuly recorded. We will work on them.")
+        handleLogIn();       
+    }
+
+
+    const handleLogIn = () =>{
+        fetch('/prayer_request', {
+            method:'POST',
+            body:JSON.stringify({
+                name:name,
+                comment:comment,
+            }),
+            headers:{
+                "Content-type":"application/json"
+            }
+        }).then(responds =>  responds.json())
+          .then(message =>{
+            setAlertMessage(message)
+            setName('')
+            setComment('')
+        })
     }
 
     return (
@@ -41,11 +74,11 @@ const Comments =() =>{
 
 
                     <form className='the-prayer-form' onSubmit={handleSubmit}>
-
-                        <input type='email' placeholder='Email' required/>
+                        <p style={{color:'blue'}} > {alertMessage} </p>
+                        <input type='text' value={name} onChange={handleName} placeholder='Name' required/>
                         <br />
 
-                        <textarea  placeholder="Prayer Request"  required />
+                        <textarea value={name} onChange={handleComment}  placeholder="Comment"  required />
 
                         <input type='submit' className='submit'/>
                     </form>

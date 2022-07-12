@@ -56,8 +56,8 @@ function General () {
                         <div key={index} className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
                             <Card className='Card' style={{ width: '18rem' }}>
                                 <Card.Body>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{ item[3] }</Card.Title>
-                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}> { item[5] }                                        
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif'}}>{ item[3] }</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}> { item[5] }                                        
                                     <h6 className='signature'>By: { item[2] }</h6>
                                     </Card.Text>
                                 </Card.Body>

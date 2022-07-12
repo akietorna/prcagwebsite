@@ -11,7 +11,7 @@ import MySQLdb.cursors
 def connection():
     connect = MySQLdb.connect( host = 'localhost',
                               user = 'root',
-                              passwd = 'Hispresence123@',
+                              passwd = 'hispresence123@',
                               db = "prcwebsite")
 # initializing the cursor 
     curs = connect.cursor()

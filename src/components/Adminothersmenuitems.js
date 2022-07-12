@@ -1,3 +1,4 @@
+import React from 'react'
 import * as FaIcons from 'react-icons/fa'
 import * as BiIcons from 'react-icons/bi'
 
@@ -11,6 +12,12 @@ export const AdminOthersMenuItems=[
     {
         title: 'Log Out',
         path: '/readothers/logout',
+        icon: < BiIcons.BiHelpCircle />,
+    },
+
+    {
+        title: 'Upcoming',
+        path: '/others/upcoming',
         icon: < BiIcons.BiHelpCircle />,
     },
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import * as FaIcons from 'react-icons/fa'
 import * as FcIcons from 'react-icons/fc'
 import * as BiIcons from 'react-icons/bi'

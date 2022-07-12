@@ -58,8 +58,8 @@ function Devotional () {
                             <Card key={index} className='Card' style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={item[5]} />
                                 <Card.Body>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontWeight:'800', fontSize:'24px', fontFamily:'Times New Romans'}}>{item[2]}</Card.Title>
-                                    <Card.Text style={{fontSize:'15px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'Times New Romans'}}>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontWeight:'800', fontSize:'24px', fontFamily:'sans-serif'}}>{item[2]}</Card.Title>
+                                    <Card.Text style={{fontSize:'15px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}>
                                         <h6 style={{color:'rgba(188, 188, 255, 0.842)'}}>Passage: {item[6]}</h6>
                                         {item[4]}
                                         <h6 className='signature'>By: {item[1]}</h6>

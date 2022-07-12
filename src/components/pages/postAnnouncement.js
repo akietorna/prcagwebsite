@@ -2,17 +2,42 @@ import React, {useState, useEffect} from 'react'
 import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import '../post.css'
+import { useNavigate } from 'react-router-dom'
 
 
 function PostAnnouncement(){
     
+    
     const [post, setPost] = useState([])
     const [alertMessage, setAlertMessage] = useState('')
+    let Navigate = useNavigate()
+
+    const handleNavigate = (item) =>{
+        if (item === true){
+            Navigate('/admin',{replace:true})
+        }
+    }
+
+    const handleDelete =(id)=>{
+        alert('Are you sure you want to delete this post?')
+        deletePost(id)
+    }
 
 
     useEffect(() =>{
-        fetch('/admin/post').then(response =>{
-            if(response.ok){
+        const token1 = localStorage.getItem('jwt-token')
+        fetch('/admin/post',{
+            method: 'GET',
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Bearer ' + token1
+            }
+        }).then(response =>{
+            if(!response.ok){
+                alert('You must log in first!!!!')
+                return handleNavigate(true)
+            }
+            else {
                 return response.json()
             }
         }).then(data => {
@@ -20,16 +45,27 @@ function PostAnnouncement(){
         } )
     },[])
 
+
     const deletePost =(id) =>{
+        const token2 = localStorage.getItem('jwt-token')
         fetch('/delete_announcement',{
             method:'POST',
             body:JSON.stringify({
                 id : id
         }),
             headers:{
-                "Content-type":"application/json; charset=UTF-8"
+                "Content-type":"application/json",
+                "Authorization": "Bearer "+ token2
             }
-        }).then(responds => responds.json())
+        }).then(responds => {
+            if (!responds.ok){
+                alert('You must log in first!!!')
+                return handleNavigate(true)
+            }
+            else {
+                return responds.json()
+            }
+        })
           .then(data =>{
             setAlertMessage(data)
           })
@@ -55,7 +91,7 @@ function PostAnnouncement(){
                         {post.map((item, index) =>{
                             return(
                                 <tr key={index}>
-                                    <td onClick={ () => deletePost(item[0]) }><MdIcons.MdDelete /></td>
+                                    <td onClick={ () => handleDelete(item[0]) }><MdIcons.MdDelete /></td>
                                     <td> {item[4]} </td>
                                     <td> {item[2]} </td>
                                     <td> {item[3]} </td>

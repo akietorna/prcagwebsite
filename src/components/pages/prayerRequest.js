@@ -47,10 +47,10 @@ function PrayerRequest () {
                 email:email,
                 prayer_request:prayerRequest,
             }),
-            headers: {
-                "Content-type":"application/json; charset=UTF-8"
+            headers:{
+                "Content-type":"application/json"
             }
-        }).then(responds =>responds.json())
+        }).then(responds => responds.json())
           .then(message =>{
             setAlertMessage(message)
             setName('')

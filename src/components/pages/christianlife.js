@@ -4,13 +4,14 @@ import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
 import "./sermons.css"
 import './prayer_request.css'
+import { Link } from 'react-scroll'
 import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 
 function ChristianLife () {
-    const [book, setBook] = useState([])
+    const [christian, setChristian] = useState([])
 
 
     useEffect(() =>{
@@ -19,22 +20,12 @@ function ChristianLife () {
                 return response.json()
             }
         }).then(data => {
-            setBook(data)
+            setChristian(data)
             // console.log()
         } )
     },[])
 
-    const download = (path) =>{
-        fetch('/download_book',{
-            method: 'POST',
-            body: JSON.stringify({
-                path:path
-            }),
-            headers:{
-                "content-type":"application/json"
-            }
-        }).then(responds =>responds.json())
-    }
+    
 
 
     return(
@@ -63,16 +54,16 @@ function ChristianLife () {
             <hr/>
 
             <div className='row'>
-                {book.map((item, index) =>{
+                {christian.map((index,item)=>{
                     return(
                         <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                            <Card key={index} className='Card' style={{ width: '18rem' }}>
+                            <Card className='Card' style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={item[6]} />
-                                <Card.Body>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',textAlign:'left',fontWeight:'450', fontFamily:'sans-serif'}}>{item[3]}</Card.Title>
-                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                                        <h6 className='signature'>By: {item[2]} </h6>
-                                        <p onClick={() => download(item[5]) } style = {{color:'blue',fontSize:'18px',cursor:'pointer', textAlign:'left', textDecoration:'underline'}}> Download here ... </p>
+                                <Card.Body key={index}>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif'}}>{item[3]}</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}>
+                                        <Link to={item[5]} target='_blank' download>{item[5]}</Link>
+                                    <h6 className='signature'>By: {item[1]}</h6>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

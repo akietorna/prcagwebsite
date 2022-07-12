@@ -19,7 +19,7 @@ import PrayerRequest from './components/pages/prayerRequest';
 import Prayer from './components/pages/prayer';
 import Motivation from './components/pages/motivation';
 import Marriage from './components/pages/marriage';
-import Help from './components/pages/help';
+import UpdateUpcomingEvent from './components/pages/upcoming';
 import Health from './components/pages/health';
 import General from './components/pages/general';
 import Devotional from './components/pages/devotional';
@@ -111,7 +111,7 @@ function App() {
             <Route path='/devotional' element={<Devotional />} />
             <Route path='/announcement/general' element={<General />} />
             <Route path='/book/health' element={<Health />} />
-            <Route path='/others/help' element={<Help />} />
+            <Route path='/others/upcoming' element={<UpdateUpcomingEvent />} />
             <Route path='/' element={<Home />} />
             <Route path='/others' element={<Others />} />
             <Route path='/book' element={<Books />} />

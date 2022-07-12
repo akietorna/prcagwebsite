@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import '../slydeshowstyles.css'
 import Aos from 'aos'
 import 'aos/dist/aos.css';
@@ -6,7 +6,6 @@ import NewCarousel from '../newCarousel'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
-import mamachristy from '../pictures/mamachristy.jpg'
 
 
 
@@ -14,12 +13,26 @@ function Home (){
     useEffect(() =>{
         Aos.init({duration:1000});
     },[])
+
+    const [upcoming, setUpcoming] = useState([])
+
+
+    useEffect(() =>{
+        fetch('/upcoming').then(response =>{
+            if(response.ok){
+                return response.json()
+            }
+        }).then(data => {
+            setUpcoming(data)
+        } )
+    },[])
+
     return (
         <div >
             <NewCarousel className='carousel'/>
             <hr />
 
-            <div data-aos='slide-up' className='row'>
+            <div data-aos='zoom-in-right' className='row'>
                 <div className='container w-auto p-3  col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                     <Card style={{textAlign:'center' }}>
                         <Card.Body>
@@ -46,22 +59,22 @@ function Home (){
                 <br />
                 <br />
                 <br />
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                        <Card style={{ width: '22rem'}}>
-                            <Card.Img variant="top" src={mamachristy} />
-                            <Card.Body>
-                            <Card.Title style={{ color:'rgba(170, 12, 99, 0.87)', fontFamily:'sans-serif'}}>Mrs Matilda Etoo</Card.Title>
-                                <Card.Text style={{fontSize:'20px', color:'rgba(170, 12, 99, 0.87)', fontFamily:'sans-serif'}}>
-                                    Head Decorator <br />
-                                    <Card.Link href='#' style={{textDecoration:'none',fontSize:'16px', color:'rgb(14, 14, 124)' }}>(00233) 240 000 000</Card.Link> <br />
-                                    <Card.Link href='#'style={{textDecoration:'none',fontSize:'16px', color:'rgb(14, 14, 124)' }}>akitestapps@gmsil.com</Card.Link>
-                                </Card.Text>
-
-                            </Card.Body>
-                        </Card>
-                    </div>
+                <div className='row'>
+                    {upcoming.map((item,index)=>{
+                        return(
+                            <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                            <Card key={index} className='Card' style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src={item[5]} />
+                                <Card.Body>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{item[2]}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                        )
+                    })}
+                
                 </div>
-
+            </div>
             
         </div>
     )

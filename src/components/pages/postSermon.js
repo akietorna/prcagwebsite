@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postSermon.css'
+import {useNavigate} from 'react-router-dom'
 
 
 
@@ -10,6 +11,13 @@ const PostSermon =() =>{
     const [name, setName] = useState('')
     const [topic, setTopic] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    let Navigate = useNavigate()
+
+    const handleNavigate = (item) =>{
+        if (item === true){
+            Navigate('/admin',{replace:true})
+        }
+    }
 
     const handleName =(event) =>{
         setName(event.target.value)
@@ -40,11 +48,23 @@ const PostSermon =() =>{
     }
 
     const handleUpload = () =>{       
-
+        const token2 = localStorage.getItem('jwt-token')
         fetch("/admin/add_sermon", {
             method:'POST',
-            body:data
-        }).then(responds =>responds.json())
+            body:data,
+            headers:{
+                "Content-type":"application/json",
+                "Authorization": "Bearer "+ token2
+            }
+        }).then(responds => {
+            if (!responds.ok){
+                alert('You must log in first!!!')
+                return handleNavigate(true)
+            }
+            else {
+                return responds.json()
+            }
+        })
           .then(message =>{
               setAlertMessage(message)
               setName('')

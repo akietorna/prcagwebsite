@@ -7,37 +7,28 @@ import gc
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
-
+from flask_jwt_extended import JWTManager,create_access_token,jwt_required,get_jwt_identity
 
 
 app=Flask(__name__)
 app.config['SECRET_KEY'] = "ignance123@"
 app.config['DEBUG'] = True
+app.config['JWT_SECRET_KEY']="prcwebsite123@"
 
 
 #initializations
 bcrypt = Bcrypt()
-#socketio = SocketIO(app)
+jwt = JWTManager(app)
+
 
 user_details = { 'username': '','email': '', 'password': '', 'confirm_code': ''}
 
 
-def login_required(f):
-    @wraps(f)
-    def wrapping(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-
-        else :
-            return jsonify('You need to log in first') 
-
-    return wrapping
 
 
-app.config['AUDIO_UPLOADS']= "C:/Users/akietorna/Desktop/myapp/public/sermons"
-app.config['IMAGE_UPLOADS']= "C:/Users/akietorna/Desktop/myapp/public/pictures"
-app.config['BOOK_UPLOADS']= "C:/Users/akietorna/Desktop/myapp/public/books"
-app.config['BOOK_DOWNLOADS']= "C:/Users/akietorna/Desktop/myapp/public"
+app.config['AUDIO_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/sermons"
+app.config['IMAGE_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/pictures"
+app.config['BOOK_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/books"
 app.config['ALLOWED_IMAGE_EXTENSIONS']= ['JPEG', 'JPG', 'PNG']
 app.config['ALLOWED_AUDIO_EXTENSIONS']= ['MP3', 'AAC', 'WAV']
 app.config['ALLOWED_BOOK_EXTENSIONS']=["PDF"]
@@ -162,87 +153,111 @@ def sign_in():
     # fetching the password
     Password = curs.execute("SELECT password FROM users WHERE user_name = %s", [username])
     Password = curs.fetchone()
+    user_id = curs.execute("SELECT user_id FROM users WHERE user_name = %s", [username])
+    user_id = curs.fetchone()[0]
     connect.commit()
     curs.close()
     connect.close()
     gc.collect()
 
     if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
-        return jsonify("Log in successfully")
+        access_token = create_access_token(identity=user_id)
+        return jsonify({'token':access_token, 'status':'Log in successful'})
 
     else:
-        return jsonify("Invalid credentials, try again")
+        return jsonify({"status":"Invalid credentials, try again"})
 
 
 
 @app.route('/admin/post',methods=["GET"])
+@jwt_required()
 def post():
+
     curs,connect= connection()
-    curs.execute("select * from posts")
-    posts = curs.fetchall()
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    return jsonify(posts[::-1])
-
-@app.route("/delete_posts",methods=["POST"])
-def delete_post():      
-    print('okay1') 
-    request_data = request.get_json()              
-    picked = request_data['id']
-    print('it worked')  
-    print(picked)  
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from posts WHERE post_id = %s", [picked])
-
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
-
-    return jsonify(f'Post with ID number {picked} deleted')
-
-
-
-
-
-@app.route("/admin/add_devotional", methods=["POST"])
-def add_devotional():
-
-    # request_data = request.get_json()
-    picture = request.files['picture']
-    name=request.form['name']
-    topic=request.form['topic']
-    message=request.form['message']
-    passage=request.form['passage']
-
-
-
-    if allowed_image_types(picture.filename):
-
-        filename = secure_filename(picture.filename)
-        picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename))
-
-        path_to_picture = '/pictures/'+ filename
-        time_sent = datetime.now()
-        item ='devotional'
-        curs,connect = connection()
-
-        input_statement = ("INSERT INTO devotional (sender,title,post_time,passage,message,path_to_picture) VALUES (%s,%s,%s,%s,%s,%s)" ) 
-        data = [name,topic, time_sent, passage,message,path_to_picture]
-        curs.execute( input_statement, data)
-        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+    if len(user) == 1:
+        curs.execute("select * from posts")
+        posts = curs.fetchall()
         connect.commit()
         curs.close()
         connect.close()
         gc.collect()
-        return jsonify("Upload Successful !!!")
 
-    else:
-        return jsonify('Upload Unsuccessful, please try again')
+        return jsonify(posts[::-1])
+    
+    
+
+@app.route("/delete_posts",methods=["POST"])
+@jwt_required()
+def delete_post():      
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+         
+        request_data = request.get_json()              
+        picked = request_data['id']
+ 
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from posts WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+@app.route("/admin/add_devotional", methods=["POST"])
+@jwt_required()
+def add_devotional():
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+        # request_data = request.get_json()
+        picture = request.files['picture']
+        name=request.form['name']
+        topic=request.form['topic']
+        message=request.form['message']
+        passage=request.form['passage']
+
+
+
+        if allowed_image_types(picture.filename):
+
+            filename = secure_filename(picture.filename)
+            picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename))
+
+            path_to_picture = '/pictures/'+ filename
+            time_sent = datetime.now()
+            item ='devotional'
+            curs,connect = connection()
+
+            input_statement = ("INSERT INTO devotional (sender,title,post_time,passage,message,path_to_picture) VALUES (%s,%s,%s,%s,%s,%s)" ) 
+            data = [name,topic, time_sent, passage,message,path_to_picture]
+            curs.execute( input_statement, data)
+            curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify("Upload Successful !!!")
+
+        else:
+            return jsonify('Upload Unsuccessful, please try again')
 
 
 
@@ -259,58 +274,155 @@ def devotional():
 
 
 @app.route("/delete_devotional",methods=["POST"])
+@jwt_required()
 def delete_devotionals():      
-    print('okay1') 
-    request_data = request.get_json()              
-    picked = request_data['id']
-    print('it worked')  
-    print(picked)  
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from devotional WHERE post_id = %s", [picked])
 
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    return jsonify(f'Post with ID number {picked} deleted')
-
-
-
-@app.route('/admin/add_sermon', methods=["POST"]) 
-def add_sermon():
-      # request_data = request.get_json()
-    picture = request.files['picture']
-    sermon =request.files['sermon']
-    name=request.form['name']
-    topic=request.form['topic']
-
-
-
-    if allowed_image_types(picture.filename) and allowed_audio_types(sermon.filename):
-
-        filename1 = secure_filename(picture.filename)
-        filename2 = secure_filename(sermon.filename)
-        picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
-        sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
-
-        path_to_picture = '/pictures/'+ filename1
-        path_to_sermon = '/sermons/'+ filename2
-        time_sent = datetime.now()
-        item ='sermon'
+    if len(user) == 1:
+        
+        request_data = request.get_json()              
+        picked = request_data['id']
+        print('it worked')  
+        print(picked)  
+        # connection to database
         curs,connect = connection()
+        curs.execute("delete from devotional WHERE post_id = %s", [picked])
 
-        curs.execute( "INSERT INTO sermons (sender,title,post_time,path_to_sermon,path_to_picture) VALUES (%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_sermon,path_to_picture])
-        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
         connect.commit()
         curs.close()
         connect.close()
         gc.collect()
-        return jsonify("Upload Successful !!!")
 
-    else:
-        return jsonify('Upload Unsuccessful, please try again')
+        return jsonify(f'Post with ID number {picked} deleted')
+
+
+
+@app.route('/admin/add_sermon', methods=["POST"]) 
+@jwt_required()
+def add_sermon():
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+      # request_data = request.get_json()
+        picture = request.files['picture']
+        sermon =request.files['sermon']
+        name=request.form['name']
+        topic=request.form['topic']
+
+
+
+        if allowed_image_types(picture.filename) and allowed_audio_types(sermon.filename):
+
+            filename1 = secure_filename(picture.filename)
+            filename2 = secure_filename(sermon.filename)
+            picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
+            sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
+
+            path_to_picture = '/pictures/'+ filename1
+            path_to_sermon = '/sermons/'+ filename2
+            time_sent = datetime.now()
+            item ='sermon'
+            curs,connect = connection()
+
+            curs.execute( "INSERT INTO sermons (sender,title,post_time,path_to_sermon,path_to_picture) VALUES (%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_sermon,path_to_picture])
+            curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify("Upload Successful !!!")
+
+        else:
+            return jsonify('Upload Unsuccessful, please try again')
+
+
+
+@app.route('/admin/upcoming', methods=["POST"]) 
+@jwt_required()
+def add_upcoming():
+    
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+      # request_data = request.get_json()
+        picture = request.files['picture']
+        name=request.form['name']
+        topic=request.form['topic']
+
+
+
+        if allowed_image_types(picture.filename) :
+
+            filename1 = secure_filename(picture.filename)
+            filename2 = secure_filename(sermon.filename)
+            picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
+            sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
+
+            path_to_picture = '/pictures/'+ filename1
+            time_sent = datetime.now()
+            item ='upcoming'
+            curs,connect = connection()
+
+            curs.execute( "insert into upcoming(sender,title,post_time,path_to_picture) VALUES (%s,%s,%s,%s)", [name,topic, time_sent,path_to_picture])
+            curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify("Upload Successful !!!")
+
+        else:
+            return jsonify('Upload Unsuccessful, please try again')
+
+
+@app.route("/upcoming", methods=["GET"])
+def upcoming():
+    curs, connect = connection()
+    curs.execute('SELECT * FROM upcoming')
+    data = curs.fetchall()
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()              
+    return jsonify(data[::-1])
+
+
+@app.route("/delete_upcoming",methods=["POST"])
+@jwt_required()
+def delete_upcoming():      
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id'] 
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from upcoming WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
 
 
 @app.route("/sermon", methods=["GET"])
@@ -324,20 +436,30 @@ def sermon():
     gc.collect()              
     return jsonify(data[::-1])
 
+
 @app.route("/delete_sermon",methods=["POST"])
+@jwt_required()
 def delete_sermon():      
-    request_data = request.get_json()              
-    picked = request_data['id'] 
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from sermons WHERE post_id = %s", [picked])
 
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    return jsonify(f'Post with ID number {picked} deleted')
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id'] 
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from sermons WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
 
 
 
@@ -364,32 +486,154 @@ def prayer_request():
 
 
 @app.route("/admin/prayer_request", methods=["GET"])
+@jwt_required()
 def read_prayer():
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        curs, connect = connection()
+        curs.execute('SELECT * FROM prayer_request')
+        data = curs.fetchall()
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()              
+        return jsonify(data[::-1])
+
+
+
+@app.route("/delete_prayer_request",methods=["POST"])
+@jwt_required()
+def delete_prayer_request():      
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id'] 
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from prayer_request WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
+    
+    
+@app.route("/admin/comments", methods=["GET"])
+@jwt_required()
+def read_comment():
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        curs, connect = connection()
+        curs.execute('SELECT * FROM comment')
+        data = curs.fetchall()
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()              
+        return jsonify(data[::-1])
+
+
+
+@app.route("/delete_comments",methods=["POST"])
+@jwt_required()
+def delete_comment():      
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id'] 
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from comment WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Comment with ID number {picked} deleted')
+
+
+@app.route('/add_comment',methods=['POST'])
+def add_comment():
+    # this function accept new password from the user to reset the old one 
+    request_data = request.get_json()
+    name = request_data["name"]
+    comment = request_data["comment"]
+
+    post_time =datetime.now()
+
     curs, connect = connection()
-    curs.execute('SELECT * FROM prayer_request')
+    curs.execute("insert into comment (title,comment,post_time) values (%s,%s,%s)", [name,comment,post_time])
+    connect.commit()
+    curs.close()
+    connect.close()
+    gc.collect()
+    return jsonify('Your Testimony is recorded ')
+
+
+
+@app.route('/admin/add_about',methods=['POST'])
+@jwt_required()
+def add_about():
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+        # this function accept new password from the user to reset the old one 
+        request_data = request.get_json()
+        name = request_data["name"]
+        about = request_data["about"]
+
+        post_time =datetime.now()
+
+        curs, connect = connection()
+        curs.execute("update table about_us set writer = %s,about = %s,post_time = %s  where post_id = 1", [name,about,post_time])
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+        return jsonify('Your input is recorded ')
+
+
+
+@app.route("/others/about_us", methods=["GET"])
+def about_us():
+    curs, connect = connection()
+    curs.execute('select * from about_us')
     data = curs.fetchall()
     connect.commit()
     curs.close()
     connect.close()
     gc.collect()              
     return jsonify(data[::-1])
-
-
-
-@app.route("/delete_prayer_request",methods=["POST"])
-def delete_prayer_request():      
-    request_data = request.get_json()              
-    picked = request_data['id'] 
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from prayer_request WHERE post_id = %s", [picked])
-
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
-
-    return jsonify(f'Post with ID number {picked} deleted')
 
 
 
@@ -406,7 +650,7 @@ def add_testimony():
     post_time =datetime.now()
 
     curs, connect = connection()
-    curs.execute("insert into testimony (sender,phone_number,email,testimomy,post_time) values (%s,%s,%s,%s,%s)", [name,phone_number,email,testimony,post_time])
+    curs.execute("insert into testimony(sender,phone_number,email,testimomy,post_time) values (%s,%s,%s,%s,%s)", [name,phone_number,email,testimony,post_time])
     connect.commit()
     curs.close()
     connect.close()
@@ -428,49 +672,67 @@ def testimony():
 
 
 @app.route("/delete_testimony",methods=["POST"])
+@jwt_required()
 def delete_testimony():      
-    request_data = request.get_json()              
-    picked = request_data['id']
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from posts WHERE post_id = %s", [picked])
 
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    return jsonify(f'Post with ID number {picked} deleted')
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id']
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from posts WHERE post_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
 
 
 
 
 @app.route('/admin/add_announcement',methods=['POST'])
+@jwt_required()
 def add_announcement():
-    # this function accept new password from the user to reset the old one 
-    request_data = request.get_json()
-    post_code = request_data["post_code"]
-    sender = request_data["sender"]
-    title = request_data["title"]
-    announcement = request_data["announcement"]
 
-    post_time =datetime.now()
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    curs, connect = connection()
-    curs.execute("insert into announcements (post_code,sender,title,post_time,announcement) values (%s,%s,%s,%s,%s)", [post_code,sender,title,post_time,announcement])
-    curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [title,sender,post_time,post_code])
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
-    return jsonify('Your Announcement is recorded ')
+    if len(user) == 1:
+
+        # this function accept new password from the user to reset the old one 
+        request_data = request.get_json()
+        post_code = request_data["post_code"]
+        sender = request_data["sender"]
+        title = request_data["title"]
+        announcement = request_data["announcement"]
+
+        post_time =datetime.now()
+
+        curs, connect = connection()
+        curs.execute("insert into announcements (post_code,sender,title,post_time,announcement) values (%s,%s,%s,%s,%s)", [post_code,sender,title,post_time,announcement])
+        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [title,sender,post_time,post_code])
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+        return jsonify('Your Announcement is recorded ')
 
 
 
 @app.route("/announcement", methods=["GET"])
 def announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement')
+    curs.execute('SELECT * FROM announcements')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -483,7 +745,7 @@ def announcement():
 @app.route("/children_announcement", methods=["GET"])
 def children_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code= CHI')
+    curs.execute('SELECT * FROM announcements where post_code= "CHI"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -496,7 +758,7 @@ def children_announcement():
 @app.route("/youth_announcement", methods=["GET"])
 def youth_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code = YOU')
+    curs.execute('SELECT * FROM announcements where post_code = "YOU"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -509,7 +771,7 @@ def youth_announcement():
 @app.route("/women_announcement", methods=["GET"])
 def women_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code = WOM')
+    curs.execute('SELECT * FROM announcements where post_code = "WOM"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -522,7 +784,7 @@ def women_announcement():
 @app.route("/men_announcement", methods=["GET"])
 def men_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code = MEN')
+    curs.execute('SELECT * FROM announcements where post_code = "MEN"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -535,7 +797,7 @@ def men_announcement():
 @app.route("/teen_announcement", methods=["GET"])
 def teen_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code = TEE')
+    curs.execute('SELECT * FROM announcements where post_code = "TEE"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -549,7 +811,7 @@ def teen_announcement():
 @app.route("/general_announcement", methods=["GET"])
 def general_announcement():
     curs, connect = connection()
-    curs.execute('SELECT * FROM announcement where post_code = GEN')
+    curs.execute('SELECT * FROM announcements where post_code = "GEN"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -560,55 +822,73 @@ def general_announcement():
 
 
 @app.route("/delete_announcement",methods=["POST"])
+@jwt_required()
 def delete_announcement():       
-    request_data = request.get_json()              
-    picked = request_data['id']  
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from announcements WHERE post_code = %s", [picked])
 
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-    return jsonify(f'Post with ID number {picked} deleted')
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id']  
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from announcements WHERE post_code = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
 
 
 
 
 
 @app.route('/admin/add_book', methods=["POST"]) 
+@jwt_required()
 def add_book():  
-    post_code = request.form['post_code']
-    picture = request.files['picture']
-    book =request.files['book']
-    name=request.form['name']
-    topic=request.form['topic']
 
-    if allowed_image_types(picture.filename) and allowed_book_types(book.filename):
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
 
-        filename1 = secure_filename(picture.filename)
-        filename2 = secure_filename(book.filename)
-        picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
-        book.save(os.path.join(app.config['BOOK_UPLOADS'], filename2))
+    if len(user) == 1:
 
-        path_to_picture = '/pictures/'+ filename1
-        path_to_sermon = '/books/'+ filename2
-        time_sent = datetime.now()
-        item ='book'
-        curs,connect = connection()
+        post_code = request.form['post_code']
+        picture = request.files['picture']
+        book =request.files['book']
+        name=request.form['name']
+        topic=request.form['topic']
 
-        curs.execute( "INSERT INTO books (sender,title,post_time,path_to_sermon,path_to_picture,post_code) VALUES (%s,%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_sermon,path_to_picture,post_code])
-        curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-        return jsonify("Upload Successful !!!")
+        if allowed_image_types(picture.filename) and allowed_book_types(book.filename):
 
-    else:
-        return jsonify('Upload Unsuccessful, please try again')
+            filename1 = secure_filename(picture.filename)
+            filename2 = secure_filename(book.filename)
+            picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
+            book.save(os.path.join(app.config['BOOK_UPLOADS'], filename2))
+
+            path_to_picture = '/pictures/'+ filename1
+            path_to_book = '/books/'+ filename2
+            time_sent = datetime.now()
+            item ='book'
+            curs,connect = connection()
+
+            curs.execute( "INSERT INTO books (sender,title,post_time,path_to_sermon,path_to_picture,post_code) VALUES (%s,%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_book,path_to_picture,post_code])
+            curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify("Upload Successful !!!")
+
+        else:
+            return jsonify('Upload Unsuccessful, please try again')
 
 
 @app.route("/sunday_school", methods=["GET"])
@@ -682,6 +962,7 @@ def christian_life():
     gc.collect()              
     return jsonify(data[::-1])
 
+
 @app.route("/books", methods=["GET"])
 def books():
     curs, connect = connection()
@@ -693,37 +974,39 @@ def books():
     gc.collect()              
     return jsonify(data[::-1])
 
-@app.route("/delete_book",methods=["POST"])
-def delete_book():      
-    request_data = request.get_json()              
-    picked = request_data['id'] 
-    print(picked)
-    # connection to database
-    curs,connect = connection()
-    curs.execute("delete from books WHERE post_id = %s", [picked])
-    connect.commit()
-    curs.close()
-    connect.close()
-    gc.collect()
 
-    return jsonify(f'Post with ID number {picked} deleted')
+
+@app.route("/delete_book",methods=["POST"])
+@jwt_required()
+def delete_book():      
+
+    curs,connect= connection()
+    current_user_id = get_jwt_identity()
+    curs.execute('select * from users where user_id = %s',[current_user_id])
+    user = curs.fetchall()
+
+    if len(user) == 1:
+
+        request_data = request.get_json()              
+        picked = request_data['id'] 
+        print(picked)
+        # connection to database
+        curs,connect = connection()
+        curs.execute("delete from books WHERE post_id = %s", [picked])
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return jsonify(f'Post with ID number {picked} deleted')
 
 
 @app.route("/logout/")
-@login_required
 def logout():
     session.clear()
     gc.collect()
     return redirect(url_for('home_page'))
- 
 
-@app.route('/download_book',methods=["POST","GET"])
-def download_book():
-    request_data = request.get_json()
-    path = request_data['path']
-    path = app.config['BOOK_DOWNLOADS'] + path
-    print(path)   
-    return send_file(path,as_attachment=True)
 
 
 

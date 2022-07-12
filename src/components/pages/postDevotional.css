@@ -24,6 +24,13 @@
     border: 2px solid rgba(0, 0, 0, 0.26);
 }
 
+.devotional-form textarea{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 .the-devotional-form .submit{
     width: 200px;
     margin-top: 10px;
@@ -75,6 +82,7 @@
     .the-devotional-form textarea{
         width: 310px;
         height: 150px;
+
     }
 
 }

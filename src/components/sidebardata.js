@@ -145,12 +145,6 @@ export const SideBarData =[
             },
 
             {
-                title: 'Help',
-                path: '/others/help',
-                icon: < BiIcons.BiHelpCircle />,
-            },
-
-            {
                 title: 'About Us',
                 path: '/others/about-us',
                 icon: <FaIcons.FaHandshake />,

@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postDevotional.css'
+import {useNavigate} from 'react-router-dom'
 
 
 
@@ -31,8 +32,17 @@ const PostMen =() =>{
         handleLogIn();       
     }
 
+    let Navigate = useNavigate()
+
+    const handleNavigate = (item) =>{
+        if (item === true){
+            Navigate('/admin',{replace:true})
+        }
+    }
+
 
     const handleLogIn = () =>{
+        const token2 = localStorage.getItem('jwt-token')
         fetch('/admin/add_announcement', {
             method:'POST',
             body:JSON.stringify({
@@ -41,10 +51,19 @@ const PostMen =() =>{
                 title: title,
                 announcement: announcement,
             }),
-            headers: {
-                "Content-type":"application/json; charset=UTF-8"
+            headers:{
+                "Content-type":"application/json",
+                "Authorization": "Bearer "+ token2
             }
-        }).then(responds =>responds.json())
+        }).then(responds => {
+            if (!responds.ok){
+                alert('You must log in first!!!')
+                return handleNavigate(true)
+            }
+            else {
+                return responds.json()
+            }
+        })
           .then(message =>{
             setAlertMessage(message)
             setName('')

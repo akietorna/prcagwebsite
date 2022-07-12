@@ -152,6 +152,11 @@ export const AdminSideBarData =[
                 path: '/admin/readothers/logout',
                 icon: < FiIcons.FiLogOut />,
             },
+            {
+                title: 'Upcoming',
+                path: '/others/upcoming',
+                icon: < BiIcons.BiHelpCircle />,
+            },
 
             {
                 title: 'About Us',
