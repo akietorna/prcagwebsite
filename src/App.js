@@ -19,7 +19,7 @@ import PrayerRequest from './components/pages/prayerRequest';
 import Prayer from './components/pages/prayer';
 import Motivation from './components/pages/motivation';
 import Marriage from './components/pages/marriage';
-import UpdateUpcomingEvent from './components/pages/upcoming';
+
 import Health from './components/pages/health';
 import General from './components/pages/general';
 import Devotional from './components/pages/devotional';
@@ -55,6 +55,7 @@ import PostPrayer from './components/pages/postPrayer';
 import ForgetPassword from './components/pages/forget_password';
 import ResetPassword from './components/pages/reset_password';
 import GetUserName from './components/pages/getUsername';
+import UpdateUpcomingEvent from "./components/pages/upcoming"
 
 
 function App() {
@@ -93,6 +94,7 @@ function App() {
             <Route exact path='/admin/readothers' element={<OthersPosts />} />
             <Route exact path='/admin/readothers/comments' element={<ReadComment />} />
             <Route exact path='/admin/readothers/updateaboutus' element={<UpdateAboutUs />} />
+            <Route exact path='/admin/readothers/upcoming' element={<UpdateUpcomingEvent />} />
             <Route exact path='/admin/read-prayer-request' element={<ReadPrayerRequest />} />
           </Routes>
         </Router>
@@ -111,7 +113,6 @@ function App() {
             <Route path='/devotional' element={<Devotional />} />
             <Route path='/announcement/general' element={<General />} />
             <Route path='/book/health' element={<Health />} />
-            <Route path='/others/upcoming' element={<UpdateUpcomingEvent />} />
             <Route path='/' element={<Home />} />
             <Route path='/others' element={<Others />} />
             <Route path='/book' element={<Books />} />

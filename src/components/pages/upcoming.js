@@ -33,7 +33,9 @@ const UpdateUpcomingEvent =() =>{
     const handleImage =(event) =>{
         image_file = event.target.files[0];
         if (image_file != null){
-            data.append('picture', image_file)
+            data.append('pictures', image_file)
+            data.append('names', name)
+            data.append('topic', topic)
         }
     }
 
@@ -44,7 +46,6 @@ const UpdateUpcomingEvent =() =>{
             method:'POST',
             body:data,
             headers:{
-                "Content-type":"application/json",
                 "Authorization": "Bearer "+ token2
             }
         }).then(responds => {
@@ -74,8 +75,7 @@ const UpdateUpcomingEvent =() =>{
 
             <div className='row'>
                 <div className='sermon-form col-lg-12 col-md-12 col-sm-12 col-xs-12' >
-                    <h4>Upload a message</h4>
-                    <h6><strong>Take Note:</strong> The first file to choose is the image file of the sermon  </h6>
+                    <h4>Upload upcoming event</h4>
                     <form className='the-sermon-form' onSubmit={handleSubmit}>
                         <p style={{"color":"blue"}}>{alertMessage}</p>
                         

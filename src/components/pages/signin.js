@@ -45,13 +45,18 @@ function LogIn(){
             }
         }).then(responds =>{
             if (responds.ok){
-                authenticate(true)
                 return responds.json()
             }
         })
           .then(message =>{
-            setAlertMessage(message['status'])
-            localStorage.setItem("jwt-token", message['token'])
+            if (message === 'Invalid Credentials, Try again'){
+                setAlertMessage(message)
+            }
+            else{
+                authenticate(true)
+                localStorage.setItem("jwt-token", message['token'])
+            }
+            
             setPassword('')
             setUsername('')
         })

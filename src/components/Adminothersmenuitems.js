@@ -5,25 +5,25 @@ import * as BiIcons from 'react-icons/bi'
 export const AdminOthersMenuItems=[
     {
         title: 'Comments',
-        path: '/readothers/comments',
+        path: '/admin/readothers/comments',
         icon: <BiIcons.BiPencil />,
     },
 
     {
         title: 'Log Out',
-        path: '/readothers/logout',
+        path: '/admin/readothers/logout',
         icon: < BiIcons.BiHelpCircle />,
     },
 
     {
         title: 'Upcoming',
-        path: '/others/upcoming',
+        path: '/admin/readothers/upcoming',
         icon: < BiIcons.BiHelpCircle />,
     },
 
     {
         title: 'About Us',
-        path: '/readothers/update-about-us',
+        path: '/admin/readothers/update-about-us',
         icon: <FaIcons.FaHandshake />,
     },
 ]

@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
-import { Link } from 'react-scroll'
+import { Link } from 'react-router-dom'
 import "./sermons.css"
 import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
@@ -50,15 +50,15 @@ const Prayer =() =>{
             <hr/>
 
             <div className='row'>
-                {prayer.map((index,item)=>{
+                {prayer.map((item,index)=>{
                     return(
-                        <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                        <div key={index} className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
                             <Card className='Card' style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={item[6]} />
-                                <Card.Body key={index}>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{item[3]}</Card.Title>
-                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                                        <Link to={item[5]} target='_blank' download>{item[5]}</Link>
+                                <Card.Body >
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif',textAlign:'left'}}>{item[3]}</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif',textAlign:'left'}}>
+                                        <Link to={item[5]} target='_blank' download>Download Here</Link>
                                     <h6 className='signature'>By: {item[1]}</h6>
                                     </Card.Text>
                                 </Card.Body>

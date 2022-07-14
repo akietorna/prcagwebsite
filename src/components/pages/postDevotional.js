@@ -60,7 +60,6 @@ function PostDevotional (){
             method:'POST',
             body:data,
             headers:{
-                "Content-type":"application/json",
                 "Authorization": "Bearer "+ token2
             }
         }).then(responds => {

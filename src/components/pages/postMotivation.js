@@ -9,6 +9,7 @@ import {useNavigate} from 'react-router-dom'
 function PostMotivation () {
     
     const [name, setName] = useState('')
+    const [author, setAuthor] = useState('')
     const [topic, setTopic] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     let Navigate = useNavigate()
@@ -23,6 +24,10 @@ function PostMotivation () {
         setName(event.target.value)
     }
 
+    const handleAuthor =(event) =>{
+        setAuthor(event.target.value)
+    }
+
     const handleTopic =(event) =>{
         setTopic(event.target.value)
     }
@@ -30,21 +35,24 @@ function PostMotivation () {
     let data = new FormData();
     let image_file;
     let pdf_file;
+    let dept_code="MOT"
     
     const handleImage =(event) =>{
         image_file = event.target.files[0];
         if (image_file != null){
-            data.append('picture', image_file)
+            data.append("pictures", image_file)
+            data.append("dept_code",dept_code)
         }
     }
 
     const handlePdf =(event) =>{
         pdf_file = event.target.files[0];
         if (pdf_file != null){
-            data.append('book', pdf_file)
-            data.append('name',name)
-            data.append('topic',topic)
-            data.append('post_code','MOT')
+            data.append("book", pdf_file)
+            data.append("name",name)
+            data.append("author",author)
+            data.append("topic",topic)
+            
         }
     }
 
@@ -54,7 +62,6 @@ function PostMotivation () {
             method:'POST',
             body:data,
             headers:{
-                "Content-type":"application/json",
                 "Authorization": "Bearer "+ token2
             }
         }).then(responds => {
@@ -67,9 +74,10 @@ function PostMotivation () {
             }
         })
           .then(message =>{
-              setAlertMessage(message)
-              setName('')
-              setTopic('')
+            console.log(message)
+            setAlertMessage(message)
+            setName('')
+            setTopic('')
           })
     }
 
@@ -92,6 +100,9 @@ function PostMotivation () {
                     <form className='the-sermon-form' onSubmit={handleSubmit}>
                         <p style={{"color":"blue"}}>{alertMessage}</p>
                         <input type="text" value={name} onChange={handleName} placeholder='Name'  required />
+                        <br />
+
+                        <input type="text" value={author} onChange={handleAuthor} placeholder=" Author's Name"  required />
                         <br />
 
                         <input type='text' value={topic} onChange={handleTopic} placeholder='Topic/Title'  required/>

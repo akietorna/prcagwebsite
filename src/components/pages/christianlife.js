@@ -11,7 +11,7 @@ import prayerpics3 from '../pictures/prayerpics3.JPG'
 
 
 function ChristianLife () {
-    const [christian, setChristian] = useState([])
+    const [book, setBook] = useState([])
 
 
     useEffect(() =>{
@@ -20,11 +20,10 @@ function ChristianLife () {
                 return response.json()
             }
         }).then(data => {
-            setChristian(data)
+            setBook(data)
             // console.log()
         } )
     },[])
-
     
 
 
@@ -54,16 +53,17 @@ function ChristianLife () {
             <hr/>
 
             <div className='row'>
-                {christian.map((index,item)=>{
+                {book.map((index,item)=>{
                     return(
                         <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
                             <Card className='Card' style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={item[6]} />
                                 <Card.Body key={index}>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif'}}>{item[3]}</Card.Title>
-                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}>
-                                        <Link to={item[5]} target='_blank' download>{item[5]}</Link>
-                                    <h6 className='signature'>By: {item[1]}</h6>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontFamily:'sans-serif',textAlign:'left'}}>{item[3]}</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif',textAlign:'left'}}>
+                                    <h6 className='signature'>By: {item[7]}</h6>
+                                        <Link to={item[5]} target='_blank' download>Download Here .....</Link>
+                                   
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

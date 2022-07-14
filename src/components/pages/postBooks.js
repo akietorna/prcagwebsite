@@ -35,6 +35,7 @@ function PostBooks(){
                 return response.json()
             }
         }).then(data => {
+            console.log(data)
             setPost(data)
         } )
     },[])

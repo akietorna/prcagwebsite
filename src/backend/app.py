@@ -162,10 +162,10 @@ def sign_in():
 
     if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
         access_token = create_access_token(identity=user_id)
-        return jsonify({'token':access_token, 'status':'Log in successful'})
+        return jsonify({'token':access_token, 'id': user_id})
 
     else:
-        return jsonify({"status":"Invalid credentials, try again"})
+        return jsonify("Invalid Credentials, Try again")
 
 
 
@@ -286,8 +286,6 @@ def delete_devotionals():
         
         request_data = request.get_json()              
         picked = request_data['id']
-        print('it worked')  
-        print(picked)  
         # connection to database
         curs,connect = connection()
         curs.execute("delete from devotional WHERE post_id = %s", [picked])
@@ -354,23 +352,23 @@ def add_upcoming():
     current_user_id = get_jwt_identity()
     curs.execute('select * from users where user_id = %s',[current_user_id])
     user = curs.fetchall()
+    
+
 
     if len(user) == 1:
-
       # request_data = request.get_json()
-        picture = request.files['picture']
-        name=request.form['name']
+        
+        name=request.form['names'] 
         topic=request.form['topic']
+        picture = request.files['pictures']
 
 
 
         if allowed_image_types(picture.filename) :
 
             filename1 = secure_filename(picture.filename)
-            filename2 = secure_filename(sermon.filename)
             picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
-            sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
-
+            
             path_to_picture = '/pictures/'+ filename1
             time_sent = datetime.now()
             item ='upcoming'
@@ -594,7 +592,7 @@ def add_comment():
     curs.close()
     connect.close()
     gc.collect()
-    return jsonify('Your Testimony is recorded ')
+    return jsonify('Your Comment is recorded. We will give it a consideration ')
 
 
 
@@ -860,11 +858,13 @@ def add_book():
 
     if len(user) == 1:
 
-        post_code = request.form['post_code']
-        picture = request.files['picture']
+       
+        picture = request.files['pictures']
         book =request.files['book']
         name=request.form['name']
+        author=request.form['author']
         topic=request.form['topic']
+        post_code = request.form['dept_code']
 
         if allowed_image_types(picture.filename) and allowed_book_types(book.filename):
 
@@ -879,7 +879,7 @@ def add_book():
             item ='book'
             curs,connect = connection()
 
-            curs.execute( "INSERT INTO books (sender,title,post_time,path_to_sermon,path_to_picture,post_code) VALUES (%s,%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_book,path_to_picture,post_code])
+            curs.execute( "INSERT INTO books (sender,title,post_time,path_to_book,path_to_picture,post_code,author) VALUES (%s,%s,%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_book,path_to_picture,post_code,author])
             curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
             connect.commit()
             curs.close()
@@ -894,7 +894,7 @@ def add_book():
 @app.route("/sunday_school", methods=["GET"])
 def sunday_school():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code = %s', ['SCH'])
+    curs.execute('SELECT * FROM books where post_code = "SCH"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -906,7 +906,7 @@ def sunday_school():
 @app.route("/marriage", methods=["GET"])
 def marriage():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code = %s',['MAR'])
+    curs.execute('SELECT * FROM books where post_code ="MAR" ')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -918,7 +918,7 @@ def marriage():
 @app.route("/prayer", methods=["GET"])
 def prayer():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code = %s',['PRA'])
+    curs.execute('SELECT * FROM books where post_code = "PRA" ')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -930,7 +930,7 @@ def prayer():
 @app.route("/health", methods=["GET"])
 def health():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code = %s',['HEA'])
+    curs.execute('SELECT * FROM books where post_code = "HEA"',)
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -942,7 +942,7 @@ def health():
 @app.route("/motivation", methods=["GET"])
 def motivation():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code = %s',['MOT'])
+    curs.execute('SELECT * FROM books where post_code = "MOT"')
     data = curs.fetchall()
     connect.commit()
     curs.close()
@@ -954,7 +954,7 @@ def motivation():
 @app.route("/christian_life", methods=["GET"])
 def christian_life():
     curs, connect = connection()
-    curs.execute('SELECT * FROM books where post_code =%s',['CHR'])
+    curs.execute('SELECT * FROM books where post_code = "CHR" ')
     data = curs.fetchall()
     connect.commit()
     curs.close()

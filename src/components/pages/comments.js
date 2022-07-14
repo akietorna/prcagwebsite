@@ -28,7 +28,7 @@ const Comments =() =>{
 
 
     const handleLogIn = () =>{
-        fetch('/prayer_request', {
+        fetch('/add_comment', {
             method:'POST',
             body:JSON.stringify({
                 name:name,
@@ -78,7 +78,7 @@ const Comments =() =>{
                         <input type='text' value={name} onChange={handleName} placeholder='Name' required/>
                         <br />
 
-                        <textarea value={name} onChange={handleComment}  placeholder="Comment"  required />
+                        <textarea value={comment} onChange={handleComment}  placeholder="Comment"  required />
 
                         <input type='submit' className='submit'/>
                     </form>

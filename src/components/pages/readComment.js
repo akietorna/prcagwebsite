@@ -19,7 +19,7 @@ function ReadComment(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-token')
-        fetch('/admin/post',{
+        fetch('/admin/comments',{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",

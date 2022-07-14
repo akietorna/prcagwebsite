@@ -54,26 +54,24 @@ function Home (){
 
             <hr />
 
-            <div  className='row'>
+            <div  data-aos='zoom-in-right' className='row'>
                 <h3   style={{ color:'rgba(4, 4, 107, 0.911)',textAlign:'center', fontSize: 'auto', textDecoration:'underline'}}>Upcoming Events</h3>
                 <br />
                 <br />
                 <br />
-                <div className='row'>
                     {upcoming.map((item,index)=>{
                         return(
                             <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
                             <Card key={index} className='Card' style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={item[5]} />
+                                <Card.Img variant="top" src={item[4]} />
                                 <Card.Body>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{item[2]}</Card.Title>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif'}}>{item[2]}</Card.Title>
                                 </Card.Body>
                             </Card>
                         </div>
                         )
                     })}
                 
-                </div>
             </div>
             
         </div>

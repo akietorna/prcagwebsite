@@ -154,7 +154,7 @@ export const AdminSideBarData =[
             },
             {
                 title: 'Upcoming',
-                path: '/others/upcoming',
+                path: '/admin/others/upcoming',
                 icon: < BiIcons.BiHelpCircle />,
             },
 

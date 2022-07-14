@@ -57,7 +57,7 @@ function Sermons() {
                 {sermon.map((item, index) =>{
                     return(
                         <div className='sermons w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                            <Card key={index} className='Card' style={{ width: '18rem' }}>
+                            <Card key={index} className='Card' style={{ width: '17rem' }}>
                                 <Card.Img variant="top" src={item[5]} />
                                 <Card.Body>
                                     <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{item[2]}</Card.Title>
