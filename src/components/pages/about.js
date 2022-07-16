@@ -49,7 +49,7 @@ function About () {
             <NewCarousel className='carousel'/>
             <hr />
 
-            <div className='row'>
+            <div className='row' style={{textAlign:'center'}}>
                 {aboutUs.map((item,index)=>{
                     return(
                         <div data-aos='zoom-in-right' className='row'>
@@ -90,7 +90,7 @@ function About () {
                 </div>
 
 
-                <div className='pastors w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='pastors w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={revremus} />
                         <Card.Body>
@@ -105,7 +105,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='pastors w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='pastors w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -141,7 +141,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                     <Card.Img variant="top" src={mama_vic} />
                         <Card.Body>
@@ -157,7 +157,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={revremus} />
                         <Card.Body>
@@ -187,7 +187,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='leaders w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={revremus} />
                         <Card.Body>
@@ -204,13 +204,15 @@ function About () {
 
                 
             </div>
+            <br />
+            <br />
 
             <hr />
 
             <div data-aos='zoom-in-right' className='row '>
                 <h5 className='departments-heading'> Departmental Leaders </h5>
                 <div className='departments w-auto p-3  col-lg-4 col-md-6 col-sm-12 col-xs-12'>
-                    <Card style={{ width: '16rem' , }}>
+                    <Card style={{ width: '16rem' }}>
                         <Card.Img variant="top" src={mrfrancis} />
                         <Card.Body>
                             <Card.Title style={{ color:'rgba(170, 12, 99, 0.87)', fontFamily:'sans-serif'}}>Mr Francis Sodzi</Card.Title>
@@ -224,7 +226,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamaenyo} />
                         <Card.Body>
@@ -239,7 +241,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={commander} />
                         <Card.Body>
@@ -269,7 +271,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={revremus} />
                         <Card.Body>
@@ -284,7 +286,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={rev_jerome} />
                         <Card.Body>
@@ -299,7 +301,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -314,7 +316,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -329,7 +331,7 @@ function About () {
                     </Card>
                 </div>
                 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -344,7 +346,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -359,7 +361,7 @@ function About () {
                     </Card>
                 </div>
 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>
@@ -374,7 +376,7 @@ function About () {
                     </Card>
                 </div>
                 
-                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12'>
+                <div className='departments w-auto p-3 col-lg-4 col-md-6 col-sm-12 col-xs-12' style={{marginLeft:'10px'}}>
                     <Card style={{ width: '16rem'  }}>
                         <Card.Img variant="top" src={mamachristy} />
                         <Card.Body>

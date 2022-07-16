@@ -8,7 +8,6 @@ import {useNavigate} from 'react-router-dom'
 function Posts(){
     
     const [post, setPost] = useState([])
-    const [alertMessage, setAlertMessage] = useState('')
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -65,7 +64,7 @@ function Posts(){
             }
         })
           .then(data => {
-            setAlertMessage(data)
+            alert(data)
             console.log(id)
           })
     }
@@ -73,7 +72,6 @@ function Posts(){
     return(
         <div className='row'>
             <div className='posts col-lg-12 col-md-12 col-sm-12 col-xs-12' >
-                <p style={{color:'blue'}}>{ alertMessage }</p>
                 <Table striped bordered hover>
                     <thead>
                         <tr>

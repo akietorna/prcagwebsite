@@ -20,7 +20,7 @@ export function FooterContainer() {
                             and also groom and teach  the won souls  
                             the means  to Heaven.
                         </Footer.Paragraph>
-                        <Footer.Link href='#'>Read Our History</Footer.Link>
+                        <Footer.Link href='/others/about-us'>Read Our History</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Contact Us</Footer.Title>
@@ -33,11 +33,11 @@ export function FooterContainer() {
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Social Media</Footer.Title>
-                        <Footer.Link href='#'><TiIcons.TiSocialFacebook /> Facebook</Footer.Link>
-                        <Footer.Link href='#'><TiIcons.TiSocialTwitter /> Twitter</Footer.Link>
-                        <Footer.Link href='#'><Footer.Span><TiIcons.TiSocialInstagram /></Footer.Span> Intagram</Footer.Link>
-                        <Footer.Link href='#'><Footer.Span><FaIcons.FaTelegramPlane /></Footer.Span> Telegram</Footer.Link>
-                        <Footer.Link href='#'><Footer.Span><TiIcons.TiSocialYoutube /></Footer.Span> Youtube</Footer.Link>
+                        <Footer.Link href='http://facebook.com'><TiIcons.TiSocialFacebook /> Facebook</Footer.Link>
+                        <Footer.Link href='http://twitter.com'><TiIcons.TiSocialTwitter /> Twitter</Footer.Link>
+                        <Footer.Link href='http://instagram.com'><Footer.Span><TiIcons.TiSocialInstagram /></Footer.Span> Intagram</Footer.Link>
+                        <Footer.Link href='http://telegram.com'><Footer.Span><FaIcons.FaTelegramPlane /></Footer.Span> Telegram</Footer.Link>
+                        <Footer.Link href='http://youtube.com'><Footer.Span><TiIcons.TiSocialYoutube /></Footer.Span> Youtube</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Legal Notice</Footer.Title>

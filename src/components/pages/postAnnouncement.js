@@ -9,7 +9,6 @@ function PostAnnouncement(){
     
     
     const [post, setPost] = useState([])
-    const [alertMessage, setAlertMessage] = useState('')
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -67,14 +66,13 @@ function PostAnnouncement(){
             }
         })
           .then(data =>{
-            setAlertMessage(data)
+            alert(data)
           })
     }
 
     return(
         <div className='row'>
             <div className='posts col-lg-12 col-md-12 col-sm-12 col-xs-12' >
-                <p style={{color:'blue'}}>{ alertMessage }</p>
                 <Table striped bordered hover>
                     <thead>
                         <tr>

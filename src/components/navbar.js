@@ -16,14 +16,14 @@ import * as RiIcons from 'react-icons/ri'
 
 function NavBar() {
     const [click, setClick] = useState(false);
+    // const [clicked, setClicked] = useState(false)
     const [announcementDropdown, setAnnouncementDropdown] = useState(false);
     const [booksDropdown, setBooksDropdown] = useState(false);
     const [othersDropdown, setOthersDropdown] = useState(false);
     const [hover, setHover] = useState(false);
-    // const [clicked, setClicked] = useState(false);
 
 
-    // const handleClick = () => setClick(!click);
+    // const handleClick = () => setClicked(!click);
     
 
     const onClickAnnouncement = () =>{
@@ -80,10 +80,10 @@ function NavBar() {
 
 return(
     <>
-    <nav className='navbar' sticky='top'>
-            <ul className='nav-menu'>
+        <nav className='navbar'    >
+            <ul className= 'nav-menu'>
                 <li className='nav-item'>
-                    <Link className='nav-links' to="/" > <AiIcons.AiFillHome /> <span>Home</span>  </Link>
+                    <Link className='nav-links' to="/" > <AiIcons.AiFillHome  /> <span>Home</span>  </Link>
                 </li>
                 <li className='nav-item'>
                     <Link className='nav-links' to='/sermons'   > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </Link> 
@@ -115,7 +115,6 @@ return(
                 </li>
                 
             </ul>
-
         </nav >
         
         

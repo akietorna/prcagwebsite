@@ -1,13 +1,10 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminNavBar from '../src/components/adminNav';
 import PostSermon from '../src/components/pages/postSermon';
 import ReadPrayerRequest from '../src/components/pages/readPrayerRequest';
 import Posts from '../src/components/pages/Posts';
 import LogIn from './components/pages/signin';
-import NavBar from './components/navbar'
-import SideBar from './components/sidebar';
 import Women from './components/pages/women';
 import Youth from './components/pages/youth';
 import Men from './components/pages/men';
@@ -19,7 +16,7 @@ import PrayerRequest from './components/pages/prayerRequest';
 import Prayer from './components/pages/prayer';
 import Motivation from './components/pages/motivation';
 import Marriage from './components/pages/marriage';
-
+import AdminFinalNav from './components/AdminNavigation';
 import Health from './components/pages/health';
 import General from './components/pages/general';
 import Devotional from './components/pages/devotional';
@@ -32,7 +29,6 @@ import { FooterContainer } from './containers/footer'
 import Announcement from './components/pages/announcement';
 import Others from './components/pages/others';
 import Books from './components/pages/book';
-import AdminSideBar from './components/adminSidebar';
 import PostDevotional from './components/pages/postDevotional';
 import ReadTestimony from './components/pages/readtestimony';
 import PostAnnouncement from './components/pages/postAnnouncement';
@@ -56,6 +52,7 @@ import ForgetPassword from './components/pages/forget_password';
 import ResetPassword from './components/pages/reset_password';
 import GetUserName from './components/pages/getUsername';
 import UpdateUpcomingEvent from "./components/pages/upcoming"
+import FinalNav from './components/navigation';
 
 
 function App() {
@@ -67,7 +64,7 @@ function App() {
   if (myPath){
     return(
         <Router>
-          {window.innerWidth <1100 ? <AdminSideBar />  : <AdminNavBar /> }
+          <AdminFinalNav />
           <Routes>
             <Route exact path='/admin'  element={<LogIn />}/> 
             <Route exact path='/admin/forget_password'  element={<ForgetPassword />}/>
@@ -105,7 +102,7 @@ function App() {
 
     return (
         <Router>
-          {window.innerWidth <1100 ? <SideBar />  : <NavBar /> }
+          <FinalNav />
           <Routes>
             <Route path='/announcement/children' element={<Children />} />
             <Route path='/book/christian-life' element={<ChristianLife />} />
