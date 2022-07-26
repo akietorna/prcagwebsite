@@ -82,7 +82,7 @@ function PrayerRequest () {
                     </Carousel>
                 </div>
             </div>
-
+            <hr />
             <div className='row'>
                 <div className='prayer-form col-lg-6 col-md-12 col-sm-12 col-xs-12' >
                     <h4>Send your Prayer Request</h4>

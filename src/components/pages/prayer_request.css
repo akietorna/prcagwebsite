@@ -558,15 +558,18 @@
     .praying .carousel{
         width: 100vw;
         height: 25vh;
+        margin-bottom: 50px;
     }
     
     .type{
-        padding-bottom: 70px;
+        padding-bottom: 50px;
         color: rgb(248, 248, 106);
-        font-weight: 700;
+        font-weight: 600;
+        margin-bottom: 80px;
     }
     
     .prayer-form{
+        margin-top: 20px;
         color:rgba(170, 12, 99, 0.87);
         padding-left: 50px;
         border-right: 2px solid rgba(0, 0, 0, 0.548);
@@ -605,6 +608,7 @@
     }
     
     .contact{
+        margin-top: 80px;
         padding-left: 30px;
     }
     
