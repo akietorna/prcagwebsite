@@ -1,5 +1,11 @@
 {
   "projects": {
-    "default": "prcwebsite-1d858"
-  }
+    "default": "newproject-9d490",
+    "prcwebsite": "prcwebsite-c447e",
+    "prcweb": "prcweb-14689",
+    "rtyui": "prcwebsite-c447e",
+    "pentecostalrevivalcenter": "newproject-9d490"
+  },
+  "targets": {},
+  "etags": {}
 }
