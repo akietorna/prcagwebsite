@@ -17,7 +17,7 @@ const Health =() =>{
 
 
     useEffect(() =>{
-        fetch('/health').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/health').then(response =>{
             if(response.ok){
                 return response.json()
             }

@@ -42,7 +42,7 @@ const UpdateUpcomingEvent =() =>{
 
     const handleUpload = () =>{       
         const token2 = localStorage.getItem('jwt-token')
-        fetch("/admin/upcoming", {
+        fetch("https://prcwebsite.pythonanywhere.com/admin/upcoming", {
             method:'POST',
             body:data,
             headers:{

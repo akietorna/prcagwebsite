@@ -31,7 +31,7 @@ function ForgetPassword(){
 
 
     const handleCodeSend = () =>{
-        fetch('/admin/confirmation_code', {
+        fetch('https://prcwebsite.pythonanywhere.com/admin/confirmation_code', {
             method : 'POST',
             body:JSON.stringify({
                 confirm_code : confirmCode

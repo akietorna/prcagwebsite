@@ -47,5 +47,5 @@
     ]
   },
 
-  "proxy": "https://prcwebsite.pythonanywhere.com/"
+  "proxy": "https://prcwebsite.pythonanywhere.com"
 }

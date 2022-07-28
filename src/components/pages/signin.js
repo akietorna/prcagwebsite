@@ -34,7 +34,7 @@ function LogIn(){
     }
 
     const handleLogIn = () =>{
-        fetch('/admin', {
+        fetch('https://prcwebsite.pythonanywhere.com/admin', {
             method:'POST',
             body:JSON.stringify({
                 username:username,

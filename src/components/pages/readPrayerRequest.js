@@ -18,7 +18,7 @@ function ReadPrayerRequest(){
 
     useEffect(() =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/admin/prayer_request',{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/prayer_request',{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -46,7 +46,7 @@ function ReadPrayerRequest(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/delete_posts',{
+        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
             method : 'POST',
             body: JSON.stringify({
                 id : id

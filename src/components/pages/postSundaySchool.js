@@ -56,7 +56,7 @@ function PostSundaySchool () {
 
     const handleUpload = () =>{       
         const token2 = localStorage.getItem('jwt-token')
-        fetch("/admin/add_book", {
+        fetch("https://prcwebsite.pythonanywhere.com/admin/add_book", {
             method:'POST',
             body:data,
             headers:{

@@ -14,7 +14,7 @@ const Prayer =() =>{
 
 
     useEffect(() =>{
-        fetch('/prayer').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/prayer').then(response =>{
             if(response.ok){
                 return response.json()
             }

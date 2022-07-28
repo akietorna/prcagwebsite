@@ -13,7 +13,7 @@ function Devotional () {
 
 
     useEffect(() =>{
-        fetch('/devotional').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/devotional').then(response =>{
             if(response.ok){
                 return response.json()
             }

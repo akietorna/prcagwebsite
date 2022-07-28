@@ -19,7 +19,7 @@ function ReadTestimony(){
 
 
     useEffect(() =>{
-        fetch('/admin/testimony').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/testimony').then(response =>{
             if(response.ok){
                 return response.json()
             }
@@ -36,7 +36,7 @@ function ReadTestimony(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/delete_posts',{
+        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
             method : 'POST',
             body: JSON.stringify({
                 id : id

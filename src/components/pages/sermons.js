@@ -17,7 +17,7 @@ function Sermons() {
 
 
     useEffect(() =>{
-        fetch('/sermon').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/sermon').then(response =>{
             if(response.ok){
                 return response.json()
             }

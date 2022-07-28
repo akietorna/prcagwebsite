@@ -17,7 +17,7 @@ const Motivation =() =>{
 
 
     useEffect(() =>{
-        fetch('/motivation').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/motivation').then(response =>{
             if(response.ok){
                 return response.json()
             }

@@ -49,7 +49,7 @@ const PostSermon =() =>{
 
     const handleUpload = () =>{       
         const token2 = localStorage.getItem('jwt-token')
-        fetch("/admin/add_sermon", {
+        fetch("https://prcwebsite.pythonanywhere.com/admin/add_sermon", {
             method:'POST',
             body:data,
             headers:{

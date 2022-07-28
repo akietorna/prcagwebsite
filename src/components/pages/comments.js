@@ -28,7 +28,7 @@ const Comments =() =>{
 
 
     const handleLogIn = () =>{
-        fetch('/add_comment', {
+        fetch('https://prcwebsite.pythonanywhere.com/add_comment', {
             method:'POST',
             body:JSON.stringify({
                 name:name,

@@ -18,7 +18,7 @@ function Posts(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-token')
-        fetch('/admin/post',{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/post',{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -45,7 +45,7 @@ function Posts(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/delete_posts',{
+        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
             method : 'POST',
             body: JSON.stringify({
                 id : id

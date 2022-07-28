@@ -43,7 +43,7 @@ const PostMen =() =>{
 
     const handleLogIn = () =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/admin/add_announcement', {
+        fetch('https://prcwebsite.pythonanywhere.com/admin/add_announcement', {
             method:'POST',
             body:JSON.stringify({
                 sender: name,

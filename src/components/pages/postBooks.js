@@ -20,7 +20,7 @@ function PostBooks(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-item')
-        fetch('/books',{
+        fetch('https://prcwebsite.pythonanywhere.com/books',{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -47,7 +47,7 @@ function PostBooks(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/delete_book',{
+        fetch('https://prcwebsite.pythonanywhere.com/delete_book',{
             method:'POST',
             body:JSON.stringify({
                 id : id

@@ -15,7 +15,7 @@ function Youth () {
 
 
     useEffect(() =>{
-        fetch('/youth_announcement').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/youth_announcement').then(response =>{
             if(response.ok){
                 return response.json()
             }

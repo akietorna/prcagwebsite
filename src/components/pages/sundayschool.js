@@ -14,7 +14,7 @@ function SundaySchool () {
 
 
     useEffect(() =>{
-        fetch('/sunday_school').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/sunday_school').then(response =>{
             if(response.ok){
                 return response.json()
             }

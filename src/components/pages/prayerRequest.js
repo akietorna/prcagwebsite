@@ -39,7 +39,7 @@ function PrayerRequest () {
 
 
     const handleLogIn = () =>{
-        fetch('/prayer_request', {
+        fetch('https://prcwebsite.pythonanywhere.com/prayer_request', {
             method:'POST',
             body:JSON.stringify({
                 name:name,

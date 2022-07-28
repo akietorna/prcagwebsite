@@ -14,7 +14,7 @@ const Children =() =>{
 
 
     useEffect(() =>{
-        fetch('/children_announcement').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/children_announcement').then(response =>{
             if(response.ok){
                 return response.json()
             }

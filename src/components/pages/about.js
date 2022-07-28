@@ -24,7 +24,7 @@ function About () {
 
 
     useEffect(() =>{
-        fetch('/others/about_us').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/others/about_us').then(response =>{
             if(response.ok){
                 return response.json()
             }

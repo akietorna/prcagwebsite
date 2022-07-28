@@ -30,7 +30,7 @@ function GetUserName(){
     }
 
     const handlePost = () =>{
-        fetch('/admin/forget_password', {
+        fetch('https://prcwebsite.pythonanywhere.com/admin/forget_password', {
             method:"POST",
             body:JSON.stringify({
                 username:username

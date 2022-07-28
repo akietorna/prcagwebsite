@@ -67,7 +67,7 @@ const Testimony =() =>{
 
 
     useEffect(() =>{
-        fetch('/admin/testimony').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/testimony').then(response =>{
             if(response.ok){
                 return response.json()
             }

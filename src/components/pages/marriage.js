@@ -17,7 +17,7 @@ const Marriage =() =>{
 
 
     useEffect(() =>{
-        fetch('/marriage').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/marriage').then(response =>{
             if(response.ok){
                 return response.json()
             }

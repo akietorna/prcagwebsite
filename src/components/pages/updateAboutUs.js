@@ -37,7 +37,7 @@ function UpdateAboutUs () {
 
     const handleLogIn = () =>{
         const token = localStorage.getItem('jwt-token')
-        fetch('/admin/add_about', {
+        fetch('https://prcwebsite.pythonanywhere.com/admin/add_about', {
             method:'POST',
             body:JSON.stringify({
                 name: name,

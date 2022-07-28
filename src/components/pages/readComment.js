@@ -19,7 +19,7 @@ function ReadComment(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-token')
-        fetch('/admin/comments',{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/comments',{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -41,7 +41,7 @@ function ReadComment(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('/delete_announcement',{
+        fetch('https://prcwebsite.pythonanywhere.com/delete_announcement',{
             method:'POST',
             body:JSON.stringify({
                 id : id

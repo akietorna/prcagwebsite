@@ -15,7 +15,7 @@ function ChristianLife () {
 
 
     useEffect(() =>{
-        fetch('/christian_life').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/christian_life').then(response =>{
             if(response.ok){
                 return response.json()
             }

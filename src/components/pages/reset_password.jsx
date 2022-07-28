@@ -43,7 +43,7 @@ function ResetPassword(){
 
 
     const handleResetPassword = () =>{
-        fetch('/admin/set_password',{
+        fetch('https://prcwebsite.pythonanywhere.com/admin/set_password',{
             method : 'POST',
             body:JSON.stringify({
                 username:username,

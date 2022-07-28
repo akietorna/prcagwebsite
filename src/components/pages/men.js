@@ -16,7 +16,7 @@ function Men () {
 
 
     useEffect(() =>{
-        fetch('/men_announcement').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/men_announcement').then(response =>{
             if(response.ok){
                 return response.json()
             }

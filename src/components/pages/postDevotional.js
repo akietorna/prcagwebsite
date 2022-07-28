@@ -56,7 +56,7 @@ function PostDevotional (){
 
     const handleUpload = () =>{       
         const token2 = localStorage.getItem('jwt-token')
-        fetch("/admin/add_devotional", {
+        fetch("https://prcwebsite.pythonanywhere.com/admin/add_devotional", {
             method:'POST',
             body:data,
             headers:{

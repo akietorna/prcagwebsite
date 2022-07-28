@@ -18,8 +18,9 @@ function Home (){
 
 
     useEffect(() =>{
-        fetch('/upcoming').then(response =>{
+        fetch('https://prcwebsite.pythonanywhere.com/upcoming').then(response =>{
             if(response.ok){
+                console.log('working')
                 return response.json()
             }
         }).then(data => {
