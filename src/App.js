@@ -104,30 +104,30 @@ function App() {
         <Router>
           <FinalNav />
           <Routes>
-            <Route path='/announcement/children' element={<Children />} />
-            <Route path='/book/christian-life' element={<ChristianLife />} />
-            <Route path='others/comments' element={<Comments />} />
-            <Route path='/devotional' element={<Devotional />} />
-            <Route path='/announcement/general' element={<General />} />
-            <Route path='/book/health' element={<Health />} />
-            <Route path='/' element={<Home />} />
-            <Route path='/others' element={<Others />} />
-            <Route path='/book' element={<Books />} />
-            <Route path='/book/marriage' element={<Marriage />} />
-            <Route path='/announcement/men' element={<Men />} />
-            <Route path='/book/motivation' element={<Motivation />} />
-            <Route path='/book/prayer' element={<Prayer />} />
-            <Route path='/book/prayer' element={<Prayer />} />
-            <Route path='/prayer-request' element={<PrayerRequest />} />
-            <Route path='/sermons' element={<Sermons />} />
-            <Route path='/book/sundayschool' element={<SundaySchool />} />
-            <Route path='/announcement/teen' element={<Teen />} />
-            <Route path='/testimony' element={<Testimony />} />
-            <Route path='/announcement/men' element={<Men />} />
-            <Route path='/announcement' element={<Announcement />} />
-            <Route path='/announcement/women' element={<Women />} />
-            <Route path='/announcement/youth' element={<Youth />} />
-            <Route path='/others/about-us'  element={<About />} />
+            <Route exact path='/announcement/children' element={<Children />} />
+            <Route exact path='/book/christian-life' element={<ChristianLife />} />
+            <Route exact path='others/comments' element={<Comments />} />
+            <Route exact path='/devotional' element={<Devotional />} />
+            <Route exact path='/announcement/general' element={<General />} />
+            <Route exact path='/book/health' element={<Health />} />
+            <Route exact path='/' element={<Home />} />
+            <Route exact path='/others' element={<Others />} />
+            <Route exact path='/book' element={<Books />} />
+            <Route exact path='/book/marriage' element={<Marriage />} />
+            <Route exact path='/announcement/men' element={<Men />} />
+            <Route exact path='/book/motivation' element={<Motivation />} />
+            <Route exact path='/book/prayer' element={<Prayer />} />
+            <Route exact path='/book/prayer' element={<Prayer />} />
+            <Route exact path='/prayer-request' element={<PrayerRequest />} />
+            <Route exact path='/sermons' element={<Sermons />} />
+            <Route exact path='/book/sundayschool' element={<SundaySchool />} />
+            <Route exact path='/announcement/teen' element={<Teen />} />
+            <Route exact path='/testimony' element={<Testimony />} />
+            <Route exact path='/announcement/men' element={<Men />} />
+            <Route exact path='/announcement' element={<Announcement />} />
+            <Route exact path='/announcement/women' element={<Women />} />
+            <Route exact path='/announcement/youth' element={<Youth />} />
+            <Route exact path='/others/about-us'  element={<About />} />
           </Routes>
           <FooterContainer />
         </Router>
