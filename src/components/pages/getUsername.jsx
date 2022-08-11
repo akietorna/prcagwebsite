@@ -6,6 +6,7 @@ import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
 import { useNavigate } from 'react-router-dom';
+import { server } from '../server';
 
 function GetUserName(){
 
@@ -30,7 +31,7 @@ function GetUserName(){
     }
 
     const handlePost = () =>{
-        fetch('https://prcwebsite.pythonanywhere.com/admin/forget_password', {
+        fetch(`${server}/admin/forget_password`, {
             method:"POST",
             body:JSON.stringify({
                 username:username

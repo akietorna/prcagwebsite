@@ -3,6 +3,7 @@ import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postDevotional.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 
@@ -42,7 +43,7 @@ function PostChildren () {
 
     const handleLogIn = () =>{
         const token = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/admin/add_announcement', {
+        fetch(`${server}/admin/add_announcement`, {
             method:'POST',
             body:JSON.stringify({
                 sender: name,

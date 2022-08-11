@@ -17,6 +17,7 @@ import mamaenyo from '../pictures/mamaenyo.jpg'
 import mrfrancis from '../pictures/mrfrancis.jpg'
 import rev_jerome from '../pictures/rev_jerome.jpg'
 import sirjerry from '../pictures/sirjerry.jpg'
+import { server } from '../server';
 
 
 function About () {
@@ -24,7 +25,7 @@ function About () {
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/others/about_us').then(response =>{
+        fetch(`${server}/others/about_us`).then(response =>{
             if(response.ok){
                 return response.json()
             }

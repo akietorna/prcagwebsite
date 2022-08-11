@@ -7,6 +7,7 @@ import './prayer_request.css'
 import { Carousel } from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
+import { server } from '../server'
 
 const Children =() =>{
 
@@ -14,7 +15,7 @@ const Children =() =>{
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/children_announcement').then(response =>{
+        fetch(`${server}/children_announcement`).then(response =>{
             if(response.ok){
                 return response.json()
             }

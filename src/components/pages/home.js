@@ -6,6 +6,7 @@ import NewCarousel from '../newCarousel'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
+import { server } from '../server';
 
 
 
@@ -18,9 +19,8 @@ function Home (){
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/upcoming').then(response =>{
-            if(response.ok){
-                console.log('working')
+        fetch(`${server}/upcoming`).then(response =>{
+            if(response.ok){ 
                 return response.json()
             }
         }).then(data => {

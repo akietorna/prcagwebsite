@@ -6,6 +6,7 @@ import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
 import { useNavigate } from 'react-router-dom';
+import { server } from '../server';
 
 function ForgetPassword(){
 
@@ -31,7 +32,7 @@ function ForgetPassword(){
 
 
     const handleCodeSend = () =>{
-        fetch('https://prcwebsite.pythonanywhere.com/admin/confirmation_code', {
+        fetch(`${server}/admin/confirmation_code`, {
             method : 'POST',
             body:JSON.stringify({
                 confirm_code : confirmCode

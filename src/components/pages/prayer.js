@@ -8,13 +8,14 @@ import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
+import { server } from '../server'
 
 const Prayer =() =>{
     const [prayer, setPrayer] = useState([])
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/prayer').then(response =>{
+        fetch(`${server}/prayer`).then(response =>{
             if(response.ok){
                 return response.json()
             }

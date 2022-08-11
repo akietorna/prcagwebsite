@@ -154,15 +154,15 @@ def sign_in():
     Password = curs.execute("SELECT password FROM users WHERE user_name = %s", [username])
     Password = curs.fetchone()
     user_id = curs.execute("SELECT user_id FROM users WHERE user_name = %s", [username])
-    user_id = curs.fetchone()[0]
+    user_id = curs.fetchone()
     connect.commit()
     curs.close()
     connect.close()
     gc.collect()
 
     if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
-        access_token = create_access_token(identity=user_id)
-        return jsonify({'token':access_token, 'id': user_id})
+        access_token = create_access_token(identity=user_id[0])
+        return jsonify({'token':access_token, 'id': user_id[0]})
 
     else:
         return jsonify("Invalid Credentials, Try again")

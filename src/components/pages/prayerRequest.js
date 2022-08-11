@@ -5,6 +5,7 @@ import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
+import { server } from '../server'
 
 
 
@@ -39,7 +40,7 @@ function PrayerRequest () {
 
 
     const handleLogIn = () =>{
-        fetch('https://prcwebsite.pythonanywhere.com/prayer_request', {
+        fetch(`${server}/prayer_request`, {
             method:'POST',
             body:JSON.stringify({
                 name:name,

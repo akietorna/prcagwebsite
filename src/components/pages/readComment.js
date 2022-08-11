@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import '../post.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 function ReadComment(){
@@ -19,7 +20,7 @@ function ReadComment(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/admin/comments',{
+        fetch(`${server}/admin/comments`,{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -41,7 +42,7 @@ function ReadComment(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/delete_announcement',{
+        fetch(`${server}/delete_announcement`,{
             method:'POST',
             body:JSON.stringify({
                 id : id

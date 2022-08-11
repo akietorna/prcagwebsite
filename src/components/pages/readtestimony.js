@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import '../post.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 function ReadTestimony(){
@@ -19,7 +20,7 @@ function ReadTestimony(){
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/admin/testimony').then(response =>{
+        fetch(`${server}/admin/testimony`).then(response =>{
             if(response.ok){
                 return response.json()
             }
@@ -36,7 +37,7 @@ function ReadTestimony(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
+        fetch(`${server}/delete_posts`,{
             method : 'POST',
             body: JSON.stringify({
                 id : id

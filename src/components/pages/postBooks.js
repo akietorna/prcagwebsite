@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import '../post.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 function PostBooks(){
@@ -20,7 +21,7 @@ function PostBooks(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-item')
-        fetch('https://prcwebsite.pythonanywhere.com/books',{
+        fetch(`${server}/books`,{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -47,7 +48,7 @@ function PostBooks(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/delete_book',{
+        fetch(`${server}/delete_book`,{
             method:'POST',
             body:JSON.stringify({
                 id : id

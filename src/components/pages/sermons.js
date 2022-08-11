@@ -8,6 +8,7 @@ import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 import ReactAudioPlayer from 'react-audio-player'
+import { server } from '../server'
 
 
 
@@ -17,7 +18,7 @@ function Sermons() {
 
 
     useEffect(() =>{
-        fetch('https://prcwebsite.pythonanywhere.com/sermon').then(response =>{
+        fetch(`${server}/sermon`).then(response =>{
             if(response.ok){
                 return response.json()
             }

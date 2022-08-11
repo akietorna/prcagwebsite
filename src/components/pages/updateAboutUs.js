@@ -3,6 +3,7 @@ import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postDevotional.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 
@@ -37,7 +38,7 @@ function UpdateAboutUs () {
 
     const handleLogIn = () =>{
         const token = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/admin/add_about', {
+        fetch(`${server}/admin/add_about`, {
             method:'POST',
             body:JSON.stringify({
                 name: name,

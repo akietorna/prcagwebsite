@@ -3,6 +3,7 @@ import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import './postSermon.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 
@@ -42,7 +43,7 @@ const UpdateUpcomingEvent =() =>{
 
     const handleUpload = () =>{       
         const token2 = localStorage.getItem('jwt-token')
-        fetch("https://prcwebsite.pythonanywhere.com/admin/upcoming", {
+        fetch(`${server}/admin/upcoming`, {
             method:'POST',
             body:data,
             headers:{

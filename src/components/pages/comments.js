@@ -5,6 +5,8 @@ import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
+import { server } from '../server'
+
 
 const Comments =() =>{
     const [name, setName] = useState('')
@@ -28,7 +30,7 @@ const Comments =() =>{
 
 
     const handleLogIn = () =>{
-        fetch('https://prcwebsite.pythonanywhere.com/add_comment', {
+        fetch(`${server}/add_comment`, {
             method:'POST',
             body:JSON.stringify({
                 name:name,

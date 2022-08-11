@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import './postSermon.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 function ReadPrayerRequest(){
     const [prayer, setPrayer] = useState([])
@@ -18,7 +19,7 @@ function ReadPrayerRequest(){
 
     useEffect(() =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/admin/prayer_request',{
+        fetch(`${server}/admin/prayer_request`,{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -46,7 +47,7 @@ function ReadPrayerRequest(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
+        fetch(`${server}/delete_posts`,{
             method : 'POST',
             body: JSON.stringify({
                 id : id

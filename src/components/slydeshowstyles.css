@@ -5,7 +5,6 @@
     height: 100vh;
     overflow: hidden;
     background-color: rgb(0, 0, 0);
-    top: 70px;
     margin-bottom: 40px; 
 }
 
@@ -106,6 +105,10 @@
         overflow: hidden;
     }
 
+    h3{
+        font-size: 0.7rem;
+    }
+
     .container{
         font-size: 10px;
     }
@@ -124,7 +127,12 @@
     /* .pastors{
         margin-left: 0px;
     } */
-    
+
+    h3{
+        font-size: 0.7rem;
+    }
+
+
     .Card{        
         width:18rem;
     }
@@ -135,6 +143,10 @@
         height: 190px;
         overflow: hidden;
     }
+
+    h3{
+        font-size: 0.7rem;
+    }
 }
 
 @media screen and (min-width:361px){
@@ -142,6 +154,11 @@
         height: 198px;
         overflow: hidden;
     }
+
+    h3{
+        font-size: 0.7rem;
+    }
+
 }
 
 @media screen and (min-width:380px){
@@ -149,6 +166,11 @@
         height: 208px;
         overflow: hidden;
     }
+
+    h3{
+        font-size: 0.7rem;
+    }
+
 }
 
 @media screen and (min-width:400px) {
@@ -163,6 +185,11 @@
         height: 254px;
         overflow: hidden;
     }
+
+    h3{
+        font-size: 0.7rem;
+    }
+
 }
 
 @media screen and (min-width:530px) {
@@ -183,6 +210,9 @@
         margin-left: 80px;
     }
 
+    h3{
+        font-size: 0.7rem;
+    }
     
 }
 
@@ -192,7 +222,10 @@
         overflow: hidden;
     }
 
-    
+    h3{
+        font-size: 0.7rem;
+    }
+
 }
 
 @media screen and (min-width:700px) {
@@ -206,6 +239,11 @@
     .departments{
         margin-left: 190px;
     }
+
+    h3{
+        font-size: 0.9rem;
+    }
+
 }
 
 @media screen and (min-width:780px) {
@@ -241,6 +279,10 @@
         margin-left: 270px;
     }
 
+    h3{
+        font-size: 1rem;
+    }
+
     .departments{
         margin-left: 270px;
     }
@@ -268,6 +310,10 @@
         overflow: hidden;
     }
 
+    h3{
+        font-size: 1.5rem;
+    }
+
     .leaders{
         margin-left: 30px;
     }
@@ -283,6 +329,11 @@
     .carousel{
         height: 96vh;
         overflow: hidden;
+        top: 70px;
+    }
+
+    h3{
+        font-size: 1.5rem;
     }
 
     .leaders{

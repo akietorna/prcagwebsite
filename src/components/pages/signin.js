@@ -4,6 +4,7 @@ import  'bootstrap/dist/css/bootstrap.min.css'
 import '../signin.css'
 import theside from '../pictures/theside.jpg'
 import { Link,useNavigate } from 'react-router-dom'
+import { server } from '../server'
 
 
 function LogIn(){
@@ -34,7 +35,7 @@ function LogIn(){
     }
 
     const handleLogIn = () =>{
-        fetch('https://prcwebsite.pythonanywhere.com/admin', {
+        fetch(`${server}/admin`, {
             method:'POST',
             body:JSON.stringify({
                 username:username,

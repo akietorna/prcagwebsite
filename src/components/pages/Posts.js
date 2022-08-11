@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap'
 import * as MdIcons from 'react-icons/md'
 import '../post.css'
 import {useNavigate} from 'react-router-dom'
+import { server } from '../server'
 
 
 function Posts(){
@@ -18,7 +19,7 @@ function Posts(){
 
     useEffect(() =>{
         const token1 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/admin/post',{
+        fetch(`${server}/admin/post`,{
             method: 'GET',
             headers: {
                 'Content-Type': "application/json",
@@ -45,7 +46,7 @@ function Posts(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch('https://prcwebsite.pythonanywhere.com/delete_posts',{
+        fetch(`${server}/delete_posts`,{
             method : 'POST',
             body: JSON.stringify({
                 id : id
