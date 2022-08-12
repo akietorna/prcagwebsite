@@ -11,14 +11,14 @@ def confirm_email(receiver, username):
     
     # generate code generate the con
     sender_email = str("akitestapps@gmail.com")
-    password = str("geflzngnbbqcrzfh")
+    password = str("bnvpubhdcgazdgiw")
 
     conf_code = generate_code()
 
 
     msg = MIMEText(f" Hello {username} ! \n \n You requested for a change of password to your account on the PRC website. Please enter the following code. \n \n Confirmation Code: {conf_code} \n \n You can ignore this mail if you are not the one who triggered the process. ")
     msg['Subject'] = 'PRC AG website sign up email confirmation'
-    msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
+    msg['From'] = 'PRC Technical Team'
     msg['To'] = receiver
 
     context = ssl.create_default_context()

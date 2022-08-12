@@ -1,7 +1,6 @@
 import random
 import string
 import json
-import pytest
 from app import app
 
 def test_sign_in():

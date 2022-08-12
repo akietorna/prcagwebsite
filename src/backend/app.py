@@ -86,7 +86,6 @@ def forget_password():
 
     check_account = curs.execute("select * from users where user_name = %s ", [username])
 
-    print(check_account)
     # this function checks if the username is correct by sending an email to it's email address with a confirmation code
     if check_account > 0:
         email = curs.execute("select email from users where user_name = %s ", [username])
