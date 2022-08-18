@@ -108,7 +108,7 @@ def forget_password():
 def confirm_code():
     # this function check if the correct code sent to user is typed
     request_data = request.get_json()
-    confirmed_code = request_data['confirm_code']
+    confirmed_code = request_data['confirmed_code']
     conf = user_details["confirm_code"]
     if conf == confirmed_code:
         return jsonify('verification successful')

@@ -1,13 +1,18 @@
 {
   "hosting": {
-    "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  },
-  "storage": {
-    "rules": "storage.rules"
-  }
-}
+  "public": "build",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ],
+  "rewrites": [{
+    "source": "**",
+    "destination": "/index.html"
+  }],
+  "headers": [{
+     "source": "/service-worker.js",
+      "key": "Cache-Control",
+      "value": "max-age=0"
+  }]
+}}
