@@ -12,6 +12,8 @@ function GetUserName(){
 
     const [username, setUsername] =  useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
+
 
     const handleUsername = (event) =>{
         setUsername(event.target.value)
@@ -21,6 +23,7 @@ function GetUserName(){
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true)
         handlePost();
     }
 
@@ -33,6 +36,7 @@ function GetUserName(){
     const handlePost = () =>{
         fetch(`${server}/admin/forget_password`, {
             method:"POST",
+            mode: 'cors',
             body:JSON.stringify({
                 username:username
             }),
@@ -44,6 +48,7 @@ function GetUserName(){
                 authenticate(message)
                 setAlertMessage(message)
                 setUsername(' ')
+                setLoading(false)
         })
     }
 
@@ -65,7 +70,7 @@ function GetUserName(){
                                 <form className='confirm-code' onSubmit={handleSubmit}>
                                     <input type='text' value={username} onChange={handleUsername} placeholder='Username' required />
                                     <br />
-                                    <input type='submit' value='Submit' className='submit'/>
+                                    {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' value='Submit' className='submit'/>}
                                 </form>
                             </Card.Text>
                         </Card.Body>

@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import  'bootstrap/dist/css/bootstrap.css'
 import  'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
-import { Link } from 'react-router-dom'
+import fileDownload from 'js-file-download'
 import "./sermons.css"
 import './prayer_request.css'
 import {Carousel} from 'react-bootstrap'
@@ -63,7 +63,7 @@ const Health =() =>{
                                     <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif',textAlign:'left'}}>{item[3]}</Card.Title>
                                     <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif',textAlign:'left'}}>                
                                         <h6 className='signature'>By: {item[7]}</h6>
-                                        <Link to={item[5]} target='_blank' download>Download Here</Link>
+                                        <button className='bookDownload' onClick={() => {fileDownload(item[5], item[3])}}>Download Book</button>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

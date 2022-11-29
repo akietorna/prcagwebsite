@@ -23,6 +23,7 @@ function PostBooks(){
         const token1 = localStorage.getItem('jwt-item')
         fetch(`${server}/books`,{
             method: 'GET',
+            mode: 'cors',
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': 'Bearer ' + token1
@@ -50,6 +51,7 @@ function PostBooks(){
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/delete_book`,{
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 id : id
         }),

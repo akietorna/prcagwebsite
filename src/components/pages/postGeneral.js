@@ -44,6 +44,7 @@ function PostGeneral () {
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_announcement`, {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 sender: name,
                 post_code: postCode,

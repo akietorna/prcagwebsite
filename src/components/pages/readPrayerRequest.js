@@ -47,8 +47,9 @@ function ReadPrayerRequest(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch(`${server}/delete_posts`,{
+        fetch(`${server}/delete_prayer_request`,{
             method : 'POST',
+            mode: 'cors',
             body: JSON.stringify({
                 id : id
             }),
@@ -67,7 +68,6 @@ function ReadPrayerRequest(){
         })
           .then(data => {
             setAlertMessage(data)
-            console.log(id)
           })
     }
 

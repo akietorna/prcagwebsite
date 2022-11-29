@@ -61,9 +61,9 @@ function Sermons() {
                             <Card key={index} className='Card' style={{ width: '17rem' }}>
                                 <Card.Img variant="top" src={item[5]} />
                                 <Card.Body>
-                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'cursive'}}>{item[2]}</Card.Title>
-                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'cursive'}}>
-                                    <ReactAudioPlayer src={item[4]}  controls volume={1}/>
+                                    <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)', fontFamily:'sans-serif'}}>{item[2]}</Card.Title>
+                                    <Card.Text style={{fontSize:'20px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}>
+                                    <ReactAudioPlayer src={item[6]}  controls volume={1}/>
                                     <h6 className='signature'>By: {item[1]} </h6>
                                     </Card.Text>
                                 </Card.Body>

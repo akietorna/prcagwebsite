@@ -21,6 +21,7 @@ function Posts(){
         const token1 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/post`,{
             method: 'GET',
+            mode: 'cors',
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': 'Bearer ' + token1
@@ -48,6 +49,7 @@ function Posts(){
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/delete_posts`,{
             method : 'POST',
+            mode: 'cors',
             body: JSON.stringify({
                 id : id
             }),
@@ -66,7 +68,6 @@ function Posts(){
         })
           .then(data => {
             alert(data)
-            console.log(id)
           })
     }
 
@@ -92,7 +93,7 @@ function Posts(){
                                     <td onClick={() => handleDelete(item[0]) }  ><MdIcons.MdDelete /></td>
                                     <td> {item[1]} </td>
                                     <td> {item[2]} </td>
-                                    <td> {item[4]} </td>
+                                    <td> {item[7]} </td>
                                     <td> {item[3]} </td>
                                 </tr>
                                 

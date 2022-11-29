@@ -9,12 +9,14 @@ import { server } from '../server'
 
 
 
+
 function PrayerRequest () {
     const [name, setName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [email, setEmail] = useState('')
     const [prayerRequest, setPrayerRequest] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading,setLoading] = useState(false)
 
 
     const handleName = (event)=>{
@@ -35,6 +37,7 @@ function PrayerRequest () {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true)
         handleLogIn();       
     }
 
@@ -42,6 +45,7 @@ function PrayerRequest () {
     const handleLogIn = () =>{
         fetch(`${server}/prayer_request`, {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 name:name,
                 phone_number:phoneNumber,
@@ -58,6 +62,7 @@ function PrayerRequest () {
             setPhoneNumber('')
             setEmail('')
             setPrayerRequest('')
+            setLoading(false)
         })
     }
     
@@ -104,7 +109,7 @@ function PrayerRequest () {
 
                         <textarea value={prayerRequest} onChange={handlePrayerRequest} placeholder="Prayer Request"  required />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' className='submit'/>}
                     </form>
                 </div>
 
@@ -125,7 +130,7 @@ function PrayerRequest () {
                     <br />
 
                     <h4 className='email'>E-mail:</h4>
-                    <h6> pentecostalrevivalcenter@gmail.com </h6>
+                    <h6 className='the-email'>pentecostalrevivalcenter@gmail.com</h6>
 
 
                 </div>

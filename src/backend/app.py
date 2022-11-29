@@ -1,8 +1,9 @@
-from flask import Flask,json, jsonify,request,redirect,send_file,session,url_for
+from flask import Flask, jsonify,request
+from flask_cors import CORS, cross_origin
 from python_modules.database import connection
 from python_modules.emailhandling import confirm_email
 from flask_bcrypt import Bcrypt
-from functools import wraps
+# from functools import wraps
 import gc
 from datetime import datetime
 import os
@@ -15,20 +16,18 @@ app.config['SECRET_KEY'] = "ignance123@"
 app.config['DEBUG'] = True
 app.config['JWT_SECRET_KEY']="prcwebsite123@"
 
-
 #initializations
 bcrypt = Bcrypt()
 jwt = JWTManager(app)
-
+CORS(app, support_credentials=True)
 
 user_details = { 'username': '','email': '', 'password': '', 'confirm_code': ''}
 
 
 
-
-app.config['AUDIO_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/sermons"
-app.config['IMAGE_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/pictures"
-app.config['BOOK_UPLOADS']= "C:/Users/Akietorna/Desktop/myapp/public/books"
+app.config['AUDIO_UPLOADS']= "/home/prcwebsite/prcagwebsite/sermons"
+app.config['IMAGE_UPLOADS']= "/home/prcwebsite/prcagwebsite/images"
+app.config['BOOK_UPLOADS']= "/home/prcwebsite/prcagwebsite/books"
 app.config['ALLOWED_IMAGE_EXTENSIONS']= ['JPEG', 'JPG', 'PNG']
 app.config['ALLOWED_AUDIO_EXTENSIONS']= ['MP3', 'AAC', 'WAV']
 app.config['ALLOWED_BOOK_EXTENSIONS']=["PDF"]
@@ -72,10 +71,11 @@ def allowed_image_types(filename):
     if extension.upper() in app.config['ALLOWED_IMAGE_EXTENSIONS']:
         return True
     else:
-        return False   
+        return False
 
 
 @app.route("/admin/forget_password", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def forget_password():
 
     # this takes care of resetting password
@@ -86,6 +86,7 @@ def forget_password():
 
     check_account = curs.execute("select * from users where user_name = %s ", [username])
 
+    print(check_account)
     # this function checks if the username is correct by sending an email to it's email address with a confirmation code
     if check_account > 0:
         email = curs.execute("select email from users where user_name = %s ", [username])
@@ -95,7 +96,7 @@ def forget_password():
         connect.close()
         gc.collect()
 
-        user_details['confirm_code'] = confirm_email(email,username)     
+        user_details['confirm_code'] = confirm_email(email,username)
         return jsonify('username received')
 
     else:
@@ -105,10 +106,11 @@ def forget_password():
 
 
 @app.route('/admin/confirmation_code', methods=["POST"])
+@cross_origin(supports_credentials=True)
 def confirm_code():
     # this function check if the correct code sent to user is typed
     request_data = request.get_json()
-    confirmed_code = request_data['confirmed_code']
+    confirmed_code = request_data['confirm_code']
     conf = user_details["confirm_code"]
     if conf == confirmed_code:
         return jsonify('verification successful')
@@ -119,14 +121,15 @@ def confirm_code():
 
 
 @app.route('/admin/set_password',methods=['POST'])
+@cross_origin(supports_credentials=True)
 def set_password():
-    # this function accept new password from the user to reset the old one 
+    # this function accept new password from the user to reset the old one
     request_data = request.get_json()
     username = request_data["username"]
     password = request_data["password"]
     confirm_password = request_data["confirm_password"]
 
-    if password == confirm_password:       
+    if password == confirm_password:
         password = bcrypt.generate_password_hash(password)
         curs, connect = connection()
         curs.execute("update users set password = (%s) where user_name= (%s)", [password,username])
@@ -142,6 +145,7 @@ def set_password():
 
 
 @app.route('/admin', methods=[ "POST"])
+@cross_origin(supports_credentials=True)
 def sign_in():
     request_data = request.get_json()
     username = request_data['username']
@@ -153,15 +157,15 @@ def sign_in():
     Password = curs.execute("SELECT password FROM users WHERE user_name = %s", [username])
     Password = curs.fetchone()
     user_id = curs.execute("SELECT user_id FROM users WHERE user_name = %s", [username])
-    user_id = curs.fetchone()
+    user_id = curs.fetchone()[0]
     connect.commit()
     curs.close()
     connect.close()
     gc.collect()
 
     if info == 1 and bcrypt.check_password_hash(Password[0], password) == True:
-        access_token = create_access_token(identity=user_id[0])
-        return jsonify({'token':access_token, 'id': user_id[0]})
+        access_token = create_access_token(identity=user_id)
+        return jsonify({'token':access_token, 'id': user_id})
 
     else:
         return jsonify("Invalid Credentials, Try again")
@@ -169,6 +173,7 @@ def sign_in():
 
 
 @app.route('/admin/post',methods=["GET"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def post():
 
@@ -186,12 +191,12 @@ def post():
         gc.collect()
 
         return jsonify(posts[::-1])
-    
-    
+
 
 @app.route("/delete_posts",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_post():      
+def delete_post():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -199,24 +204,54 @@ def delete_post():
     user = curs.fetchall()
 
     if len(user) == 1:
-         
-        request_data = request.get_json()              
+
+        request_data = request.get_json()
         picked = request_data['id']
- 
+
         # connection to database
         curs,connect = connection()
-        curs.execute("delete from posts WHERE post_id = %s", [picked])
 
+        info =curs.execute("select * from posts WHERE post_id = %s", [picked])
         connect.commit()
         curs.close()
         connect.close()
-        gc.collect()
+        gc.collect
 
-        return jsonify(f'Post with ID number {picked} deleted')
+        if info[4][0] == 'devotional':
+            curs,connect = connection()
+            curs.execute("delete from devotional WHERE post_time = %s", [info[3][0]])
+            curs.execute("delete from posts WHERE post_id = %s", [picked])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify(f'Post with ID number {picked} deleted')
+
+        elif info[4][0] == 'sermon':
+            curs,connect = connection()
+            curs.execute("delete from sermons WHERE post_time = %s", [info[3][0]])
+            curs.execute("delete from posts WHERE post_id = %s", [picked])
+            connect.commit()
+            curs.close()
+            connect.close()
+            gc.collect()
+            return jsonify(f'Post with ID number {picked} deleted')
+
+        else:
+            return jsonify(f'Error deleting post with ID number {picked}')
+
+    else:
+        return jsonify('Credentials not found')
+
+
+
+
+
 
 
 
 @app.route("/admin/add_devotional", methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_devotional():
 
@@ -234,18 +269,17 @@ def add_devotional():
         passage=request.form['passage']
 
 
-
         if allowed_image_types(picture.filename):
 
             filename = secure_filename(picture.filename)
             picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename))
 
-            path_to_picture = '/pictures/'+ filename
+            path_to_picture = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/images/'+ filename
             time_sent = datetime.now()
-            item ='devotional'
+            item = 'devotional'
             curs,connect = connection()
 
-            input_statement = ("INSERT INTO devotional (sender,title,post_time,passage,message,path_to_picture) VALUES (%s,%s,%s,%s,%s,%s)" ) 
+            input_statement = ("INSERT INTO devotional (sender,title,post_time,passage,message,path_to_picture) VALUES (%s,%s,%s,%s,%s,%s)" )
             data = [name,topic, time_sent, passage,message,path_to_picture]
             curs.execute( input_statement, data)
             curs.execute("insert into posts (title,sender,post_time,item) values (%s, %s,%s,%s)", [topic,name,time_sent,item])
@@ -260,7 +294,9 @@ def add_devotional():
 
 
 
+
 @app.route("/devotional", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def devotional():
     curs, connect = connection()
     curs.execute('SELECT * FROM devotional')
@@ -268,37 +304,18 @@ def devotional():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
-@app.route("/delete_devotional",methods=["POST"])
-@jwt_required()
-def delete_devotionals():      
-
-    curs,connect= connection()
-    current_user_id = get_jwt_identity()
-    curs.execute('select * from users where user_id = %s',[current_user_id])
-    user = curs.fetchall()
-
-    if len(user) == 1:
-        
-        request_data = request.get_json()              
-        picked = request_data['id']
-        # connection to database
-        curs,connect = connection()
-        curs.execute("delete from devotional WHERE post_id = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return jsonify(f'Post with ID number {picked} deleted')
 
 
 
-@app.route('/admin/add_sermon', methods=["POST"]) 
+
+
+
+@app.route('/admin/add_sermon', methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_sermon():
 
@@ -324,10 +341,11 @@ def add_sermon():
             picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
             sermon.save(os.path.join(app.config['AUDIO_UPLOADS'], filename2))
 
-            path_to_picture = '/pictures/'+ filename1
-            path_to_sermon = '/sermons/'+ filename2
+            path_to_picture = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/images/'+ filename1
+            path_to_sermon = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/sermons/'+ filename2
             time_sent = datetime.now()
-            item ='sermon'
+            item = 'sermon'
+
             curs,connect = connection()
 
             curs.execute( "INSERT INTO sermons (sender,title,post_time,path_to_sermon,path_to_picture) VALUES (%s,%s,%s,%s,%s)", [name,topic, time_sent, path_to_sermon,path_to_picture])
@@ -343,21 +361,27 @@ def add_sermon():
 
 
 
-@app.route('/admin/upcoming', methods=["POST"]) 
+
+
+
+
+
+@app.route('/admin/upcoming', methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_upcoming():
-    
+
     curs,connect= connection()
     current_user_id = get_jwt_identity()
     curs.execute('select * from users where user_id = %s',[current_user_id])
     user = curs.fetchall()
-    
+
 
 
     if len(user) == 1:
       # request_data = request.get_json()
-        
-        name=request.form['names'] 
+
+        name=request.form['names']
         topic=request.form['topic']
         picture = request.files['pictures']
 
@@ -367,8 +391,8 @@ def add_upcoming():
 
             filename1 = secure_filename(picture.filename)
             picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
-            
-            path_to_picture = '/pictures/'+ filename1
+
+            path_to_picture = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/images/'+ filename1
             time_sent = datetime.now()
             item ='upcoming'
             curs,connect = connection()
@@ -386,6 +410,7 @@ def add_upcoming():
 
 
 @app.route("/upcoming", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def upcoming():
     curs, connect = connection()
     curs.execute('SELECT * FROM upcoming')
@@ -393,13 +418,14 @@ def upcoming():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/delete_upcoming",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_upcoming():      
+def delete_upcoming():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -408,8 +434,8 @@ def delete_upcoming():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
-        picked = request_data['id'] 
+        request_data = request.get_json()
+        picked = request_data['id']
         # connection to database
         curs,connect = connection()
         curs.execute("delete from upcoming WHERE post_id = %s", [picked])
@@ -423,6 +449,7 @@ def delete_upcoming():
 
 
 @app.route("/sermon", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def sermon():
     curs, connect = connection()
     curs.execute('SELECT * FROM sermons')
@@ -430,40 +457,19 @@ def sermon():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
-@app.route("/delete_sermon",methods=["POST"])
-@jwt_required()
-def delete_sermon():      
 
-    curs,connect= connection()
-    current_user_id = get_jwt_identity()
-    curs.execute('select * from users where user_id = %s',[current_user_id])
-    user = curs.fetchall()
-
-    if len(user) == 1:
-
-        request_data = request.get_json()              
-        picked = request_data['id'] 
-        # connection to database
-        curs,connect = connection()
-        curs.execute("delete from sermons WHERE post_id = %s", [picked])
-
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-
-        return jsonify(f'Post with ID number {picked} deleted')
 
 
 
 
 @app.route('/prayer_request',methods=['POST'])
+@cross_origin(supports_credentials=True)
 def prayer_request():
-    # this function accept new password from the user to reset the old one 
+    # this function accept new password from the user to reset the old one
     request_data = request.get_json()
     name = request_data["name"]
     phone_number = request_data["phone_number"]
@@ -483,6 +489,7 @@ def prayer_request():
 
 
 @app.route("/admin/prayer_request", methods=["GET"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def read_prayer():
 
@@ -499,14 +506,15 @@ def read_prayer():
         connect.commit()
         curs.close()
         connect.close()
-        gc.collect()              
+        gc.collect()
         return jsonify(data[::-1])
 
 
 
 @app.route("/delete_prayer_request",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_prayer_request():      
+def delete_prayer_request():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -515,8 +523,8 @@ def delete_prayer_request():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
-        picked = request_data['id'] 
+        request_data = request.get_json()
+        picked = request_data['id']
         # connection to database
         curs,connect = connection()
         curs.execute("delete from prayer_request WHERE post_id = %s", [picked])
@@ -526,10 +534,11 @@ def delete_prayer_request():
         connect.close()
         gc.collect()
 
-        return jsonify(f'Post with ID number {picked} deleted')
-    
-    
+        return jsonify(f'Post with ID number {picked} is deleted')
+
+
 @app.route("/admin/comments", methods=["GET"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def read_comment():
 
@@ -546,14 +555,15 @@ def read_comment():
         connect.commit()
         curs.close()
         connect.close()
-        gc.collect()              
+        gc.collect()
         return jsonify(data[::-1])
 
 
 
 @app.route("/delete_comments",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_comment():      
+def delete_comment():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -562,8 +572,8 @@ def delete_comment():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
-        picked = request_data['id'] 
+        request_data = request.get_json()
+        picked = request_data['id']
         # connection to database
         curs,connect = connection()
         curs.execute("delete from comment WHERE post_id = %s", [picked])
@@ -577,8 +587,9 @@ def delete_comment():
 
 
 @app.route('/add_comment',methods=['POST'])
+@cross_origin(supports_credentials=True)
 def add_comment():
-    # this function accept new password from the user to reset the old one 
+    # this function accept new password from the user to reset the old one
     request_data = request.get_json()
     name = request_data["name"]
     comment = request_data["comment"]
@@ -596,6 +607,7 @@ def add_comment():
 
 
 @app.route('/admin/add_about',methods=['POST'])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_about():
     curs,connect= connection()
@@ -604,7 +616,7 @@ def add_about():
     user = curs.fetchall()
 
     if len(user) == 1:
-        # this function accept new password from the user to reset the old one 
+        # this function accept new password from the user to reset the old one
         request_data = request.get_json()
         name = request_data["name"]
         about = request_data["about"]
@@ -622,6 +634,7 @@ def add_about():
 
 
 @app.route("/others/about_us", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def about_us():
     curs, connect = connection()
     curs.execute('select * from about_us')
@@ -629,15 +642,16 @@ def about_us():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 
 @app.route('/add_testimony',methods=['POST'])
+@cross_origin(supports_credentials=True)
 def add_testimony():
-    # this function accept new password from the user to reset the old one 
+    # this function accept new password from the user to reset the old one
     request_data = request.get_json()
     name = request_data["name"]
     phone_number = request_data["phone_number"]
@@ -657,6 +671,7 @@ def add_testimony():
 
 
 @app.route("/admin/testimony", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def testimony():
     curs, connect = connection()
     curs.execute('SELECT * FROM testimony')
@@ -664,13 +679,14 @@ def testimony():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/delete_testimony",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_testimony():      
+def delete_testimony():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -679,7 +695,7 @@ def delete_testimony():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
+        request_data = request.get_json()
         picked = request_data['id']
         # connection to database
         curs,connect = connection()
@@ -696,6 +712,7 @@ def delete_testimony():
 
 
 @app.route('/admin/add_announcement',methods=['POST'])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_announcement():
 
@@ -706,7 +723,7 @@ def add_announcement():
 
     if len(user) == 1:
 
-        # this function accept new password from the user to reset the old one 
+        # this function accept new password from the user to reset the old one
         request_data = request.get_json()
         post_code = request_data["post_code"]
         sender = request_data["sender"]
@@ -727,6 +744,7 @@ def add_announcement():
 
 
 @app.route("/announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements')
@@ -734,12 +752,13 @@ def announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/children_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def children_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code= "CHI"')
@@ -747,12 +766,13 @@ def children_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/youth_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def youth_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code = "YOU"')
@@ -760,12 +780,13 @@ def youth_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/women_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def women_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code = "WOM"')
@@ -773,12 +794,13 @@ def women_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/men_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def men_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code = "MEN"')
@@ -786,12 +808,13 @@ def men_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/teen_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def teen_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code = "TEE"')
@@ -799,13 +822,14 @@ def teen_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 
 @app.route("/general_announcement", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def general_announcement():
     curs, connect = connection()
     curs.execute('SELECT * FROM announcements where post_code = "GEN"')
@@ -813,14 +837,15 @@ def general_announcement():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/delete_announcement",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_announcement():       
+def delete_announcement():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -829,8 +854,8 @@ def delete_announcement():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
-        picked = request_data['id']  
+        request_data = request.get_json()
+        picked = request_data['id']
         # connection to database
         curs,connect = connection()
         curs.execute("delete from announcements WHERE post_code = %s", [picked])
@@ -846,9 +871,10 @@ def delete_announcement():
 
 
 
-@app.route('/admin/add_book', methods=["POST"]) 
+@app.route('/admin/add_book', methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def add_book():  
+def add_book():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -857,7 +883,7 @@ def add_book():
 
     if len(user) == 1:
 
-       
+
         picture = request.files['pictures']
         book =request.files['book']
         name=request.form['name']
@@ -872,8 +898,8 @@ def add_book():
             picture.save(os.path.join(app.config['IMAGE_UPLOADS'], filename1))
             book.save(os.path.join(app.config['BOOK_UPLOADS'], filename2))
 
-            path_to_picture = '/pictures/'+ filename1
-            path_to_book = '/books/'+ filename2
+            path_to_picture = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/images/'+ filename1
+            path_to_book = 'https://www.pythonanywhere.com/user/prcwebsite/files/home/prcwebsite/prcagwebsite/books/'+ filename2
             time_sent = datetime.now()
             item ='book'
             curs,connect = connection()
@@ -891,6 +917,7 @@ def add_book():
 
 
 @app.route("/sunday_school", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def sunday_school():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code = "SCH"')
@@ -898,11 +925,12 @@ def sunday_school():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/marriage", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def marriage():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code ="MAR" ')
@@ -910,11 +938,12 @@ def marriage():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/prayer", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def prayer():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code = "PRA" ')
@@ -922,11 +951,12 @@ def prayer():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/health", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def health():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code = "HEA"',)
@@ -934,11 +964,12 @@ def health():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/motivation", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def motivation():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code = "MOT"')
@@ -946,11 +977,12 @@ def motivation():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/christian_life", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def christian_life():
     curs, connect = connection()
     curs.execute('SELECT * FROM books where post_code = "CHR" ')
@@ -958,11 +990,12 @@ def christian_life():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 @app.route("/books", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def books():
     curs, connect = connection()
     curs.execute('SELECT * FROM books')
@@ -970,14 +1003,15 @@ def books():
     connect.commit()
     curs.close()
     connect.close()
-    gc.collect()              
+    gc.collect()
     return jsonify(data[::-1])
 
 
 
 @app.route("/delete_book",methods=["POST"])
+@cross_origin(supports_credentials=True)
 @jwt_required()
-def delete_book():      
+def delete_book():
 
     curs,connect= connection()
     current_user_id = get_jwt_identity()
@@ -986,8 +1020,8 @@ def delete_book():
 
     if len(user) == 1:
 
-        request_data = request.get_json()              
-        picked = request_data['id'] 
+        request_data = request.get_json()
+        picked = request_data['id']
         print(picked)
         # connection to database
         curs,connect = connection()
@@ -1000,11 +1034,12 @@ def delete_book():
         return jsonify(f'Post with ID number {picked} deleted')
 
 
-@app.route("/logout/")
-def logout():
-    session.clear()
-    gc.collect()
-    return redirect(url_for('home_page'))
+# @app.route("/logout/")
+# @cross_origin(supports_credentials=True)
+# def logout():
+#     session.clear()
+#     gc.collect()
+#     return redirect(url_for('home_page'))
 
 
 

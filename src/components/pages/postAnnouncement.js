@@ -28,6 +28,7 @@ function PostAnnouncement(){
         const token1 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/post`,{
             method: 'GET',
+            mode: 'cors',
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': 'Bearer ' + token1
@@ -50,6 +51,7 @@ function PostAnnouncement(){
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/delete_announcement`,{
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 id : id
         }),

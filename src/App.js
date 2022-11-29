@@ -55,6 +55,7 @@ import UpdateUpcomingEvent from "./components/pages/upcoming"
 import FinalNav from './components/navigation';
 
 
+
 function App() {
 
   const pathname = window.location.pathname;

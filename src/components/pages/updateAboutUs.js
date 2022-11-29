@@ -40,6 +40,7 @@ function UpdateAboutUs () {
         const token = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_about`, {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 name: name,
                 about: about

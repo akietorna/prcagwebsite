@@ -7,17 +7,17 @@ const SideBarLink = styled(Link)`
     color:white;
     justify-content: space-between;
     align-item:center;
-    padding:20px;
+    padding:10px;
     list-style:none;
     height: 50px;
     text-decoration:none;
     font-size: 16px;
     
     &:hover{
-        background:black;
-        border-left: 4px solid yellow;
+        background:white;
+        border-left: 4px solid rgb(126, 126, 233);
         cursor: pointer;
-        color: yellow
+        color: rgb(126, 126, 233)
     }
 `;
 
@@ -36,10 +36,9 @@ const DropdownLink = styled(Link)`
     font-size:10px;
 
     &:hover{
-        background:black;
-        border-left: 4px solid yellow;
+        background:white;
         cursor: pointer;
-        color: yellow
+        color: rgb(126, 126, 233)
     }
 `
 

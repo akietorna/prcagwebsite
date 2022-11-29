@@ -12,6 +12,7 @@ function PostChristianLife () {
     const [name, setName] = useState('')
     const [author, setAuthor] = useState('')
     const [topic, setTopic] = useState('')
+    const [loading, setLoading] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
     let Navigate = useNavigate()
 
@@ -60,6 +61,7 @@ function PostChristianLife () {
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_book`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
                 "Authorization": "Bearer "+ token2
@@ -78,12 +80,14 @@ function PostChristianLife () {
                 setName('')
                 setAuthor('')
                 setTopic('')
+                setLoading(false)
             })
     }
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true)
         handleUpload();
     }
 
@@ -114,7 +118,7 @@ function PostChristianLife () {
                         <input type='file' value={pdf_file} onChange={handlePdf} placeholder='PDF here' required/>
                         <br />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' className='submit'/>}
                     </form>
 
                 </div>

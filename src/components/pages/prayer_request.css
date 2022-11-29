@@ -3,6 +3,19 @@
     height: 25vh;
 }
 
+.bookDownload{
+    border-bottom: 0px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    color: rgb(60, 60, 178);
+    background: transparent;
+}
+
+.bookDownload:hover{
+    text-decoration: underline;
+}
+
 .type{
     padding-bottom: 50px;
     color: #f8f86a;

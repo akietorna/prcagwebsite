@@ -13,6 +13,7 @@ function ResetPassword(){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading,setLoading] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
 
     const handleUsername = (event) =>{
@@ -33,6 +34,7 @@ function ResetPassword(){
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true)
         handleResetPassword()
     }
 
@@ -46,6 +48,7 @@ function ResetPassword(){
     const handleResetPassword = () =>{
         fetch(`${server}/admin/set_password`,{
             method : 'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 username:username,
                 password:password,
@@ -61,6 +64,7 @@ function ResetPassword(){
             setUsername('')
             setPassword('')
             setConfirmPassword('')
+            setLoading(false)
         })
     }
 
@@ -86,7 +90,7 @@ function ResetPassword(){
                                     <br />
                                     <input type='text' value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm password' required />
                                     <br />
-                                    <input type='submit' value='Update' className='update'/>
+                                    {loading ? <input type='submit' value='Loading......' className='update'/> : <input type='submit' value='Update' className='update'/>}
 
                                 </form>
                             </Card.Text>

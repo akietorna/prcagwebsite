@@ -12,6 +12,7 @@ function PostMotivation () {
     const [name, setName] = useState('')
     const [author, setAuthor] = useState('')
     const [topic, setTopic] = useState('')
+    const [loading, setLoading] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
     let Navigate = useNavigate()
 
@@ -41,7 +42,7 @@ function PostMotivation () {
     const handleImage =(event) =>{
         image_file = event.target.files[0];
         if (image_file != null){
-            data.append("pictures", image_file)
+            data.append("flier", image_file)
             data.append("dept_code",dept_code)
         }
     }
@@ -51,7 +52,7 @@ function PostMotivation () {
         if (pdf_file != null){
             data.append("book", pdf_file)
             data.append("name",name)
-            data.append("author",author)
+            data.append("writer",author)
             data.append("topic",topic)
             
         }
@@ -61,6 +62,7 @@ function PostMotivation () {
         const token2 =localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_book`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
                 "Authorization": "Bearer "+ token2
@@ -79,12 +81,14 @@ function PostMotivation () {
             setAlertMessage(message)
             setName('')
             setTopic('')
+            setLoading(false)
           })
     }
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true)
         handleUpload();
     }
 
@@ -115,7 +119,7 @@ function PostMotivation () {
                         <input type='file' value={pdf_file} onChange={handlePdf} placeholder='PDF here' required/>
                         <br />
 
-                        <input type='submit' className='submit'/>
+                       {loading ?  <input type='submit' value='loading' className='submit'/> :  <input type='submit' className='submit'/>}
                     </form>
 
                 </div>

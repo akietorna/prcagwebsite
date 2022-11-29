@@ -22,6 +22,7 @@ function ReadComment(){
         const token1 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/comments`,{
             method: 'GET',
+            mode: 'cors',
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': 'Bearer ' + token1
@@ -42,8 +43,9 @@ function ReadComment(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch(`${server}/delete_announcement`,{
+        fetch(`${server}/delete_comment`,{
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 id : id
         }),

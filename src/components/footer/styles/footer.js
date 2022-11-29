@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
     margin-top:300px;
     padding: 60px 40px;
-    background:linear-gradient(180deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% )
+    background:rgb(14, 14, 124)
 `
 
 export const Wrapper = styled.div`

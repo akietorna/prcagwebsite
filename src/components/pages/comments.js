@@ -6,11 +6,13 @@ import {Carousel} from 'react-bootstrap'
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 import { server } from '../server'
+import { Link } from 'react-router-dom'
 
 
 const Comments =() =>{
     const [name, setName] = useState('')
     const [comment, setComment] = useState('')
+    const [loading, setloading] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
     
 
@@ -25,6 +27,7 @@ const Comments =() =>{
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setloading(true)
         handleLogIn();       
     }
 
@@ -32,6 +35,7 @@ const Comments =() =>{
     const handleLogIn = () =>{
         fetch(`${server}/add_comment`, {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 name:name,
                 comment:comment,
@@ -44,6 +48,7 @@ const Comments =() =>{
             setAlertMessage(message)
             setName('')
             setComment('')
+            setloading(false)
         })
     }
 
@@ -82,7 +87,7 @@ const Comments =() =>{
 
                         <textarea value={comment} onChange={handleComment}  placeholder="Comment"  required />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' className='submit'/>}
                     </form>
                 </div>
 
@@ -103,7 +108,7 @@ const Comments =() =>{
                     <br />
 
                     <h4 className='email'>E-mail:</h4>
-                    <h6> pentecostalrevivalcenter@gmail.com </h6>
+                    <h6> <Link>pentecostalrevivalcenter@gmail.com</Link> </h6>
 
 
                 </div>

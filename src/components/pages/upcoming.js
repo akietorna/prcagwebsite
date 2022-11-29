@@ -45,6 +45,7 @@ const UpdateUpcomingEvent =() =>{
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/upcoming`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
                 "Authorization": "Bearer "+ token2

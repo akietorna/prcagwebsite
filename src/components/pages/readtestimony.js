@@ -37,8 +37,9 @@ function ReadTestimony(){
 
     const deletePost =(id) =>{
         const token2 = localStorage.getItem('jwt-token')
-        fetch(`${server}/delete_posts`,{
+        fetch(`${server}/delete_testimony`,{
             method : 'POST',
+            mode: 'cors',
             body: JSON.stringify({
                 id : id
             }),
@@ -57,7 +58,6 @@ function ReadTestimony(){
         })
           .then(data => {
             setAlertMessage(data)
-            console.log(id)
           })
     }
 

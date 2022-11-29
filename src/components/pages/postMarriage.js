@@ -13,6 +13,7 @@ function PostMarriage () {
     const [author, setAuthor] = useState('')
     const [topic, setTopic] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -40,7 +41,7 @@ function PostMarriage () {
     const handleImage =(event) =>{
         image_file = event.target.files[0];
         if (image_file != null){
-            data.append('pictures', image_file)
+            data.append('flier', image_file)
         }
     }
 
@@ -49,7 +50,7 @@ function PostMarriage () {
         if (pdf_file != null){
             data.append('book', pdf_file)
             data.append('name',name)
-            data.append('author',author)
+            data.append('writer',author)
             data.append('topic',topic)
             data.append('dept_code','MAR')
         }
@@ -59,6 +60,7 @@ function PostMarriage () {
         const token2 =localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_book`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
  
@@ -78,12 +80,14 @@ function PostMarriage () {
               setName('')
               setAuthor('')
               setTopic('')
+              setLoading(false)
           })
     }
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true)
         handleUpload();
     }
 
@@ -113,7 +117,7 @@ function PostMarriage () {
                         <input type='file' value={pdf_file} onChange={handlePdf} placeholder='PDF here' required/>
                         <br />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' className='submit'/>}
                     </form>
 
                 </div>

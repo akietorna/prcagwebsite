@@ -14,6 +14,7 @@ function PostTeen () {
     const [title, setTitle] = useState('')
     const [announcement, setAnnouncement] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -37,6 +38,7 @@ function PostTeen () {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true)
         handleLogIn();       
     }
 
@@ -45,6 +47,7 @@ function PostTeen () {
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_announcement` , {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 sender: name,
                 post_code: postCode,
@@ -69,6 +72,7 @@ function PostTeen () {
             setName('')
             setTitle('')
             setAnnouncement('')
+            setLoading(false)
         })
     }
 
@@ -91,7 +95,7 @@ function PostTeen () {
 
                         <textarea value={announcement} onChange={handleAnnouncement}  placeholder="Announcement"  required />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' className='submit'/>}
                     </form>
                 </div>
 

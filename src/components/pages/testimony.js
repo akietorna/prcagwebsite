@@ -8,6 +8,7 @@ import "./sermons.css"
 import prayerpics2 from '../pictures/prayerpics2.JPG'
 import prayerpics3 from '../pictures/prayerpics3.JPG'
 import { server } from '../server'
+import { Link } from 'react-router-dom'
 
 const Testimony =() =>{
 
@@ -16,6 +17,7 @@ const Testimony =() =>{
     const [phoneNumber, setPhoneNumber] = useState('')
     const [email, setEmail] = useState('')
     const [testimony, setTestimony] = useState('')
+    const [loading,setLoading] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
 
 
@@ -37,6 +39,7 @@ const Testimony =() =>{
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true)
         handleLogIn();       
     }
 
@@ -44,6 +47,7 @@ const Testimony =() =>{
     const handleLogIn = () =>{
         fetch('/add_testimony', {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 name:name,
                 phone_number:phoneNumber,
@@ -60,6 +64,7 @@ const Testimony =() =>{
             setPhoneNumber('')
             setEmail('')
             setTestimony('')
+            setLoading(false)
         })
     }
 
@@ -121,7 +126,7 @@ const Testimony =() =>{
 
                         <textarea value={testimony} onChange={handleTestimony} placeholder="Testimony"  required />
 
-                        <input type='submit' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/>:<input type='submit' className='submit'/>}  
                     </form>
                 </div>
 
@@ -142,7 +147,7 @@ const Testimony =() =>{
                     <br />
 
                     <h4 className='email'>E-mail:</h4>
-                    <h6> pentecostalrevivalcenter@gmail.com </h6>
+                    <h6><Link>pentecostalrevivalcenter@gmail.com</Link></h6>
 
 
                 </div>

@@ -10,6 +10,7 @@ import homepics5 from '../pictures/homepics5.jpg'
 import '../typping.css'
 import Aos from 'aos'
 import 'aos/dist/aos.css';
+import '../slydeshowstyles.css'
 
 const Announcement =() =>{
 
@@ -22,7 +23,7 @@ const Announcement =() =>{
     
     return(
             <>
-                <div className='announcement'>
+                <div className='carousel'>
                     <div className='col-12' >
                         <Carousel interval={5000}>
                             <Carousel.Item>

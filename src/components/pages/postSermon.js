@@ -12,6 +12,7 @@ const PostSermon =() =>{
     const [name, setName] = useState('')
     const [topic, setTopic] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -52,6 +53,7 @@ const PostSermon =() =>{
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_sermon`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
                 "Authorization": "Bearer "+ token2
@@ -69,12 +71,14 @@ const PostSermon =() =>{
               setAlertMessage(message)
               setName('')
               setTopic('')
+              setLoading(false)
           })
     }
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true)
         handleUpload();
     }
 
@@ -100,7 +104,7 @@ const PostSermon =() =>{
                         <input type='file' value={audio_file} onChange={handleSermon} placeholder='Sermon audio' required/>
                         <br />
 
-                        <input type='submit' className='submit'/>
+                       {loading ?  <input type='submit' value='Loading......' className='submit'/> :  <input type='submit' className='submit'/>}
                     </form>
 
                 </div>

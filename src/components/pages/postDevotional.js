@@ -14,6 +14,7 @@ function PostDevotional (){
     const [passage, setPassage] = useState('')
     const [message, setMessage] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
     let Navigate = useNavigate()
 
     const handleNavigate = (item) =>{
@@ -21,6 +22,8 @@ function PostDevotional (){
             Navigate('/admin',{replace:true})
         }
     }
+
+    
 
 
     const handleName =(event) =>{
@@ -40,18 +43,17 @@ function PostDevotional (){
     }
 
     let data = new FormData();
-    let file;
+    let img_file;
+
 
     const handleFile =(event) =>{
-        file = event.target.files[0];
-        if (file != null){
-            data.append('picture', file)
+        img_file = event.target.files[0];
+        if (img_file != null){
+            data.append('flier', img_file)
             data.append('name',name)
             data.append('topic',topic)
             data.append('message',message)
             data.append('passage',passage)
-            console.log('it was successful')
-            console.log(data)
         }
     }
 
@@ -59,6 +61,7 @@ function PostDevotional (){
         const token2 = localStorage.getItem('jwt-token')
         fetch(`${server}/admin/add_devotional`, {
             method:'POST',
+            mode: 'cors',
             body:data,
             headers:{
                 "Authorization": "Bearer "+ token2
@@ -78,12 +81,14 @@ function PostDevotional (){
               setName('')
               setPassage('')
               setTopic('')
+              setLoading(false)
           })
     }
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true);
         handleUpload();
     }
 
@@ -107,13 +112,13 @@ function PostDevotional (){
                        
                         <br />
 
+                        <input type='file' value={img_file} onChange={handleFile} placeholder='Message picture' required/>
+
                         <textarea value={message} onChange={handleMessage}  placeholder="Message"  required />
 
                         <br />
 
-                        <input type='file' value={file} onChange={handleFile} placeholder='Message picture' required/>
-
-                        <input type='submit' value='Upload' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' value='Upload' className='submit'/>}
                     </form>
                 </div>
 

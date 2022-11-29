@@ -12,6 +12,7 @@ function LogIn(){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
+    const [loading, setLoading] = useState(false)
 
     let Navigate = useNavigate()
 
@@ -25,8 +26,10 @@ function LogIn(){
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setLoading(true);
         handleLogIn();       
     }
+
 
     const authenticate = (alert) =>{
         if (alert === true){
@@ -37,6 +40,7 @@ function LogIn(){
     const handleLogIn = () =>{
         fetch(`${server}/admin`, {
             method:'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 username:username,
                 password:password,
@@ -60,6 +64,7 @@ function LogIn(){
             
             setPassword('')
             setUsername('')
+            setLoading(false)
         })
     }
 
@@ -83,7 +88,7 @@ function LogIn(){
 
                         <Link to='/admin/get_username' className='forgot-password'>forgot password?</Link>
 
-                        <input type='submit' value='Log In' className='submit'/>
+                        {loading ? <input type='submit' value='Loading.....' className='submit'/>: <input type='submit' value='Log In' className='submit'/> }
                     </form>
                 </div>
 

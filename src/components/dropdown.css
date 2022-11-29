@@ -10,7 +10,7 @@
 }
 
 .dopdown-menu li{
-    background: rgb(126, 126, 233); 
+    background: rgb(14, 14, 124); 
     text-decoration:none ;
     color: white;
     cursor: pointer;
@@ -23,19 +23,18 @@
 
 .dropdown-link {
     text-decoration:none;
-    background: rgb(126, 126, 233);
+    background: rgb(14, 14, 124);
     display: block;
     width: 200px;
     height: 100%;
     color: white;
-    padding: 10px;
+    padding: 15px;
 
 }
 
 .dropdown-link:hover{
-    color: yellow;
-    background: black;
-    border-left: 4px solid yellow;
+    color: rgb(14, 14, 124);
+    background: white;
 }
 
 

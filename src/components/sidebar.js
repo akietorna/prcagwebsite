@@ -10,7 +10,7 @@ import { IconContext } from 'react-icons/lib'
 
 
 const Nav = styled.div`
-    background: linear-gradient(0deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% );
+    background: rgb(14, 14, 124);
     height:80px;
     display:flex;
     justify-content: flex-start;
@@ -29,7 +29,7 @@ const NavIcon = styled(Link)`
     align-items:center;
 `
 const SideBarNav = styled.nav `
-    background: linear-gradient(0deg, rgb(252, 5, 219) 0%, rgb(14, 14, 124) 100% );
+    background: rgb(14, 14, 124);
     width:260px;
     height:100vh;
     display: flex;
@@ -62,10 +62,10 @@ const SideBar = () =>{
             <SideBarNav sidebar={sidebar}>
                 <SideBarWrap>
                     <NavIcon to='#'>
-                        <AiIcons.AiOutlineClose onClick={handleSidebar} />
+                        <AiIcons.AiOutlineClose style={{marginLeft:'160px'}} onClick={handleSidebar} />
                     </NavIcon>
                     {SideBarData.map((item, index) =>{
-                        return (<SubMenu item={item} key={index} />);
+                        return (<SubMenu item={item} key={index} onClick={()=> handleSidebar()} />);
                     })}
                 </SideBarWrap>
             </SideBarNav>

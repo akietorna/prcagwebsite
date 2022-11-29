@@ -62,7 +62,7 @@ function Devotional () {
                                     <Card.Title style={{ color:'rgba(10, 7, 182, 0.863)',fontWeight:'800', fontSize:'24px', fontFamily:'sans-serif'}}>{item[2]}</Card.Title>
                                     <Card.Text style={{fontSize:'15px', color:'rgba(70, 68, 68, 0.986)', fontFamily:'sans-serif'}}>
                                         <h6 style={{color:'rgba(188, 188, 255, 0.842)'}}>Passage: {item[6]}</h6>
-                                        {item[4]}
+                                        {item[6]}
                                         <h6 className='signature'>By: {item[1]}</h6>
                                     </Card.Text>
                                 </Card.Body>

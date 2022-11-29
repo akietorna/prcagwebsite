@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import "./navbar.css";
 import  AnnouncementDropdown from "./announcementdropdown";
 import  BooksDropdown from "./booksdropdown";
@@ -83,34 +83,34 @@ return(
         <nav className='navbar'    >
             <ul className= 'nav-menu'>
                 <li className='nav-item'>
-                    <Link className='nav-links' to="/" > <AiIcons.AiFillHome  /> <span>Home</span>  </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})}  to="/" > <AiIcons.AiFillHome  /> <span>Home</span>  </NavLink>
                 </li>
                 <li className='nav-item'>
-                    <Link className='nav-links' to='/sermons'   > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </Link> 
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/sermons'   > <GiIcons.GiPublicSpeaker /> <span>Sermons</span> </NavLink> 
                 </li>
                 <li className='nav-item'>
-                    <Link className='nav-links' to='/prayer-request'   > <GiIcons.GiPrayer /> <span>Prayer Request</span></Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/prayer-request'   > <GiIcons.GiPrayer /> <span>Prayer Request</span></NavLink>
                 </li>
                 <li className='nav-item'>
-                    <Link className='nav-links' to='/devotional'   > <FaIcons.FaBookReader /> <span>Devotional</span> </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/devotional'   > <FaIcons.FaBookReader /> <span>Devotional</span> </NavLink>
                 </li>
                 <li className='nav-item'>
-                    <Link className='nav-links' to='/testimony'   > <FcIcons.FcPodiumWithSpeaker /> <span>Testimony</span> </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/testimony'   > <FcIcons.FcPodiumWithSpeaker /> <span>Testimony</span> </NavLink>
                 </li>
                 <li className='nav-item' onMouseEnter={onMouseEnterAnnouncement} onMouseLeave={onMouseLeaveAnnouncement} onClick = {onClickAnnouncement }>
-                    <Link className='nav-links' to='/announcement'  > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/announcement'  > <FcIcons.FcSpeaker /> <span>Announcement</span>  <RiIcons.RiArrowDownSFill /> </NavLink>
                     {announcementDropdown && <AnnouncementDropdown />}
                 </li>
             
                 
                 <li className='nav-item' onMouseEnter={onMouseEnterBooks} onMouseLeave={onMouseLeaveBooks} onClick={onClickBooks}>
-                    <Link className='nav-links' to='/book'   > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/book'   > <BiIcons.BiBookBookmark /> <span>Books</span>  <RiIcons.RiArrowDownSFill /> </NavLink>
                     {booksDropdown && <BooksDropdown />}
                 </li>
                 
 
                 <li className='nav-item' onMouseEnter={onMouseEnterOthers} onMouseLeave={onMouseLeaveOthers} onClick={onClickOthers}>
-                    <Link className='nav-links' to='/others'   > <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </Link>
+                    <NavLink className='nav-links'  style={({isActive}) => ({ borderBottom : isActive ? "4px solid white" : ""})} to='/others'   > <AiIcons.AiOutlineSetting /> <span> Others</span> <RiIcons.RiArrowDownSFill /> </NavLink>
                     {othersDropdown && <OthersDropdown />}
                 </li>
                 
@@ -122,5 +122,7 @@ return(
 )
 
 }
+
+
 
 export default NavBar;

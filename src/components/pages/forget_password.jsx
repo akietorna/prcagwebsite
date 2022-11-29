@@ -12,7 +12,7 @@ function ForgetPassword(){
 
     const [confirmCode, setConfirmCode] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
-
+    const [loading, setLoading] = useState(false)
     let navigate = useNavigate()
 
     const handleConfirmCode = (event) =>{
@@ -21,6 +21,7 @@ function ForgetPassword(){
 
     const handleSubmit = (event) =>{
         event.preventDefault()
+        setLoading(true)
         handleCodeSend()
     }
 
@@ -34,6 +35,7 @@ function ForgetPassword(){
     const handleCodeSend = () =>{
         fetch(`${server}/admin/confirmation_code`, {
             method : 'POST',
+            mode: 'cors',
             body:JSON.stringify({
                 confirm_code : confirmCode
             }),
@@ -45,6 +47,7 @@ function ForgetPassword(){
             authenticate(message)
             setAlertMessage(message)
             setConfirmCode('')
+            setLoading(false)
           })
     }
 
@@ -66,7 +69,7 @@ function ForgetPassword(){
                                     
                                     <input type='text' value={confirmCode} onChange={handleConfirmCode} placeholder='Confirmation code here' required />
                                     <br />
-                                    <input type='submit' value='Submit' className='submit'/>
+                                    {loading ? <input type='submit' value='Loading.....' className='submit'/> : <input type='submit' value='Submit' className='submit'/>}
                                 </form>
                             </Card.Text>
                         </Card.Body>
